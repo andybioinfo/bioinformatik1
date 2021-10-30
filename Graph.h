@@ -85,7 +85,7 @@ template <typename NodeLabel> class Graph
 	void removeEdge(const Edge& e);
 
 	/**
-	 * If the graph contains an edge betwenn n1 and n2,
+	 * If the graph contains an edge between n1 and n2,
 	 * it is removed.
 	 */
 	void removeEdge(Node* n1, const Node* n2);
@@ -107,17 +107,130 @@ template <typename NodeLabel> class Graph
 
 
 
-/*
-	Konstruktor mit DNA-(Liste bzw Vector): Erstellt einen Graphen,
-	der Knoten mit den übergebenen Labels beinhalten soll.
 
-    was soll das Label sein?
-    Sequence.toString -> "ATTAG"   <- nodes_element.toString
-    oder getComment   -> "DNA_A"   <- nodes_element.getComment
 
-*/
+
+
+
+/** Removes an edge by source and target
+ *
+ *  @n1 source Node
+ *  @n2 target Node
+ **/
+template <typename NodeLabel> 
+void Graph<NodeLabel>::removeEdge(Node* n1, const Node* n2) {
+
+    // Look for the source Node:
+    auto edge_ = n1->out_edges.begin();
+    while(edge_ != n1->out_edges.end()) {
+            if (edge_->first == n2) {
+                n1->out_edges.erase(edge_);
+                break;
+            }
+            ++edge_;
+        }
+
+};
+
+
+/** Removes an edge with his edge-object
+ *
+ *  @e the edge to remove
+ **/
+template <typename NodeLabel> 
+void Graph<NodeLabel>::removeEdge(const Edge& e) {
+    // redirect to removeEdge(node n1,node n2)
+    removeEdge(e.source,e.target);
+};
+
+
+/** Contracts an edge in this graph.
+ *  All successors of the target node (from the edge to contract) becomes
+ *  the successors of the start-node. The edge weights will be adopted.
+ *  All edges to the target node are redirected to the start-node.
+ *  (see: https://de.wikipedia.org/wiki/Kantenkontraktion)
+ *
+ *  @rem the edge to contract
+ *  @return the pointer of the contracted node
+ * */
+template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>::contractEdge(const Graph<NodeLabel>::Edge& rem) {
+
+// Ermittle die beiden Knoten der Kante
+    auto source_node = rem.source;
+    auto target_node = rem.target;
+    cout << "\n folgende Kante soll gelöscht werden: " << source_node->label.getComment() << " -> " << target_node->label.getComment();
+
+// laufe die Kanten des Zielknoten ab und schreibe die source-Knoten des target-Knoten zum source-Knoten der zu kontraktierenden Kante um
+    auto target_target = target_node->out_edges.begin();
+    auto target_targets_end = target_node->out_edges.end();
+
+    /* iteration - Auslesen und neue Kanten in Source-Node erstellen */
+    for (; target_target != target_targets_end; target_target++) {
+        cout << "\n readfrom target->target_target :" << (target_node->label).getComment() << " -> " << (target_target->first->label).getComment() << " : schreibe source_node->target_target" << (source_node->label).getComment() << " -> " << (target_target->first->label).getComment() ;
+        // baue Kante
+        addEdge(source_node,target_target->first,target_target->second);
+    }
+
+    // delete all edges from the target_node
+    target_node->out_edges.clear();
+
+    // Loop for delete the argument-edge source_node->target_node
+    auto source_target = source_node->out_edges.begin();
+    while(source_target != source_node->out_edges.end()) {
+        cout << "\n search source->source_target :" << source_node->label.getComment() << " -> " << source_target->first->label.getComment() << " : ";
+        if (source_target->first == target_node) {source_node->out_edges.erase(source_target);cout << "deleted";break;}
+        ++source_target;
+    }
+    // Redirect all edges: SUCCESSOR = target_node => SUCCESSOR = source_node
+    auto node_beg = nodes_.begin();
+    while(node_beg != nodes_.end()) {
+        //Loop over all edges from the actual node
+        auto edge_beg = node_beg->out_edges.begin();
+        while(edge_beg != node_beg->out_edges.end()) {
+            if (edge_beg->first == target_node) {
+                // Redirect the edge to the source_node
+                auto E = Edge(node_beg.operator->(), source_node, 0);
+                std::pair<Node*, size_t> P (source_node,0);
+                //addEdge(node_beg,source_node,edge_beg->second);
+                node_beg->out_edges.erase(edge_beg);
+                node_beg->out_edges.push_back(P);
+                continue;
+            }
+            ++edge_beg;
+        }
+        ++node_beg;
+    }
+
+    return source_node;
+
+}
+
+
+
+
+/** returns a constant of the node-iterator
+ */
+template <typename NodeLabel> typename Graph<NodeLabel>::node_iterator       Graph<NodeLabel>::beginNodes() {return nodes_.begin();}
+/** returns a constant of the node-iterator
+ */
+template <typename NodeLabel> typename Graph<NodeLabel>::node_iterator       Graph<NodeLabel>::endNodes()   {return nodes_.end();}
+/** returns a constant of the node-iterator
+ */
+template <typename NodeLabel> typename Graph<NodeLabel>::const_node_iterator Graph<NodeLabel>::beginNodes() const {return nodes_.begin();}
+/** returns a constant of the node-iterator
+ */
+template <typename NodeLabel> typename Graph<NodeLabel>::const_node_iterator Graph<NodeLabel>::endNodes()   const {return nodes_.end();}
+
+
+/** Creates a Graph. All sequences will be added as nodes in the graph.
+ *
+ *  @new_nodes the vector with the sequences.
+ * */
 template <typename NodeLabel>
 Graph<NodeLabel>::Graph(const std::vector<NodeLabel>& new_nodes) {
+    //was soll das Label sein?
+    //                   Sequence.toString -> "ATTAG"   <- nodes_element.toString
+    //oder getComment   -> "DNA_A"   <- nodes_element.getComment
     std::cout << "\n Graph erstellen...";
     // Durchlaufe die Liste new_nodes
     for (const Sequence <Alphabet::DNA> &var: new_nodes) {
@@ -131,89 +244,16 @@ Graph<NodeLabel>::Graph(const std::vector<NodeLabel>& new_nodes) {
 
 }
 
-/*
-    Fügt einen neuen Knoten mit entsprechendem Label in den Graphen ein.
-*/
-
-template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>::addNode(const NodeLabel& label) {
-    auto knoten = Node(label); // Knoten mit Label erstellen
-    nodes_.push_back(Node(label)); // Knoten in Array einfügen
-    return knoten;
-}
 
 
-
-
-
-/*
-	• Node* contractEdge(const Edge& rem) führt eine Kantenkontraktion durch. Dabei wird eine Kante entfernt und die beiden anliegenden Knoten werden zu einem
-	neuen Knoten vereinigt. (siehe: https://de.wikipedia.org/wiki/Kantenkontraktion)
-	Kontrahiert zwei Knoten zu einem und gibt den neuen Knoten zurück
-	(https://de.wikipedia.org/wiki/Kantenkontraktion)
-	[Noch überarbeiten]
-*/
-
-template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>::contractEdge(const Graph<NodeLabel>::Edge& rem) {
-
-// Ermittle die beiden Knoten der Kante
-auto source_node = rem.source;
-auto target_node = rem.target;
-cout << "\n folgende Kante soll gelöscht werden: " << source_node->label.getComment() << " -> " << target_node->label.getComment();
-
-// laufe die Kanten des Zielknoten ab und schreibe die source-Knoten des target-Knoten zum source-Knoten der zu kontraktierenden Kante um
-auto nodeB1 = target_node->out_edges.begin();
-auto nodeB2 = target_node->out_edges.end();
-
-
-return NULL;
-
-}
-
-
-
-
-
-
-/*
-	• void removeEdge(Node* n1, const Node* n2) löscht die Kante zwischen Knoten
-	n1 und Knoten n2.
-*/
-template <typename NodeLabel> 
-void Graph<NodeLabel>::removeEdge(Node* n1, const Node* n2) {};
-
-
-/*
-	• void removeEdge(const Edge& e) löscht die entsprechende Kante.
-*/
-template <typename NodeLabel> 
-void Graph<NodeLabel>::removeEdge(const Edge& e) {};
-
-
-
-
-
-/*#################### FERTIGE METHODEN ###################### */
-
-// + Iterator
-// + AddNode ( ?? )
-// + Graphviz-Ausgabe
-// + AddEdge
-//
-/*
-	Iteratoren für die Knotenliste.
-	[Fehlerfrei, noch nicht getestet]
-*/
-template <typename NodeLabel> typename Graph<NodeLabel>::node_iterator       Graph<NodeLabel>::beginNodes() {return nodes_.begin();}
-template <typename NodeLabel> typename Graph<NodeLabel>::node_iterator       Graph<NodeLabel>::endNodes()   {return nodes_.end();}
-template <typename NodeLabel> typename Graph<NodeLabel>::const_node_iterator Graph<NodeLabel>::beginNodes() const {return nodes_.begin();}
-template <typename NodeLabel> typename Graph<NodeLabel>::const_node_iterator Graph<NodeLabel>::endNodes()   const {return nodes_.end();}
-
-
-/*
-   Füge eine Kante zwischen 2 Knoten ein
-*/
-template <typename NodeLabel>
-typename Graph<NodeLabel>::Edge Graph<NodeLabel>::addEdge(Node* n1, Node* n2, size_t weight ) {
+/** Inserts a Edge in the graph.
+ *
+ *  @n1 the pointer to the reference-node
+ *  @n2 the pointer to the successor of the reference-node
+ *  @weight the weight of this edge
+ *  @return the reference-node
+ * */
+template <typename NodeLabel> typename Graph<NodeLabel>::Edge Graph<NodeLabel>::addEdge(Node* n1, Node* n2, size_t weight ) {
     // Startknoten auswählen und eine Kante erstellen
     auto E = Edge(n1, n2, weight);
     std::pair<Node*, size_t> P (n2,weight);
@@ -221,18 +261,34 @@ typename Graph<NodeLabel>::Edge Graph<NodeLabel>::addEdge(Node* n1, Node* n2, si
     return E;
 }
 
+/** Inserts a Node in the graph.
+ *
+ *  @label the pointer to the sequence
+ *  @n2 the pointer to the successor of the reference-node
+ *  @weight the weight of this edge
+ * */
+template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>::addNode(const NodeLabel& label) {
+    auto knoten = Node(label); // Knoten mit Label erstellen
+    nodes_.push_back(Node(label)); // Knoten in Array einfügen
+    return knoten;
+}
 
-/*
-	Gibt die Anzahl der Knoten mithilfe der Listenlänge std::list.size zurück
-	[Fertig implementiert und ausprobiert]
-*/
+
+/**
+ *  @return the number of the nodes in this graph
+ * */
 template <typename NodeLabel> size_t  Graph<NodeLabel>::numNodes() const { return nodes_.size(); }
 
 
-/*
-	Sendet den Graphen im Graphvix-Format in den outstream
-	[funktioniert + getestet]
-*/
+/** Overrides the << Operator for Graph-Classes.
+ *  The return output-stream is the graph in Graphviz-Format.
+ *
+ *  This graph contains the number of nodes, sequences with comments and weight of the edges.
+ *
+ *  @graph the graph to be output
+ *  @stream the stream to be used
+ *  @return the graph in Graphviz-Format
+ * */
 template <typename NodeLabel>
 std::ostream& operator<<(std::ostream& stream,const Graph<NodeLabel>& graph)
 {

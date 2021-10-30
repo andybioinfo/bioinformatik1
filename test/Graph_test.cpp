@@ -17,7 +17,19 @@ using SeqList = std::vector<Sequence<Alphabet::DNA>>;
 
 SeqList SequenceCombinator(int intervall_start,int intervall_end,bool generate_empty);
 
-// Empty-Graph-Tests
+using Node = Graph<Sequence<Alphabet::DNA>>::Node;
+using Edge = Graph<Sequence<Alphabet::DNA>>::Edge;
+
+/** GRAPH TESTS - Test for check the methods of the Graph-Class
+ * - Add Nodes
+ * - Add Edges
+ * - Remove Edges
+ * - Contract Edges
+ * - Graph Constructor Tests
+ * - Graphviz Tests
+ * - Assembler Tests
+ *
+ * */
 
 TEST(Graph, emptyListToGraph)
 {
@@ -29,17 +41,50 @@ EXPECT_EQ(graph_empty.numNodes(),0);
 EXPECT_NE(graph_not_empty.numNodes(),0);
 }
 
-TEST(Graph, emptyListToGraph_GraphvizOutput)
+TEST(Graph, AddOneEdge)
 {
-SeqList emptySeqList = SequenceCombinator(0,0,true);
-SeqList NotemptySeqList = SequenceCombinator(0,0,false);
-
-std::string compstring = "digraph " << "overlapgraph" << " { \n";
-<< "     nodecount=" << "0" << "\n" << "}\n";
-
-EXPECT_EQ(compstring,"" << emptySeqList);
-EXPECT_NE(compstring,"" << NotemptySeqList);
+//Create Graph:
+SeqList SeqTriplePack = SequenceCombinator(0,3,false);
+Graph<Sequence<Alphabet::DNA>> g(SeqTriplePack);
+auto iter = g.beginNodes();
+// Create Node-pointers
+Node *_a = &iter.operator*(); iter++;
+Node *_b = &iter.operator*(); iter++;
+Node *_c = &iter.operator*(); iter++;
+// Add Edges
+g.addEdge(_a,_b,99);
+// Check the count of the edges
+EXPECT_EQ(_a->out_edges.size(),1);
+// Check the values of the edges
+EXPECT_EQ(_a->out_edges.front().first->label,"AA");
+EXPECT_EQ(_a->out_edges.front().second,99);
 }
+
+TEST(Graph, AddMultiEdges)
+{
+//Create Graph:
+SeqList SeqTriplePack = SequenceCombinator(0,3,false);
+Graph<Sequence<Alphabet::DNA>> g(SeqTriplePack);
+auto iter = g.beginNodes();
+// Create Node-pointers
+Node *_a = &iter.operator*(); iter++;
+Node *_b = &iter.operator*(); iter++;
+Node *_c = &iter.operator*(); iter++;
+// Add Edges
+g.addEdge(_a,_b,10);
+g.addEdge(_c,_b,15);
+g.addEdge(_c,_a,20);
+// Check the count of the edges
+EXPECT_EQ(_a->out_edges.size(),1);
+EXPECT_EQ(_b->out_edges.size(),0);
+EXPECT_EQ(_c->out_edges.size(),2);
+// Check the values of the edges
+EXPECT_EQ(_a->out_edges.front().first->label,"AA");
+EXPECT_EQ(_c->out_edges.front().first->label,"AA");
+EXPECT_EQ(_a->out_edges.front().second,10);
+EXPECT_EQ(_c->out_edges.front().second,15);
+}
+
 
 TEST(Graph, CustomGraphOnlyNodes)
 {
@@ -71,7 +116,84 @@ EXPECT_EQ(start->out_edges.begin()->first->label,(--destination)->label);
 }
 }
 
-TEST(Graph, CustomGraphNodesAndEdges_GraphvizOutput)
+
+
+TEST(Graph, contractEdgeTest)
+{
+SeqList KK = SequenceCombinator(0,9,false);
+Graph<Sequence<Alphabet::DNA>> KG(KK);
+auto HH = KG.beginNodes();
+// Erstelle Knotenpointer
+Node *_A = &HH.operator*(); HH++;
+Node *_B = &HH.operator*(); HH++;
+Node *_C = &HH.operator*(); HH++;
+Node *_D = &HH.operator*(); HH++;
+Node *_E = &HH.operator*(); HH++;
+Node *_F = &HH.operator*(); HH++;
+Node *_S = &HH.operator*(); HH++;
+Node *_T = &HH.operator*(); HH++;
+Node *_Q = &HH.operator*(); HH++;
+Node *_X = &HH.operator*(); HH++;
+// Erstelle Kanten
+KG.addEdge(_S,_D,10);
+KG.addEdge(_S,_E,15);
+KG.addEdge(_S,_F,20);
+KG.addEdge(_S,_T,25);
+KG.addEdge(_T,_A,30);
+KG.addEdge(_T,_B,35);
+KG.addEdge(_T,_C,40);
+KG.addEdge(_Q,_T,45);
+// Contract this edge:
+Edge EE(_S,_T,25);
+KG.contractEdge(EE);
+// Check the new count of the edges from the source-node
+EXPECT_EQ(_S->out_edges.size(),6);
+// If the successor of _Q changed?
+EXPECT_EQ(_Q->out_edges.front().first->label,"TATATATATATA");
+}
+
+TEST(Graph, removeEdgeTest)
+{
+//Create Graph:
+SeqList SeqTriplePack = SequenceCombinator(0,3,false);
+Graph<Sequence<Alphabet::DNA>> g(SeqTriplePack);
+auto iter = g.beginNodes();
+// Create Node-pointers
+Node *_a = &iter.operator*(); iter++;
+Node *_b = &iter.operator*(); iter++;
+Node *_c = &iter.operator*(); iter++;
+// Add Edges
+g.addEdge(_a,_b,10);
+g.addEdge(_a,_c,20);
+g.addEdge(_c,_b,15);
+g.addEdge(_c,_a,20);
+g.removeEdge(_a,_b);
+Edge for_delete(_c,_a,25);
+g.removeEdge(for_delete);
+// Check the count of the edges
+EXPECT_EQ(_a->out_edges.size(),1);
+EXPECT_EQ(_b->out_edges.size(),0);
+EXPECT_EQ(_c->out_edges.size(),1);
+// Check for deleting the correct Edge
+EXPECT_EQ(_a->out_edges.front().second,20);
+EXPECT_EQ(_c->out_edges.front().second,15);
+}
+
+
+TEST(GRAPH_GRAPHVIZ_TEST, emptyListToGraph_GraphvizOutput)
+{
+SeqList emptySeqList = SequenceCombinator(0,0,true);
+SeqList NotemptySeqList = SequenceCombinator(0,0,false);
+
+std::string compstring = "digraph " << "overlapgraph" << " { \n";
+<< "     nodecount=" << "0" << "\n" << "}\n";
+
+EXPECT_EQ(compstring,"" << emptySeqList);
+EXPECT_NE(compstring,"" << NotemptySeqList);
+}
+
+
+TEST(GRAPH_GRAPHVIZ_TEST, CustomGraphNodesAndEdges_GraphvizOutput)
 {
 SeqList SixSeq = SequenceCombinator(0,6,false);
 Graph<Sequence<Alphabet::DNA>> custom_graph(SixSeq);
@@ -82,52 +204,34 @@ for (; start != destination; start++ ) {
 custom_graph.addEdge((start).operator->(),(--destination).operator->(),weight);
 }
 std::string compstring = "digraph " << "overlapgraph" << " { \n"
-<< "     nodecount=" << "6" << "\n"
-<< "     DNA_D [sequence=\"TAGC\"]\n"
-<< "     DNA_E [sequence=\"AAAAA\"]\n"
-<< "     DNA_F [sequence=\"TA\"]\n"
-<< "     DNA_A -> DNA_F [weight=11 predecessor_sequence=\"TA\"]\n"
-<< "     DNA_B -> DNA_E [weight=11 predecessor_sequence=\"AAAAA\"]\n"
-<< "     DNA_C -> DNA_D [weight=11 predecessor_sequence=\"TAGC\"]\n"
-<< "}\n";
+                                    << "     nodecount=" << "6" << "\n"
+                                    << "     DNA_D [sequence=\"TAGC\"]\n"
+                                    << "     DNA_E [sequence=\"AAAAA\"]\n"
+                                    << "     DNA_F [sequence=\"TA\"]\n"
+                                    << "     DNA_A -> DNA_F [weight=11 predecessor_sequence=\"TA\"]\n"
+                                    << "     DNA_B -> DNA_E [weight=11 predecessor_sequence=\"AAAAA\"]\n"
+                                    << "     DNA_C -> DNA_D [weight=11 predecessor_sequence=\"TAGC\"]\n"
+                                    << "}\n";
 EXPECT_EQ(compstring,"" << custom_graph);
 }
 
-TEST(Graph, contractEdgeTest)
-{
-EXPECT_EQ(true,false);
-}
-
-TEST(Graph, removeEdgeTest)
-{
-EXPECT_EQ(true,false);
-}
-
-
-TEST(Graph, oneEdge)
-{
-EXPECT_EQ(true,false);
-}
-
-
-
-TEST(Graph, OverlapGraphTest)
-{
-EXPECT_EQ(true,false);
-}
-
-TEST(Graph, TestTest)
-{
-EXPECT_EQ(true,true);
-}
 
 
 
 
 
 
+
+
+/** Generates a Sequence List as std::vector
+ *
+ * @generate_empty  -> returns a empty List if true
+ * @intervall_start -> start in the given List
+ * @intervall_end   -> end in the given List
+ * [Range 0 - 9]
+ * */
 SeqList SequenceCombinator(int intervall_start,int intervall_end,bool generate_empty) {
-    SeqList List;
+    std::vector<Sequence<Alphabet::DNA>> List;
     if (generate_empty) {return List;}
     Sequence<Alphabet::DNA> sequences[] = {
             Sequence<Alphabet::DNA>::fromString("TAAGC")
@@ -136,12 +240,16 @@ SeqList SequenceCombinator(int intervall_start,int intervall_end,bool generate_e
             ,Sequence<Alphabet::DNA>::fromString("TAGC")
             ,Sequence<Alphabet::DNA>::fromString("AAAAA")
             ,Sequence<Alphabet::DNA>::fromString("TA")
+            ,Sequence<Alphabet::DNA>::fromString("TATATATATATA")
+            ,Sequence<Alphabet::DNA>::fromString("GCCGCG")
+            ,Sequence<Alphabet::DNA>::fromString("CACATATA")
+            ,Sequence<Alphabet::DNA>::fromString("TATACACAGGC")
     };
 
-    std::string comment[] = {"DNA_A","DNA_B","DNA_C","DNA_D","DNA_E","DNA_F","DNA_G","DNA_H","DNA_I","DNA_J"};
-    for (int id = 0 ; id < 6 ; id++) {
+    std::string comment[] = {"DNA_A","DNA_B","DNA_C","DNA_D","DNA_E","DNA_F","DNA_S","DNA_T","DNA_Q","DNA_X"};
+    for (int id = 0 ; id < 10 ; id++) {
         sequences[id].setComment(comment[id]);}
-    int max = 5;
+    int max = 9;
     int start = (intervall_start < 0 || intervall_start > max) ? 0 : intervall_start;
     int end = (intervall_end < intervall_start || intervall_end > max) ? max : intervall_end;
     for (int val = start ; val <= end ; val++) {
