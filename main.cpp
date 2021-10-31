@@ -98,7 +98,7 @@ List.push_back(F);
         for (; start != destination; start++) {
             cout << "\n iter " << (start->label).getComment() << " OUT : (" << start->out_edges.size() << ")";
             auto inside = start->out_edges.begin();
-            for (int i = 0 ; i < start->out_edges.size() ; i++) {cout << " " << (inside).operator->()->first->label.getComment() << "|" << (inside++).operator->()->second;}
+            for (int i = 0 ; i < (int) start->out_edges.size() ; i++) {cout << " " << (inside).operator->()->first->label.getComment() << "|" << (inside++).operator->()->second;}
         }
 
         start = G.beginNodes(); // reset

@@ -50,7 +50,6 @@ auto iter = g.beginNodes();
 // Create Node-pointers
 Node *_a = &iter.operator*(); iter++;
 Node *_b = &iter.operator*(); iter++;
-Node *_c = &iter.operator*(); iter++;
 // Add Edges
 g.addEdge(_a,_b,99);
 // Check the count of the edges
@@ -91,14 +90,14 @@ TEST(Graph, CustomGraphOnlyNodes)
 SeqList SixSeq = SequenceCombinator(0,6,false);
 
 Graph<Sequence<Alphabet::DNA>> custom_graph(SixSeq);
-custom_graph.beginNodes().
+custom_graph.beginNodes();
 EXPECT_EQ(custom_graph.numNodes(),6);
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()).getComment(),"DNA_A");
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()).getComment(),"DNA_B");
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()).getComment(),"DNA_C");
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()).getComment(),"DNA_D");
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()).getComment(),"DNA_E");
-EXPECT_EQ((custom_graph.beginNodes()).operator->()).getComment(),"DNA_F");
+EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label,"DNA_A");
+EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label,"DNA_B");
+EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label,"DNA_C");
+EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label,"DNA_D");
+EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label,"DNA_E");
+EXPECT_EQ((custom_graph.beginNodes()).operator->()->label,"DNA_F");
 
 }
 
@@ -133,7 +132,7 @@ Node *_F = &HH.operator*(); HH++;
 Node *_S = &HH.operator*(); HH++;
 Node *_T = &HH.operator*(); HH++;
 Node *_Q = &HH.operator*(); HH++;
-Node *_X = &HH.operator*(); HH++;
+
 // Erstelle Kanten
 KG.addEdge(_S,_D,10);
 KG.addEdge(_S,_E,15);
@@ -184,12 +183,12 @@ TEST(GRAPH_GRAPHVIZ_TEST, emptyListToGraph_GraphvizOutput)
 {
 SeqList emptySeqList = SequenceCombinator(0,0,true);
 SeqList NotemptySeqList = SequenceCombinator(0,0,false);
+std::string compstring = std::string("digraph overlapgraph { \n     nodecount=0\n}\n"); 
+//<< std::string("overlapgraph") << std::string(" { \n")
+//<< std::string("     nodecount=") << std::string("0") << std::string("\n") << string("}\n");
 
-std::string compstring = "digraph " << "overlapgraph" << " { \n";
-<< "     nodecount=" << "0" << "\n" << "}\n";
-
-EXPECT_EQ(compstring,"" << emptySeqList);
-EXPECT_NE(compstring,"" << NotemptySeqList);
+EXPECT_EQ(compstring, std::string(emptySeqList));
+EXPECT_NE(compstring, std::string(NotemptySeqList));
 }
 
 
@@ -212,7 +211,7 @@ std::string compstring = "digraph " << "overlapgraph" << " { \n"
                                     << "     DNA_B -> DNA_E [weight=11 predecessor_sequence=\"AAAAA\"]\n"
                                     << "     DNA_C -> DNA_D [weight=11 predecessor_sequence=\"TAGC\"]\n"
                                     << "}\n";
-EXPECT_EQ(compstring,"" << custom_graph);
+EXPECT_EQ(compstring, string("")  << custom_graph);
 }
 
 
@@ -230,6 +229,7 @@ EXPECT_EQ(compstring,"" << custom_graph);
  * @intervall_end   -> end in the given List
  * [Range 0 - 9]
  * */
+
 SeqList SequenceCombinator(int intervall_start,int intervall_end,bool generate_empty) {
     std::vector<Sequence<Alphabet::DNA>> List;
     if (generate_empty) {return List;}

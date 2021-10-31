@@ -156,19 +156,19 @@ void Graph<NodeLabel>::removeEdge(const Edge& e) {
  * */
 template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>::contractEdge(const Graph<NodeLabel>::Edge& rem) {
 
-// Ermittle die beiden Knoten der Kante
+	// Find the two nodes on the edge
     auto source_node = rem.source;
     auto target_node = rem.target;
     //std::cout << "\n folgende Kante soll gelöscht werden: " << source_node->label.getComment() << " -> " << target_node->label.getComment();
 
-// laufe die Kanten des Zielknoten ab und schreibe die source-Knoten des target-Knoten zum source-Knoten der zu kontraktierenden Kante um
+	// walk the edges of the target node and rewrite the source nodes of the target node to the source node of the edge to be contracted
     auto target_target = target_node->out_edges.begin();
     auto target_targets_end = target_node->out_edges.end();
 
-    /* iteration - Auslesen und neue Kanten in Source-Node erstellen */
+	// iteration - read out and create new edges in Source-Node
     for (; target_target != target_targets_end; target_target++) {
         //std::cout << "\n readfrom target->target_target :" << (target_node->label).getComment() << " -> " << (target_target->first->label).getComment() << " : schreibe source_node->target_target" << (source_node->label).getComment() << " -> " << (target_target->first->label).getComment() ;
-        // baue Kante
+        // create Edge
         addEdge(source_node,target_target->first,target_target->second);
     }
 
@@ -192,7 +192,7 @@ template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>:
         while(edge_beg != node_beg->out_edges.end()) {
             if (edge_beg->first == target_node) {
                 // Redirect the edge to the source_node
-                auto E = Edge(node_beg.operator->(), source_node, 0);
+                //auto E = Edge(node_beg.operator->(), source_node, 0);
                 std::pair<Node*, size_t> P (source_node,0);
                 //addEdge(node_beg,source_node,edge_beg->second);
                 node_beg->out_edges.erase(edge_beg);
@@ -235,7 +235,7 @@ Graph<NodeLabel>::Graph(const std::vector<NodeLabel>& new_nodes) {
     //                   Sequence.toString -> "ATTAG"   <- nodes_element.toString
     //oder getComment   -> "DNA_A"   <- nodes_element.getComment
     //std::cout << "\n Graph erstellen...";
-    // Durchlaufe die Liste new_nodes
+    // iterate the list new_nodes
     for (const NodeLabel &var: new_nodes) {
         //cout << " [" << var.getComment() << "," << var.size() << "]";
         nodes_.push_back(Node(var)); // Erstelle den Knoten und füge ihn ein
@@ -257,7 +257,7 @@ Graph<NodeLabel>::Graph(const std::vector<NodeLabel>& new_nodes) {
  *  @return the reference-node
  * */
 template <typename NodeLabel> typename Graph<NodeLabel>::Edge Graph<NodeLabel>::addEdge(Node* n1, Node* n2, size_t weight ) {
-    // Startknoten auswählen und eine Kante erstellen
+    // select start node and create an edge
     auto E = Edge(n1, n2, weight);
     std::pair<Node*, size_t> P (n2,weight);
     n1->out_edges.push_back(P);
@@ -271,8 +271,8 @@ template <typename NodeLabel> typename Graph<NodeLabel>::Edge Graph<NodeLabel>::
  *  @weight the weight of this edge
  * */
 template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>::addNode(const NodeLabel& label) {
-    auto knoten = Node(label); // Knoten mit Label erstellen
-    nodes_.push_back(Node(label)); // Knoten in Array einfügen
+    auto knoten = Node(label); // create node with label
+    nodes_.push_back(Node(label)); // insert node into array
     return knoten;
 }
 
@@ -295,7 +295,7 @@ template <typename NodeLabel> size_t  Graph<NodeLabel>::numNodes() const { retur
 template <typename NodeLabel>
 std::ostream& operator<<(std::ostream& stream,const Graph<NodeLabel>& graph)
 {
-    /* Graphdarstellung: (https://de.wikipedia.org/wiki/Graphviz)
+    /* graph representation: (https://de.wikipedia.org/wiki/Graphviz)
 
         digraph Name {
             nodecount=5
@@ -309,13 +309,13 @@ std::ostream& operator<<(std::ostream& stream,const Graph<NodeLabel>& graph)
 
 
 
-    //Erste Zeile + Attribute ausgeben
+    //First line + output attributes
         std::string graphname = "overlapgraph";
         stream << std::string("digraph ") << graphname << std::string(" { \n");
         stream << std::string("     nodecount=") << graph.numNodes() << std::string("\n");
         //stream << "     sequencetype=" << "default" << "\n";
 
-    //Knoten ausgeben, die keine ausgehenden Kanten haben ( Wichtig um auch alle Zielknoten zu identifizieren )
+    //output Nodes without outgoing Edges (Impotant to identify all target nodes)
         auto knoten_start = graph.beginNodes();
         auto knoten_ende = graph.endNodes();
 
@@ -326,8 +326,8 @@ std::ostream& operator<<(std::ostream& stream,const Graph<NodeLabel>& graph)
             }
         }
 
-    //Knoten ausgeben, mit mindestens einer ausgehenden Kante ( Beim Startknoten wird zusätzlich die Sequenz ausgegeben )
-    //FÜr jeden KNoten werden nacheinander alle Kanten aufgelistet
+	// output Nodes with outgoing Edges (The sequence is also output at the start node)
+	// For each node, all edges are listed one after the other
         knoten_start = graph.beginNodes();
         knoten_ende = graph.endNodes();
 
@@ -344,7 +344,7 @@ std::ostream& operator<<(std::ostream& stream,const Graph<NodeLabel>& graph)
             }
         }
 
-    //Schlusszeile
+    //last line
         stream << std::string("}\n");
 
     return stream;
