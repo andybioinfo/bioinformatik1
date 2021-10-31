@@ -216,6 +216,12 @@ EXPECT_EQ(compstring, string("")  << custom_graph);
 
 
 
+TEST(Graph, AssemblerTest_FastaFileOutput)
+{
+Assembler::FromFastaFileToGraph("../fragments.fasta","../output.graph");
+}
+
+
 
 
 
