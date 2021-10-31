@@ -7,9 +7,7 @@
 #include <deque>
 
 #include "../Sequence.h"
-#include "../main.cpp"
 #include "../DNA.h"
-
 #include "../Graph.h"
 
 using namespace Alphabet;
