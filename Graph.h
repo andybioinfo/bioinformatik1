@@ -5,6 +5,7 @@
 #include <list>
 #include <memory>
 #include <vector>
+#include <string>
 
 
 /**
@@ -130,7 +131,7 @@ void Graph<NodeLabel>::removeEdge(Node* n1, const Node* n2) {
             ++edge_;
         }
 
-};
+}
 
 
 /** Removes an edge with his edge-object
@@ -141,7 +142,7 @@ template <typename NodeLabel>
 void Graph<NodeLabel>::removeEdge(const Edge& e) {
     // redirect to removeEdge(node n1,node n2)
     removeEdge(e.source,e.target);
-};
+}
 
 
 /** Contracts an edge in this graph.
@@ -158,7 +159,7 @@ template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>:
 // Ermittle die beiden Knoten der Kante
     auto source_node = rem.source;
     auto target_node = rem.target;
-    cout << "\n folgende Kante soll gelöscht werden: " << source_node->label.getComment() << " -> " << target_node->label.getComment();
+    //std::cout << "\n folgende Kante soll gelöscht werden: " << source_node->label.getComment() << " -> " << target_node->label.getComment();
 
 // laufe die Kanten des Zielknoten ab und schreibe die source-Knoten des target-Knoten zum source-Knoten der zu kontraktierenden Kante um
     auto target_target = target_node->out_edges.begin();
@@ -166,7 +167,7 @@ template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>:
 
     /* iteration - Auslesen und neue Kanten in Source-Node erstellen */
     for (; target_target != target_targets_end; target_target++) {
-        cout << "\n readfrom target->target_target :" << (target_node->label).getComment() << " -> " << (target_target->first->label).getComment() << " : schreibe source_node->target_target" << (source_node->label).getComment() << " -> " << (target_target->first->label).getComment() ;
+        //std::cout << "\n readfrom target->target_target :" << (target_node->label).getComment() << " -> " << (target_target->first->label).getComment() << " : schreibe source_node->target_target" << (source_node->label).getComment() << " -> " << (target_target->first->label).getComment() ;
         // baue Kante
         addEdge(source_node,target_target->first,target_target->second);
     }
@@ -177,8 +178,10 @@ template <typename NodeLabel> typename Graph<NodeLabel>::Node* Graph<NodeLabel>:
     // Loop for delete the argument-edge source_node->target_node
     auto source_target = source_node->out_edges.begin();
     while(source_target != source_node->out_edges.end()) {
-        cout << "\n search source->source_target :" << source_node->label.getComment() << " -> " << source_target->first->label.getComment() << " : ";
-        if (source_target->first == target_node) {source_node->out_edges.erase(source_target);cout << "deleted";break;}
+        //std::cout << "\n search source->source_target :" << source_node->label.getComment() << " -> " << source_target->first->label.getComment() << " : ";
+        if (source_target->first == target_node) {source_node->out_edges.erase(source_target);
+		//cout << "deleted";
+		break;}
         ++source_target;
     }
     // Redirect all edges: SUCCESSOR = target_node => SUCCESSOR = source_node
@@ -231,16 +234,16 @@ Graph<NodeLabel>::Graph(const std::vector<NodeLabel>& new_nodes) {
     //was soll das Label sein?
     //                   Sequence.toString -> "ATTAG"   <- nodes_element.toString
     //oder getComment   -> "DNA_A"   <- nodes_element.getComment
-    std::cout << "\n Graph erstellen...";
+    //std::cout << "\n Graph erstellen...";
     // Durchlaufe die Liste new_nodes
-    for (const Sequence <Alphabet::DNA> &var: new_nodes) {
-        cout << " [" << var.getComment() << "," << var.size() << "]";
+    for (const NodeLabel &var: new_nodes) {
+        //cout << " [" << var.getComment() << "," << var.size() << "]";
         nodes_.push_back(Node(var)); // Erstelle den Knoten und füge ihn ein
-    }
-    std::cout << "\n Prüfe ob die Knoten auch eingefügt wurden...";
-    for (Graph::Node &var: nodes_) {
-        cout << " [" << (var.label).getComment() << "]";
-    }
+    };
+    //std::cout << "\n Prüfe ob die Knoten auch eingefügt wurden...";
+    //for (Graph::Node &var: nodes_) {
+        //cout << " [" << (var.label).getComment() << "]";
+    //}
 
 }
 
@@ -308,8 +311,8 @@ std::ostream& operator<<(std::ostream& stream,const Graph<NodeLabel>& graph)
 
     //Erste Zeile + Attribute ausgeben
         std::string graphname = "overlapgraph";
-        stream << "digraph " << graphname << " { \n";
-        stream << "     nodecount=" << graph.numNodes() << "\n";
+        stream << std::string("digraph ") << graphname << std::string(" { \n");
+        stream << std::string("     nodecount=") << graph.numNodes() << std::string("\n");
         //stream << "     sequencetype=" << "default" << "\n";
 
     //Knoten ausgeben, die keine ausgehenden Kanten haben ( Wichtig um auch alle Zielknoten zu identifizieren )
@@ -318,8 +321,8 @@ std::ostream& operator<<(std::ostream& stream,const Graph<NodeLabel>& graph)
 
         for (; knoten_start != knoten_ende; knoten_start++) {
             if (knoten_start->out_edges.size() == 0) {
-                stream << "     " << knoten_start->label.getComment() << " [sequence=\""
-                       << knoten_start.operator->()->label << "\"]\n";
+                stream << std::string("     ") << knoten_start->label.getComment() << std::string(" [sequence=\"")
+                       << knoten_start.operator->()->label << std::string("\"]\n");
             }
         }
 
@@ -332,15 +335,17 @@ std::ostream& operator<<(std::ostream& stream,const Graph<NodeLabel>& graph)
             if (knoten_start->out_edges.size() > 0) {
                 auto inside = knoten_start->out_edges.begin();
                 for (int i = 0 ; i < knoten_start->out_edges.size() ; i++) {
-                    stream << "     " << knoten_start->label.getComment() << " -> " << (inside).operator->()->first->label.getComment()
-                           << " [weight=" << (inside).operator->()->second << " predecessor_sequence=\"" << (inside).operator->()->first->label << "\"]\n";
+                    stream << std::string("     ") << knoten_start->label.getComment() << std::string(" -> ")
+					 << (inside).operator->()->first->label.getComment() << std::string(" [weight=") 
+					 << (inside).operator->()->second << std::string(" predecessor_sequence=\"") << (inside).operator->()->first->label 
+					 << std::string("\"]\n");
                     inside++;
                 }
             }
         }
 
     //Schlusszeile
-        stream << "}\n";
+        stream << std::string("}\n");
 
     return stream;
 }
