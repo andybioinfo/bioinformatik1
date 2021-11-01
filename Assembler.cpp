@@ -34,7 +34,6 @@ void Assembler::FromFastaFileToGraph(const char* inputfile,const char* outputfil
 
     // Loop-Variables
     std::string line;
-    bool begin = true;
     Sequence<Alphabet::DNA> first_seq;
     stack.push_back(first_seq);
 

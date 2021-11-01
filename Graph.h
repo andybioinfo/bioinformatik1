@@ -334,7 +334,7 @@ std::ostream& operator<<(std::ostream& stream,const Graph<NodeLabel>& graph)
         for (; knoten_start != knoten_ende; knoten_start++) {
             if (knoten_start->out_edges.size() > 0) {
                 auto inside = knoten_start->out_edges.begin();
-                for (int i = 0 ; i < knoten_start->out_edges.size() ; i++) {
+                for (int i = 0 ; i < (int) knoten_start->out_edges.size() ; i++) {
                     stream << std::string("     ") << knoten_start->label.getComment() << std::string(" -> ")
 					 << (inside).operator->()->first->label.getComment() << std::string(" [weight=") 
 					 << (inside).operator->()->second << std::string(" predecessor_sequence=\"") << (inside).operator->()->first->label 
