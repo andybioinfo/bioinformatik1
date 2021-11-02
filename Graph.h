@@ -100,6 +100,12 @@ template <typename NodeLabel> class Graph
 	 * Return the number of nodes in the graph.
 	 */
 	size_t numNodes() const;
+	
+	/**
+	 * << Operator override for Graph
+	 */
+	template <typename A>
+	friend std::ostream& operator<<(std::ostream& stream, const Graph<A>& graph);
 
   private:
 	NodeContainer nodes_;
