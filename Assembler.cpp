@@ -26,7 +26,7 @@ void Assembler::FromFastaFileToGraph(const char* inputfile,const char* outputfil
     std::ofstream output(outputfile);
 
     // Is file read/writeable?
-    if(!input)  { std::cerr << "Could not open file \"" << inputfile << "\" for reading!\n"; }
+    if(!input.is_open())  { std::cerr << "Could not open file \"" << inputfile << "\" for reading!\n"; }
     if(!output) { std::cerr << "Could not open file \"" << outputfile << "\" for writing!\n"; }
 
     // Create Sequences-Container

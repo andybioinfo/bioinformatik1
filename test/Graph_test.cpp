@@ -8,6 +8,8 @@
 #include <string>
 #include <ostream>
 #include <istream>
+#include <sstream>
+#include <iostream>
 
 #include "../Sequence.h"
 #include "../DNA.h"
@@ -33,6 +35,11 @@ using Edge = Graph<Sequence<Alphabet::DNA>>::Edge;
  *
  * */
 
+TEST(Graph, AssemblerTest_FastaFileOutput)
+{
+Assembler::FromFastaFileToGraph("~/fragments.fasta","../output.graph");
+}
+
 TEST(Graph, emptyListToGraph)
 {
 SeqList emptySeqList = SequenceCombinator(0,0,true);
@@ -57,7 +64,7 @@ g.addEdge(_a,_b,99);
 // Check the count of the edges
 EXPECT_EQ(_a->out_edges.size(),1);
 // Check the values of the edges
-EXPECT_EQ(_a->out_edges.front().first->label.getComment(),"AA");
+EXPECT_EQ(_a->out_edges.front().first->label.toString(),"AA");
 EXPECT_EQ(_a->out_edges.front().second,99);
 }
 
@@ -80,8 +87,8 @@ EXPECT_EQ(_a->out_edges.size(),1);
 EXPECT_EQ(_b->out_edges.size(),0);
 EXPECT_EQ(_c->out_edges.size(),2);
 // Check the values of the edges
-EXPECT_EQ(_a->out_edges.front().first->label.getComment(),"AA");
-EXPECT_EQ(_c->out_edges.front().first->label.getComment(),"AA");
+EXPECT_EQ(_a->out_edges.front().first->label.toString(),"AA");
+EXPECT_EQ(_c->out_edges.front().first->label.toString(),"AA");
 EXPECT_EQ(_a->out_edges.front().second,10);
 EXPECT_EQ(_c->out_edges.front().second,15);
 }
@@ -93,18 +100,19 @@ SeqList SixSeq = SequenceCombinator(0,6,false);
 
 Graph<Sequence<Alphabet::DNA>> custom_graph(SixSeq);
 custom_graph.beginNodes();
-EXPECT_EQ(custom_graph.numNodes(),6);
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label.getComment(),"DNA_A");
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label.getComment(),"DNA_B");
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label.getComment(),"DNA_C");
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label.getComment(),"DNA_D");
-EXPECT_EQ((custom_graph.beginNodes()++).operator->()->label.getComment(),"DNA_E");
-EXPECT_EQ((custom_graph.beginNodes()).operator->()->label.getComment(),"DNA_F");
+EXPECT_EQ(custom_graph.numNodes(),7);
+EXPECT_EQ((custom_graph.beginNodes()).operator->()->label.getComment(),"DNA_A");
+EXPECT_EQ((++custom_graph.beginNodes()).operator->()->label.getComment(),"DNA_B");
+EXPECT_EQ((++(++custom_graph.beginNodes())).operator->()->label.getComment(),"DNA_C");
+EXPECT_EQ((++(++(++custom_graph.beginNodes()))).operator->()->label.getComment(),"DNA_D");
+EXPECT_EQ((++(++(++(++custom_graph.beginNodes())))).operator->()->label.getComment(),"DNA_E");
+EXPECT_EQ((++(++(++(++(++custom_graph.beginNodes()))))).operator->()->label.getComment(),"DNA_F");
 
 }
 
 TEST(Graph, CustomGraphNodesAndEdges)
 {
+
 SeqList SixSeq = SequenceCombinator(0,6,false);
 Graph<Sequence<Alphabet::DNA>> custom_graph(SixSeq);
 auto start = custom_graph.beginNodes();
@@ -113,7 +121,8 @@ size_t weight = 11;
 for (; start != destination; start++ ) {
     custom_graph.addEdge((start).operator->(),(--destination).operator->(),weight);
 EXPECT_EQ(start->out_edges.begin()->second,weight);
-EXPECT_EQ(start->out_edges.begin()->first->label,(--destination)->label);
+--destination;
+EXPECT_EQ(start->out_edges.begin()->first->label.getComment(),(destination)->label.getComment());
 }
 }
 
@@ -150,7 +159,7 @@ KG.contractEdge(EE);
 // Check the new count of the edges from the source-node
 EXPECT_EQ(_S->out_edges.size(),6);
 // If the successor of _Q changed?
-EXPECT_EQ(_Q->out_edges.front().first->label.getComment(),"TATATATATATA");
+EXPECT_EQ(_Q->out_edges.front().first->label.toString(),"TATATATATATA");
 }
 
 TEST(Graph, removeEdgeTest)
@@ -198,7 +207,6 @@ EXPECT_NE(compstring, (std::stringstream("") << graph_not_empty).str());
 
 TEST(GRAPH_GRAPHVIZ_TEST, CustomGraphNodesAndEdges_GraphvizOutput)
 {
-    /*
 SeqList SixSeq = SequenceCombinator(0,6,false);
 Graph<Sequence<Alphabet::DNA>> custom_graph(SixSeq);
 auto start = custom_graph.beginNodes();
@@ -210,30 +218,13 @@ custom_graph.addEdge((start).operator->(),(--destination).operator->(),weight);
 std::string compstring = std::string("digraph ").append("overlapgraph").append(" { \n").append("     nodecount=6\n").append("     DNA_D [sequence=\"TAGC\"]\n").append(
    "     DNA_E [sequence=\"AAAAA\"]\n").append("     DNA_F [sequence=\"TA\"]\n").append("     DNA_A -> DNA_F [weight=11 predecessor_sequence=\"TA\"]\n").append(
     "     DNA_B -> DNA_E [weight=11 predecessor_sequence=\"AAAAA\"]\n").append("     DNA_C -> DNA_D [weight=11 predecessor_sequence=\"TAGC\"]\n").append("}\n");
-                                   
-                                   
-                                   */
-                                   /*
-                                    << "     nodecount=" << "6" << "\n"
-                                    << "     DNA_D [sequence=\"TAGC\"]\n"
-                                    << "     DNA_E [sequence=\"AAAAA\"]\n"
-                                    << "     DNA_F [sequence=\"TA\"]\n"
-                                    << "     DNA_A -> DNA_F [weight=11 predecessor_sequence=\"TA\"]\n"
-                                    << "     DNA_B -> DNA_E [weight=11 predecessor_sequence=\"AAAAA\"]\n"
-                                    << "     DNA_C -> DNA_D [weight=11 predecessor_sequence=\"TAGC\"]\n"
-                                    << "}\n";*/
-/*
-EXPECT_EQ(compstring, std::string("") << custom_graph);*/
+
+EXPECT_EQ(compstring, (std::stringstream("") << custom_graph).str());
 }
 
 
 
 
-
-TEST(Graph, AssemblerTest_FastaFileOutput)
-{
-Assembler::FromFastaFileToGraph("../fragments.fasta","../output.graph");
-}
 
 
 
@@ -264,13 +255,24 @@ SeqList SequenceCombinator(int intervall_start,int intervall_end,bool generate_e
             ,Sequence<Alphabet::DNA>::fromString("TATACACAGGC")
     };
 
-    std::string comment[] = {"DNA_A","DNA_B","DNA_C","DNA_D","DNA_E","DNA_F","DNA_S","DNA_T","DNA_Q","DNA_X"};
+    sequences[0].setComment("DNA_A");
+    sequences[1].setComment("DNA_B");
+    sequences[2].setComment("DNA_C");
+    sequences[3].setComment("DNA_D");
+    sequences[4].setComment("DNA_E");
+    sequences[5].setComment("DNA_F");
+    sequences[6].setComment("DNA_G");
+    sequences[7].setComment("DNA_H");
+    sequences[8].setComment("DNA_I");
+    sequences[9].setComment("DNA_J");
+    /*
+    const char* comment[10] = {"DNA_A","DNA_B","DNA_C","DNA_D","DNA_E","DNA_F","DNA_S","DNA_T","DNA_Q","DNA_X"};
     for (int id = 0 ; id < 10 ; id++) {
-        sequences[id].setComment(comment[id]);}
+        sequences[id].setComment(comment[id]);}*/
     int max = 9;
     int start = (intervall_start < 0 || intervall_start > max) ? 0 : intervall_start;
     int end = (intervall_end < intervall_start || intervall_end > max) ? max : intervall_end;
-    for (int val = start ; val <= end ; val++) {
+    for (int val = start++ ; val <= end ; val++) {
         List.push_back(sequences[val]);
     }
 
