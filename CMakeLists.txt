@@ -47,6 +47,7 @@ add_library(sequence SHARED
 	Graph.h
 	Assembler.h
 	Assembler.cpp
+	SequenceCombinator.h
 )
 
 # Aktiviere die Unittestfunktionalität von CMake.
