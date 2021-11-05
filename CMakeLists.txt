@@ -50,6 +50,13 @@ add_library(sequence SHARED
 	SequenceCombinator.h
 )
 
+# Erstelle das Programm "Assembler".
+add_executable(Assembler main.cpp)
+
+# Damit convert Ihren Code verwenden kann muss
+# die sequence Bibliothek zum Programm "gelinkt" werden.
+target_link_libraries(Assembler sequence ${CIP_STD_LIBS})
+
 # Aktiviere die Unittestfunktionalität von CMake.
 enable_testing()
 
