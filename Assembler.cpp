@@ -348,13 +348,13 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 
 		for (; iterB != iterB_END; iterB++) {
 			cursor++;
-			cout << "\n " << DNA::toChar(iterB.operator*()) << " == " << DNA::toChar(iterA.operator*()) ;
+			//cout << "\n " << DNA::toChar(iterB.operator*()) << " == " << DNA::toChar(iterA.operator*()) ;
 			if (iterB.operator*() == iterA.operator*()) { // same char
 				if (iterA == --A.end()) {follow++;return B;} // if A ends return Seq B ( A is full part of B)
 				follow++;iterA++;continue;}
 			if (follow > 0) {follow = 0; iterA = A.begin();} // different char > reset
 		}
-		cout << "(cursor:" << cursor << " follow: " << follow << ") ";
+		//cout << "(cursor:" << cursor << " follow: " << follow << ") ";
 		while (follow > 0 && iterA != A.end()) {B.push_back(iterA.operator*());iterA++;}
 		if (follow > 0) {return B;}
 
