@@ -31,12 +31,18 @@ class Assembler
     /**
      * returns the finished graph-instance
      * */
-    OGraph getGraph();
+    OGraph& getGraph();
 
 	/**
      * Give a Fasta-File and return an Assembler
 	 */
 	static Assembler FastaToGreedy(const char* inputfile,const char* folder,bool create_intermediates);
+
+	/**
+     * Write a numbered File in Graphviz-Format from the OGraph
+	 */
+	static void WriteGreedyFile(OGraph G, const char* outputpath,const char* outputfile,int filenumber);
+
 
 	/**
      * Check if an Edge from the graph with valid nodes.
@@ -47,6 +53,8 @@ class Assembler
      * Assembles a Graph with the Greedy-Algorithm
      * */
 	Seq assemble();
+
+	void joinLargestEdge();
 
 	/**
      * Merge two Sequences and return this
@@ -73,11 +81,23 @@ class Assembler
 	 * */
 	OGraph::Edge findLargestEdge();
 
+	
+	// Set the Greedy-Variables
+	void setOutputpath();
+	std::string getOutputpath();
+	void set_isgreedy();
+	bool get_isgreedy();
+	void set_intermediatesteps(bool v);
+	bool get_intermediatesteps();
+
   private:
 
     // Contains the finished Overlap-Graph
     OGraph OverlapGraph;
 	int greedy_steps = 1;
+	std::string outputpath;
+	bool intermediate_steps = false;
+	bool is_greedy = false;
 
 };
 

@@ -1,9 +1,13 @@
 #include "Assembler.h"
 #include "Fasta.h"
+<<<<<<< HEAD
 #include "Graph.h"
+=======
+#include <fstream>
+#include <iomanip>
+>>>>>>> 7bc12dbc17713a90fedd256510a5f42dc2835189
 #include <iostream>
 #include <sstream>
-#include <fstream>
 
 using namespace std;
 using namespace Alphabet;
@@ -97,6 +101,8 @@ void Assembler::FromFastaFileToGraph(const char *inputfile, const char *outputfi
     Assembler A(stack);
     Graph<Sequence<Alphabet::DNA>> graph = A.getGraph();
 
+
+
     // File Output
     output << A.getGraph();
     std::cout << "\033[1m\033[32m"
@@ -143,7 +149,7 @@ Assembler::Assembler(const std::vector<Sequence<Alphabet::DNA>> &sequences)
 /**
  * @return the created Overlap-Graph
  * */
-OGraph Assembler::getGraph()
+OGraph& Assembler::getGraph()
 {
     return OverlapGraph;
 }
@@ -157,40 +163,120 @@ void Assembler::Increase_Greedy_Step_Count() {
 }
 
 /**
+ * Loads the File and more informations for the Greedy-Algorith and returns this Assembler
+ * You can use on this Assember-Instance to run the Greedy Algorithm with (ASSEMBLER::FASTATOGREEDY).assemble()
  *
  * */
 Assembler Assembler::FastaToGreedy(const char *inputfile, const char *folder, bool create_intermediates) {
 
+
+	// insert file
+	std::ifstream input(inputfile);
+
+	// Create Sequences-Container
 	std::vector<Sequence<Alphabet::DNA>> stack;
-	Sequence<Alphabet::DNA> test_seq;
-	test_seq.push_back(DNA::toCharacter('T'));
-	stack.push_back(test_seq);
+
+	// Loop-Variables
+	std::string line;
+	Sequence<Alphabet::DNA> first_seq;
+	stack.push_back(first_seq);
+
+	// First line '>'
+	char first;
+	// if (first != '>') {return;}
+	while (getline(input, line))
+	{
+		line.erase(0, 1);
+		stack.back().setComment(line);
+		break;
+	}
+
+	// ## File-Loop ##
+	while (getline(input, line))
+	{
+		// read first char
+		first = line.front();
+		// Comment-Line
+		if (first == '>')
+		{ // if Comment-Line => next Sequence...
+			Sequence<Alphabet::DNA> next_seq;
+			stack.push_back(next_seq);
+			line.erase(0, 1);
+			stack.back().setComment(line);
+			continue; // next loop step
+		}
+		// No Comment-Line
+		for (auto c : line)
+		{
+			stack.back().push_back(DNA::toCharacter(c));
+		}
+	}
+	input.close();
+
+	// Build the Overlap-Graph
 	Assembler A(stack);
+	Graph<Sequence<Alphabet::DNA>> graph = A.getGraph();
+
+	// Make the Assembler ready for assembling with Greedy:
+	A.set_intermediatesteps(create_intermediates);
+	A.set_isgreedy();
+	A.setOutputpath(); // TODO: Outputpath noch anpassen
+
 	return A;
 
-}
-
-Seq Assembler::assemble() {
-
-	Sequence<Alphabet::DNA> test;
-	test.push_back(DNA::toCharacter('T'));
-	test.push_back(DNA::toCharacter('A'));
-	test.push_back(DNA::toCharacter('G'));
-	test.push_back(DNA::toCharacter('G'));
-	test.push_back(DNA::toCharacter('G'));
-	test.push_back(DNA::toCharacter('T'));
-	test.push_back(DNA::toCharacter('A'));
-	test.push_back(DNA::toCharacter('C'));
-	test.push_back(DNA::toCharacter('C'));
-	test.push_back(DNA::toCharacter('G'));
-
-
-	return test;
 }
 
 int Assembler::getStepCount() {
 	return greedy_steps;
 }
+
+void Assembler::setOutputpath() {outputpath = ""; //TODO: das ist nur provisorisch
+}
+
+std::string Assembler::getOutputpath() {return outputpath; //TODO: das ist nur provisorisch
+}
+
+void Assembler::set_isgreedy() {is_greedy = true;}
+void Assembler::set_intermediatesteps(bool v) {intermediate_steps = v;}
+bool Assembler::get_isgreedy() {return is_greedy;}
+bool Assembler::get_intermediatesteps() {return intermediate_steps;}
+
+
+
+
+Seq Assembler::assemble() {
+
+	int act_nodecount = getGraph().numNodes();
+	int after = act_nodecount;
+	// ## Greedy-Loop:
+		while (act_nodecount > 1) {
+		    // Look for biggest edge-weight and merge this
+		    joinLargestEdge();
+		    act_nodecount = getGraph().numNodes();
+
+		    // Success ? is the count of nodes decreased?
+		    if (act_nodecount < after) {
+			    act_nodecount = getGraph().numNodes();
+			    if (get_intermediatesteps()) {
+				    // write in file:
+				    Assembler::WriteGreedyFile(getGraph(), "","greedy",getStepCount()); // TODO: Outputpath hinzufügen
+			    }
+			    Increase_Greedy_Step_Count();
+			    after = getGraph().numNodes();
+			    continue;
+		    }
+
+		    // No successful joining? -> Break this algorithm
+		    break;
+
+	    }
+
+    if (getGraph().numNodes() == 1) return getGraph().beginNodes()->label;
+    // TODO: Was soll der Assembler returnen wenn mehrere Knoten übrig sind?
+	return getGraph().beginNodes()->label; // TODO: in dem fall einfach den ersten knoten als Sequenz returnen
+}
+
+
 
     /**
      * Checks Edge-Connections with both nodes in the Ograph in the Assember-Instance
@@ -273,10 +359,12 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 		if (follow > 0) {return B;}
 
 		// TODO: Was soll die Methode returnen wenn es nicht mergen lässt?
-		return Sequence<Alphabet::DNA>::fromString("T");
+		return Sequence<Alphabet::DNA>::fromString("A");
  }
 
-
+/**
+  * join the Edge with the biggest weight and adapt the remain nodes and edges this removed edge
+ */
  void Assembler::joinLargestEdge(){
     // Find largest edge
     auto edge = findLargestEdge();
@@ -346,3 +434,22 @@ OGraph::Edge Assembler::findLargestEdge(){
     }
     return max_edge;
  }
+
+ /**
+  * Write a numbered File in Graphviz-Format from the OGraph
+  */
+void Assembler::WriteGreedyFile(OGraph G, const char* outputpath,
+                                const char* outputfile, int filenumber)
+{
+	// TODO: Wie den outputpath bzw. Ordnerpfad hier hinzufügen?
+
+	std::stringstream filename;
+	filename << outputfile << "_" << setw(6) << setfill('0') << filenumber << ".digraph";
+
+	std::ofstream output(filename.str());
+
+	if (!output) { std::cerr << "> Error creating/writing/whatever file: \"" << filename.str() << "\"\n"; return; }
+
+	output << G;
+
+}

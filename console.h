@@ -11,24 +11,24 @@ using String = typename std::string;
 class C {
 public:
     using String = typename std::string;
-    static const String RESET;
-    static const String BLUE;
-    static const String BBLUE;
-    static const String BWHITE;
-    static const String BGREEN;
-    static const String BRED;
-    static const String BYELLOW;
-    static const String HBLUE;
+    static const char* RESET;
+    static const char* BLUE;
+    static const char* BBLUE;
+    static const char* BWHITE;
+    static const char* BGREEN;
+    static const char* BRED;
+    static const char* BYELLOW;
+    static const char* HBLUE;
     };
 
-const String C::RESET   = "\e[0m";
-const String C::BLUE    = "\e[0;34m";
-const String C::BBLUE   = "\e[1;34m";
-const String C::BWHITE  = "\e[1;37m";
-const String C::BGREEN  = "\e[1;32m";
-const String C::BRED    = "\e[1;31m";
-const String C::BYELLOW = "\e[1;33m";
-const String C::HBLUE   = "\e[0;94m";
+const char* C::RESET   = "\033[0m";
+const char* C::BLUE    = "\033[0;34m";
+const char* C::BBLUE   = "\033[1;34m";
+const char* C::BWHITE  = "\033[1;37m";
+const char* C::BGREEN  = "\033[1;32m";
+const char* C::BRED    = "\033[1;31m";
+const char* C::BYELLOW = "\033[1;33m";
+const char* C::HBLUE   = "\033[0;94m";
 
 /**
  * Contains Output strings for Console
@@ -49,7 +49,7 @@ public:
 };
 
 String console::filename   = "";
-String console::folder     = "[no file output]";
+String console::folder     = "[no folder output]";
 String console::steps      = "";
 String console::message    = "";
 
@@ -58,8 +58,8 @@ void console::Title() {
     std::cout << C::BLUE << " G-----C "<<C::BYELLOW<<"     S E Q U E N C E   A S S E M B L E R \n" << C::BLUE;
     std::cout << " G-----C \n";
     std::cout << "  A---T  \n";
-    std::cout << "   T-A        > Input  : '" << filename << C::BLUE <<" \n";
-    std::cout << "    T         > Output : '" << folder << C::BLUE <<" \n";
+    std::cout << "   T-A        > Input  : " << filename << C::BLUE <<" \n";
+    std::cout << "    T         > Output : " << folder << C::BLUE <<" \n";
     std::cout << "   C-G        > Save intermediate steps   : " << steps << C::BLUE <<" \n";
     std::cout << "  A---T  \n" << C::RESET;
 }
