@@ -55,3 +55,13 @@ TEST(AssemblerUB3, ValidEdgeCheck)
 	ASSERT_FALSE(B.isValid(a_e));
 	ASSERT_FALSE(B.isValid(a_e));
 }
+
+
+TEST(AssemblerUB3, JoinLargestEdge)
+{
+SeqList stack = SequenceCombinator(18,22,false); // The "Aufgabe 1: Greedy Ansatz" exercise sequences
+Assembler B(stack);
+
+// TODO
+}
+
