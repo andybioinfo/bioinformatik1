@@ -63,6 +63,16 @@ class Assembler
      * */
 	void Increase_Greedy_Step_Count();
 
+	/**
+	 *  Merge two nodes with maximal Edge weight.
+	 * */
+	void joinLargestEdge();
+
+	/**
+	 * Finds the edge with the maxium weight.
+	 * */
+	OGraph::Edge findLargestEdge();
+
   private:
 
     // Contains the finished Overlap-Graph

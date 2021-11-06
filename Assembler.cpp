@@ -1,5 +1,6 @@
 #include "Assembler.h"
 #include "Fasta.h"
+#include "Graph.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -273,4 +274,75 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 
 		// TODO: Was soll die Methode returnen wenn es nicht mergen lässt?
 		return Sequence<Alphabet::DNA>::fromString("T");
+ }
+
+
+ void Assembler::joinLargestEdge(){
+    // Find largest edge
+    auto edge = findLargestEdge();
+
+    // Find the two nodes of the edge 
+    auto source_node = edge.source;
+    auto target_node = edge.target;
+
+    // Create new Node with merged sequence
+    auto new_node = OverlapGraph.addNode(mergeSequences(source_node->label,target_node->label));
+
+    //creates new outgoing edges for the new node
+    auto target_target = target_node->out_edges.begin();
+    auto target_targets_end = target_node->out_edges.end();
+    for (; target_target != target_targets_end; target_target++){
+        OverlapGraph.addEdge(new_node, target_target->first, new_node->label.overlap(target_target->first->label));
+    }
+
+    // Redirect all edges: 
+    auto node_beg = OverlapGraph.beginNodes();
+    while (node_beg != OverlapGraph.endNodes())
+    {
+        // Loop over all edges from the actual node
+        auto edge_beg = node_beg->out_edges.begin();
+        while (edge_beg != node_beg->out_edges.end())
+        {
+            if (edge_beg->first == target_node)
+            {
+                // Delete all edges ingoing the target node
+                //OverlapGraph.removeEdge(edge_beg);
+                //OverlapGraph.removeEdge(node_beg, target_node);
+                node_beg->out_edges.erase(edge_beg);
+                continue;
+            }
+            if (edge_beg->first == source_node)
+            {
+                // Redirect the edge to the new node
+                auto node = node_beg;
+                OverlapGraph.addEdge(node, new_node, node_beg->label.overlap(new_node->label));
+            }
+            ++edge_beg;
+        }
+        ++node_beg;
+    }
+
+    // delete old nodes
+    OverlapGraph->nodes_.erase(source_node);
+    OverlapGraph->nodes_.erase(target_node);
+ }
+
+OGraph::Edge Assembler::findLargestEdge(){
+    auto node_beg = OverlapGraph.beginNodes();
+    std::pair<Node *, size_t> max_edge(node_beg, 0);
+    // Loop over all nodes 
+    while (node_beg != OverlapGraph.endNodes())
+    {
+        // Loop over all edges from the current node
+        auto edge_beg = node_beg->out_edges.begin();
+        while (edge_beg != node_beg->out_edges.end())
+        {
+            if (edge_beg->second > max_edge->second){
+                max_edge = edge_beg;
+            }
+            ++edge_beg;
+        }
+        ++node_beg;
+    }
+    return max_edge;
  }
