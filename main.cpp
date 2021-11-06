@@ -47,24 +47,6 @@ enum Mode {
 
 int main(int argc, char* argv[]) {
 
-//	SeqList stack = SequenceCombinator(18,22,false); // The fragments.fasta sequences
-//	Assembler B(stack);
-//cout << B.getGraph();
-//auto A = Sequence<Alphabet::DNA>::fromString("CCACATGA");
-//auto B = Sequence<Alphabet::DNA>::fromString("TTCCCACA"); //ATGAGGTAGA
-
-//cout << "\n Merge " << A << " + " << B << " -> " << merge(A,B);
-
-
-
-
-
-
-
-//	return 1;
-
-
-
 	// ## getopt : Create getopt variables
 	Mode Modus = NONE;
 	int opt = 1;
@@ -99,7 +81,7 @@ int main(int argc, char* argv[]) {
 	// ## getopt [-f] : Check and store inputfile-name
 	if (!file_arg) {console::InputError("Missing -f Argument for load the Input-File! please use -f [Filename]");console::Help();return -1;}
 	if (infile_arg == NULL) {console::InputError("No Input-File choosen! please use -f [Filename]");console::Help();return -1;}
-	std::ifstream input(infile_arg); /*the input stream*/
+	std::ifstream input(infile_arg);
 	if (!input) {console::InputError("Input-File can't be read : ",infile_arg);console::Help();return -1;}
 
 	// ## getopt [-s] : Folder Check
@@ -107,21 +89,23 @@ int main(int argc, char* argv[]) {
 	//if (outfolder_arg == NULL) {folder = "greedy_intermediates";} else {folder = outfolder_arg;} // if no folder choosen
 	//DIR* dir = opendir(folder);
 	//if (dir) {cout << "\n exist: Testing \n";} else {cout << "\n NOT exist: Testing \n";} // folder already exist?
-	// TODO: Wie erstellt man einen Ordner? kein Include der bekannten Bibliotheken möglich. Dateien werden provisorisch in Quellordner geschrieben.
+	// TODO: Wie erstellt man einen Ordner? kein Include der bekannten Bibliotheken möglich. Dateien werden provisorisch in Quellordner geschrieben.Ordner soll bevor FastaToGreedy startet erstellt sein und dieser Methode mitgegeben werden..
 	//std::ofstream outputter("Tester/asd.t"); if (!outputter) {cout << "error\n";}
 
 	// ## Send inputs to Console
 	console::InsertFilename(infile_arg);
-	if (Modus == FASTA) {console::steps = "[NO]";} else {console::steps = "[YES]";console::InsertFoldername(folder);}
+	if (Modus == FASTA) {console::steps = "[NO]";} else {console::steps = "[YES]";save_arg = true;console::InsertFoldername(folder);}
 	console::Title();
 
 	// ## Import File and Folder to Assembler
 	Assembler Greedy = Assembler::FastaToGreedy(infile_arg,folder,save_arg);
 
-	// ## Start assembling and return Sequence tp console
-	console::EndMessage(Greedy.getStepCount());
+	// ## Start assembling and return Sequence to console
+	auto result_sequence = Greedy.assemble();
+
+	console::EndMessage(Greedy.getStepCount() - 1);
 	cout << C::BYELLOW << "\n > ";
-	cout << C::BGREEN << Greedy.assemble() << "\n\n";
+	cout << C::BGREEN << result_sequence << "\n\n";
 
 	return 1;
 }
