@@ -33,12 +33,41 @@ class Assembler
      * */
     OGraph getGraph();
 
+	/**
+     * Give a Fasta-File and return an Assembler
+	 */
+	static Assembler FastaToGreedy(const char* inputfile,const char* folder,bool create_intermediates);
 
+	/**
+     * Check if an Edge from the graph with valid nodes.
+     * */
+	bool isValid(const OGraph::Edge& e);
+
+	/**
+     * Assembles a Graph with the Greedy-Algorithm
+     * */
+	Seq assemble();
+
+	/**
+     * Merge two Sequences and return this
+     * */
+	static Seq mergeSequences(Seq A,Seq B);
+
+	/**
+	 * returns Greedy Step Count value
+	 * */
+	int getStepCount();
+
+	/**
+     * Increase Greedy-Step count:
+     * */
+	void Increase_Greedy_Step_Count();
 
   private:
 
     // Contains the finished Overlap-Graph
     OGraph OverlapGraph;
+	int greedy_steps = 1;
 
 };
 
