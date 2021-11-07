@@ -21,6 +21,7 @@ using namespace Alphabet;
 using SeqList = std::vector<Sequence<Alphabet::DNA>>;
 using Node = Graph<Sequence<Alphabet::DNA>>::Node;
 using Edge = Graph<Sequence<Alphabet::DNA>>::Edge;
+using Seq = Sequence<Alphabet::DNA>;
 
 
 
@@ -32,6 +33,7 @@ TEST(AssemblerUB3, init)
 
 TEST(AssemblerUB3, ValidEdgeCheck)
 {
+	
 	SeqList stack =  SequenceCombinator(10, 17, false); // The fragments.fasta sequences
 	Assembler B(stack);
 	// load OGraph
@@ -59,9 +61,11 @@ TEST(AssemblerUB3, ValidEdgeCheck)
 
 TEST(AssemblerUB3, JoinLargestEdge)
 {
-SeqList stack = SequenceCombinator(18,22,false); // The "Aufgabe 1: Greedy Ansatz" exercise sequences
-Assembler B(stack);
+	SeqList stack = SequenceCombinator(18,22,false); // The "Aufgabe 1: Greedy Ansatz" exercise sequences
+	Assembler B(stack);
+	Seq compareSeq = Sequence<Alphabet::DNA>::fromString("CATACCATCTTTGCCGGTCGCGACAA");
+	EXPECT_EQ(compareSeq, B.assemble());
 
-// TODO
 }
+
 
