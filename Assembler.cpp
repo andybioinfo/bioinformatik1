@@ -1,11 +1,8 @@
 #include "Assembler.h"
 #include "Fasta.h"
-<<<<<<< HEAD
 #include "Graph.h"
-=======
 #include <fstream>
 #include <iomanip>
->>>>>>> 7bc12dbc17713a90fedd256510a5f42dc2835189
 #include <iostream>
 #include <sstream>
 
