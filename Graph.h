@@ -105,6 +105,16 @@ public:
     template <typename A>
     friend std::ostream &operator<<(std::ostream &stream, const Graph<A> &graph);
 
+    /**
+     *  Returns the nodes.
+     * */
+    std::list<Node> getNodes();
+
+    /**
+     * Removes the given Node.
+     * */
+    void removeNode(Node* n);
+
 private:
     NodeContainer nodes_;
 };
@@ -360,5 +370,18 @@ std::ostream &operator<<(std::ostream &stream, const Graph<NodeLabel> &graph)
 
     return stream;
 }
+
+
+template <typename NodeLabel>
+std::list<typename Graph<NodeLabel>::Node> Graph<NodeLabel>::getNodes(){
+    return nodes_;
+}
+
+template <typename NodeLabel>
+void Graph<NodeLabel>::removeNode(Node* n){
+    nodes_.erase(n);
+}
+
+
 
 #endif // BIOINFOI_GRAPH_H

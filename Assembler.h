@@ -54,8 +54,6 @@ class Assembler
      * */
 	Seq assemble();
 
-	void joinLargestEdge();
-
 	/**
      * Merge two Sequences and return this
      * */
@@ -81,7 +79,7 @@ class Assembler
 	 * */
 	OGraph::Edge findLargestEdge();
 
-	
+
 	// Set the Greedy-Variables
 	void setOutputpath();
 	std::string getOutputpath();

@@ -399,8 +399,7 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
             if (edge_beg->first == source_node)
             {
                 // Redirect the edge to the new node
-                auto node = node_beg;
-                OverlapGraph.addEdge(node, new_node, node_beg->label.overlap(new_node->label));
+                OverlapGraph.addEdge(node_beg.operator*(), new_node, node_beg->label.overlap(new_node->label));
             }
             ++edge_beg;
         }
@@ -408,8 +407,13 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
     }
 
     // delete old nodes
-    OverlapGraph->nodes_.erase(source_node);
-    OverlapGraph->nodes_.erase(target_node);
+    //auto nodes = OverlapGraph.getNodes();
+    //nodes.erase(source_node);
+    //nodes.erase(target_node);
+    //OverlapGraph->nodes_.erase(source_node);
+    //OverlapGraph->nodes_.erase(target_node);
+    OverlapGraph.removeNode(*source_node);
+    OverlapGraph.removeNode(*target_node);
  }
 
 OGraph::Edge Assembler::findLargestEdge(){
