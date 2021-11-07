@@ -111,9 +111,9 @@ public:
     std::list<Node> getNodes();
 
     /**
-     * Removes the given Node.
+     * Set the nodes to the given Nodes.
      * */
-    void removeNode(Node* n);
+    void setNodes(std::list<Node>);
 
 private:
     NodeContainer nodes_;
@@ -378,8 +378,8 @@ std::list<typename Graph<NodeLabel>::Node> Graph<NodeLabel>::getNodes(){
 }
 
 template <typename NodeLabel>
-void Graph<NodeLabel>::removeNode(Node* n){
-    nodes_.erase(n);
+void Graph<NodeLabel>::setNodes(std::list<Node> nodes){
+    nodes_ = nodes;
 }
 
 
