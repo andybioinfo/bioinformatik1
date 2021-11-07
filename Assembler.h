@@ -11,6 +11,8 @@ class Assembler
   	
 	using Seq = Sequence<Alphabet::DNA>;
 	using OGraph = Graph<Seq>;
+	using Node = Graph<Seq>::Node;
+	using Triple = std::tuple<Node,Node,size_t>;
 
 
 
@@ -36,12 +38,12 @@ class Assembler
 	/**
      * Give a Fasta-File and return an Assembler
 	 */
-	static Assembler FastaToGreedy(const char* inputfile,const char* folder,bool create_intermediates);
+	static Assembler FastaToGreedy(const char* inputfile,std::string folder,bool create_intermediates);
 
 	/**
      * Write a numbered File in Graphviz-Format from the OGraph
 	 */
-	static void WriteGreedyFile(OGraph G, const char* outputpath,const char* outputfile,int filenumber);
+	static void WriteGreedyFile(OGraph G, std::string path,const char* outputfile,int filenumber);
 
 
 	/**
@@ -72,16 +74,17 @@ class Assembler
 	/**
 	 *  Merge two nodes with maximal Edge weight.
 	 * */
+
 	void joinLargestEdge();
 
 	/**
-	 * Finds the edge with the maxium weight.
+	 * Finds the edge with the maximum weight.
 	 * */
-	OGraph::Edge findLargestEdge();
+	Triple findLargestEdge();
 
 
 	// Set the Greedy-Variables
-	void setOutputpath();
+	void setOutputpath(std::string path);
 	std::string getOutputpath();
 	void set_isgreedy();
 	bool get_isgreedy();

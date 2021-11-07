@@ -2,10 +2,11 @@
 #define BIOINFOI_GRAPH_H
 
 #include <algorithm>
+#include <iostream>
 #include <list>
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 /**
  * Generic implementation of a graph class.
@@ -111,9 +112,9 @@ public:
     std::list<Node> getNodes();
 
     /**
-     * Set the nodes to the given Nodes.
+     * Removes the given Node.
      * */
-    void setNodes(std::list<Node>);
+    void removeNode(Node* n);
 
 private:
     NodeContainer nodes_;
@@ -248,20 +249,12 @@ typename Graph<NodeLabel>::const_node_iterator Graph<NodeLabel>::endNodes() cons
 template <typename NodeLabel>
 Graph<NodeLabel>::Graph(const std::vector<NodeLabel> &new_nodes)
 {
-    // was soll das Label sein?
-    //                    Sequence.toString -> "ATTAG"   <- nodes_element.toString
-    // oder getComment   -> "DNA_A"   <- nodes_element.getComment
-    // std::cout << "\n Graph erstellen...";
     //  iterate the list new_nodes
     for (const NodeLabel &var : new_nodes)
     {
-        // cout << " [" << var.getComment() << "," << var.size() << "]";
-        nodes_.push_back(Node(var)); // Erstelle den Knoten und füge ihn ein
+       nodes_.push_back(Node(var)); // Erstelle den Knoten und füge ihn ein
     };
-    // std::cout << "\n Prüfe ob die Knoten auch eingefügt wurden...";
-    // for (Graph::Node &var: nodes_) {
-    // cout << " [" << (var.label).getComment() << "]";
-    //}
+
 }
 
 /** Inserts a Edge in the graph.
@@ -292,7 +285,7 @@ typename Graph<NodeLabel>::Node *Graph<NodeLabel>::addNode(const NodeLabel &labe
 {
     auto knoten = Node(label);     // create node with label
     nodes_.push_back(Node(label)); // insert node into array
-    return knoten;
+    return &nodes_.back();
 }
 
 /**
@@ -331,17 +324,18 @@ std::ostream &operator<<(std::ostream &stream, const Graph<NodeLabel> &graph)
     stream << std::string("     nodecount=") << graph.numNodes() << std::string("\n");
     // stream << "     sequencetype=" << "default" << "\n";
 
-    // output Nodes without outgoing Edges (Impotant to identify all target nodes)
+    // Listing all Nodes of the Graph
     auto knoten_start = graph.beginNodes();
     auto knoten_ende = graph.endNodes();
 
     for (; knoten_start != knoten_ende; knoten_start++)
     {
-        if (knoten_start->out_edges.size() == 0)
-        {
-            stream << std::string("     ") << knoten_start->label.getComment() << std::string(" [sequence=\"")
+        //if (knoten_start->out_edges.size() == 0)
+        //{
+            stream << std::string("     ");
+		    stream << knoten_start->label.getComment() << std::string(" [sequence=\"")
                    << knoten_start.operator->()->label << std::string("\"]\n");
-        }
+        //}
     }
 
     // output Nodes with outgoing Edges (The sequence is also output at the start node)
@@ -356,9 +350,10 @@ std::ostream &operator<<(std::ostream &stream, const Graph<NodeLabel> &graph)
             auto inside = knoten_start->out_edges.begin();
             for (int i = 0; i < (int)knoten_start->out_edges.size(); i++)
             {
-                stream << std::string("     ") << knoten_start->label.getComment() << std::string(" -> ")
-                       << (inside).operator->()->first->label.getComment() << std::string(" [weight=")
-                       << (inside).operator->()->second << std::string(" predecessor_sequence=\"") << (inside).operator->()->first->label
+                stream << std::string("     ") << knoten_start->label.getComment() << std::string(" -> ");
+
+                stream << (inside).operator->()->first->label.getComment() << std::string(" [weight=")
+                       << (inside).operator->()->second <<  std::string(" target_sequence=\"") << (inside).operator->()->first->label
                        << std::string("\"]\n");
                 inside++;
             }
@@ -378,8 +373,16 @@ std::list<typename Graph<NodeLabel>::Node> Graph<NodeLabel>::getNodes(){
 }
 
 template <typename NodeLabel>
-void Graph<NodeLabel>::setNodes(std::list<Node> nodes){
-    nodes_ = nodes;
+void Graph<NodeLabel>::removeNode(Node* n){
+	auto iter = nodes_.begin(); // start iter
+	auto end = nodes_.end(); // end iter
+
+	for (; iter != end; iter++)
+	{
+		if (iter.operator*().label == n->label) {nodes_.erase(iter);return;}
+	}
+	std::cout << "node to delete not found";
+
 }
 
 

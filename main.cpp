@@ -33,12 +33,11 @@ using namespace std;
 #include <ostream>
 #include <string>
 #include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 
 using SeqList = std::vector<Sequence<Alphabet::DNA>>;
 using Node = Graph<Sequence<Alphabet::DNA>>::Node;
 using Edge = Graph<Sequence<Alphabet::DNA>>::Edge;
+using Triple = std::tuple<Node,Node,size_t>;
 
 enum Mode {
 	NONE,
@@ -49,6 +48,29 @@ enum Mode {
 
 
 int main(int argc, char* argv[]) {
+
+	/* Create Graph
+	SeqList stack = SequenceCombinator(18,22,false); // The "Aufgabe 1: Greedy Ansatz" exercise sequences
+	Assembler B(stack);
+    cout << "unbearbeitet: \n" << B.getGraph(); //   F.D -> F.C  weight: 5
+
+
+    B.joinLargestEdge();
+	cout << "first step" << B.getGraph();
+
+	B.joinLargestEdge();
+	cout << B.getGraph();
+
+	B.joinLargestEdge();
+	cout << B.getGraph();
+
+	B.joinLargestEdge();
+	cout << B.getGraph();
+
+	B.joinLargestEdge();
+	cout << B.getGraph();
+
+return 1;*/
 
 	// ## getopt : Create getopt variables
 	Mode Modus = NONE;
@@ -88,34 +110,29 @@ int main(int argc, char* argv[]) {
 	if (!input) {console::InputError("Input-File can't be read : ",infile_arg);console::Help();return -1;}
 
 	// ## getopt [-s] : Folder Check
-	char* folder;
-	char ordner[] = "~/greedy_intermediates/";
-	mkdir("greedy_intermediates", S_IROTH | S_IWOTH | S_IXOTH);
-	if (outfolder_arg == NULL) {folder = ordner;} else {folder = outfolder_arg;} // if no folder choosen
-	if(chdir(folder) != 0){
-		cout << "\n NOT exist: Testing \n";
+	stringstream _path("");
+	if (outfolder_arg == NULL) {_path << "greedy_intermediates/";} else {_path << outfolder_arg;} // if no folder choosen
+	char path_arr[_path.str().size()]; auto iter = _path.str().begin(); // convert string to char array
+	for (int i = 0 ; i < _path.str().size() ; i++) {
+		path_arr[i] = iter.operator*(); iter++;
 	}
+	mkdir(path_arr, S_IRUSR | S_IWUSR | S_IXUSR); // create folder
 
-	//DIR* dir = opendir(folder);
-	//if (dir) {cout << "\n exist: Testing \n";} else {cout << "\n NOT exist: Testing \n";} // folder already exist?
-	
-	// TODO: Wie erstellt man einen Ordner? kein Include der bekannten Bibliotheken möglich. Dateien werden provisorisch in Quellordner geschrieben.Ordner soll bevor FastaToGreedy startet erstellt sein und dieser Methode mitgegeben werden..
-	//std::ofstream outputter("Tester/asd.t"); if (!outputter) {cout << "error\n";}
 
 	// ## Send inputs to Console
 	console::InsertFilename(infile_arg);
-	if (Modus == FASTA) {console::steps = "[NO]";} else {console::steps = "[YES]";save_arg = true;console::InsertFoldername(folder);}
+	if (Modus == FASTA) {console::steps = "[NO]";} else {console::steps = "[YES]";save_arg = true;console::InsertFoldername(_path.str());}
 	console::Title();
 
 	// ## Import File and Folder to Assembler
-	Assembler Greedy = Assembler::FastaToGreedy(infile_arg,folder,save_arg);
+	Assembler Greedy = Assembler::FastaToGreedy(infile_arg,_path.str(),save_arg);
 
 	// ## Start assembling and return Sequence to console
 	auto result_sequence = Greedy.assemble();
 
 	console::EndMessage(Greedy.getStepCount() - 1);
 	cout << C::BYELLOW << "\n > ";
-	cout << C::BGREEN << result_sequence << "\n\n";
+	cout << C::BGREEN << result_sequence << "\n\n" << C::RESET;
 
 	return 1;
 }

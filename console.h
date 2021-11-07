@@ -41,7 +41,7 @@ public:
  static void InputError(String message);
  static void InputError(String message,char* message2);
  static void InsertFilename(char* file);
- static void InsertFoldername(char* foldername);
+ static void InsertFoldername(std::string foldername);
  static String filename;
  static String folder;
  static String steps;
@@ -71,11 +71,11 @@ void console::EndMessage(int stp) {
 }
 
 void console::Help() {
-    std::cout <<  C::BYELLOW <<"               S E Q U E N C E   A S S E M B L E R \n" << C::RESET;
+    std::cout << "\n" << C::BYELLOW <<"               S E Q U E N C E   A S S E M B L E R \n" << C::RESET;
     std::cout << "\n";
     std::cout << "   -h Help         | show this help \n";
-    std::cout << "   -f Fasta-File   | the File to be assembled.      Example: --f \"../fragments.fasta\" \n";
-    std::cout << "   -s Save         | saves all intermediate steps.  Example: --s \"out/\" \n";
+    std::cout << "   -f Fasta-File   | the File to be assembled.      Example: -f \"../fragments.fasta\" \n";
+    std::cout << "   -s Save         | saves all intermediate steps.  Example: -s \"out/\" \n";
 }
 
 void console::InputError(String message) {
@@ -88,9 +88,8 @@ void console::InputError(String message,char* message2) {
     std::cout << "\n";
 }
 
-void console::InsertFoldername(char *foldername) {
-    String S(foldername);
-    folder = S;
+void console::InsertFoldername(std::string foldername) {
+    folder = foldername;
 }
 
 void console::InsertFilename(char *file) {

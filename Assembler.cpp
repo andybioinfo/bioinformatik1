@@ -12,6 +12,8 @@ using Seq = Sequence<Alphabet::DNA>;
 using OGraph = Graph<Seq>;
 using String = std::string;
 using SeqStack = std::vector<Assembler::Seq>;
+using Node = Graph<Seq>::Node;
+using Triple = std::tuple<Node,Node,size_t>;
 
 /**
  * Creates an Overlap-Graph from a Fasta-File and write this Graph as Graphviz-Format in an output-file.
@@ -164,7 +166,7 @@ void Assembler::Increase_Greedy_Step_Count() {
  * You can use on this Assember-Instance to run the Greedy Algorithm with (ASSEMBLER::FASTATOGREEDY).assemble()
  *
  * */
-Assembler Assembler::FastaToGreedy(const char *inputfile, const char *folder, bool create_intermediates) {
+Assembler Assembler::FastaToGreedy(const char *inputfile, std::string folder, bool create_intermediates) {
 
 
 	// insert file
@@ -217,26 +219,13 @@ Assembler Assembler::FastaToGreedy(const char *inputfile, const char *folder, bo
 	// Make the Assembler ready for assembling with Greedy:
 	A.set_intermediatesteps(create_intermediates);
 	A.set_isgreedy();
-	A.setOutputpath(); // TODO: Outputpath noch anpassen
+	A.setOutputpath(folder); // TODO: Outputpath noch anpassen
 
 	return A;
 
 }
 
-int Assembler::getStepCount() {
-	return greedy_steps;
-}
 
-void Assembler::setOutputpath() {outputpath = ""; //TODO: das ist nur provisorisch
-}
-
-std::string Assembler::getOutputpath() {return outputpath; //TODO: das ist nur provisorisch
-}
-
-void Assembler::set_isgreedy() {is_greedy = true;}
-void Assembler::set_intermediatesteps(bool v) {intermediate_steps = v;}
-bool Assembler::get_isgreedy() {return is_greedy;}
-bool Assembler::get_intermediatesteps() {return intermediate_steps;}
 
 
 
@@ -245,6 +234,9 @@ Seq Assembler::assemble() {
 
 	int act_nodecount = getGraph().numNodes();
 	int after = act_nodecount;
+	// ## Write before-Graph in File (Step zero)
+	Assembler::WriteGreedyFile(getGraph(), getOutputpath(),"greedy",0);
+
 	// ## Greedy-Loop:
 		while (act_nodecount > 1) {
 		    // Look for biggest edge-weight and merge this
@@ -256,7 +248,7 @@ Seq Assembler::assemble() {
 			    act_nodecount = getGraph().numNodes();
 			    if (get_intermediatesteps()) {
 				    // write in file:
-				    Assembler::WriteGreedyFile(getGraph(), "","greedy",getStepCount()); // TODO: Outputpath hinzufügen
+				    Assembler::WriteGreedyFile(getGraph(), getOutputpath(),"greedy",getStepCount());
 			    }
 			    Increase_Greedy_Step_Count();
 			    after = getGraph().numNodes();
@@ -303,6 +295,40 @@ bool Assembler::isValid(const OGraph::Edge& e) {
 }
 
 
+
+/**
+ * Helper-method for mergeSequences
+ * */
+Seq merge_helper (Seq A , Seq B) {
+
+    std::stringstream m("");
+	m << "(" << A.getComment() << "^" << B.getComment() << ")";
+
+	int cursor = 0;
+	int follow = 0;
+	auto iterA = A.begin();
+	auto iterA_END = A.end();
+	auto iterB = B.begin();
+
+	for (; iterA != iterA_END; iterA++) {
+		cursor++;
+		//cout << "\n " << DNA::toChar(iterA.operator*()) << " == " << DNA::toChar(iterB.operator*()) ;
+		if (iterA.operator*() == iterB.operator*()) { // same char
+			if (iterB == --B.end()) {follow++;A.setComment(m.str());return A;} // if B ends return Seq A ( B is full part of A)
+			follow++;iterB++;continue;}
+		if (follow > 0) {follow = 0; iterB = B.begin();} // different char > reset
+	}
+	//cout << "(cursor:" << cursor << " follow: " << follow << ") ";
+	while (follow > 0 && iterB != B.end()) {A.push_back(iterB.operator*());iterB++;}
+	if (follow > 0) {A.setComment(m.str());return A;}
+
+    // NOT WORKED:
+	A.setComment("not merged sequence");
+	return A;
+
+}
+
+
 /**
      * Merge two Sequences with his overlapping part
      * @A Sequence A
@@ -314,112 +340,151 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 		//  A prefix B loop
 		//  A:    CCAC|ATGA|
 		//  B:        |ATGA|GTTAGA
-		int cursor = 0;
-		int follow = 0;
-		auto iterA = A.begin();
-		auto iterA_END = A.end();
-		auto iterB = B.begin();
-
-		for (; iterA != iterA_END; iterA++) {
-			cursor++;
-			//cout << "\n " << DNA::toChar(iterA.operator*()) << " == " << DNA::toChar(iterB.operator*()) ;
-			if (iterA.operator*() == iterB.operator*()) { // same char
-				if (iterB == --B.end()) {follow++;return A;} // if B ends return Seq A ( B is full part of A)
-				follow++;iterB++;continue;}
-			if (follow > 0) {follow = 0; iterB = B.begin();} // different char > reset
-		}
-		//cout << "(cursor:" << cursor << " follow: " << follow << ") ";
-		while (follow > 0 && iterB != B.end()) {A.push_back(iterB.operator*());iterB++;}
-		if (follow > 0) {return A;}
-		//cout << " result: " << A;
+	    Seq A_B = merge_helper (A,B);
+	    if (A_B.getComment() != "not merged sequence") {return A_B;}
 
 		// TODO: In diesem Fall fügt er es nicht zusammen wenn es 2 Möglichkeiten gibt des mergens
 		//  A suffix B loop
 		//  A:           |CCACA|TGA
 		//  B:        TTC|CCACA|
-		cursor = 0;
-		follow = 0;
-		iterB = B.begin();
-		auto iterB_END = B.end();
-		iterA = A.begin();
-
-		for (; iterB != iterB_END; iterB++) {
-			cursor++;
-			//cout << "\n " << DNA::toChar(iterB.operator*()) << " == " << DNA::toChar(iterA.operator*()) ;
-			if (iterB.operator*() == iterA.operator*()) { // same char
-				if (iterA == --A.end()) {follow++;return B;} // if A ends return Seq B ( A is full part of B)
-				follow++;iterA++;continue;}
-			if (follow > 0) {follow = 0; iterA = A.begin();} // different char > reset
-		}
-		//cout << "(cursor:" << cursor << " follow: " << follow << ") ";
-		while (follow > 0 && iterA != A.end()) {B.push_back(iterA.operator*());iterA++;}
-		if (follow > 0) {return B;}
+	    Seq B_A = merge_helper (B,A);
+	    if (B_A.getComment() != "not merged sequence") {return B_A;}
 
 		// TODO: Was soll die Methode returnen wenn es nicht mergen lässt?
-		return Sequence<Alphabet::DNA>::fromString("A");
+	    //cout <<  "merging impossible\n";
+	    B_A.setComment("[mergeSeqError]");
+		return B_A;
  }
 
 /**
   * join the Edge with the biggest weight and adapt the remain nodes and edges this removed edge
  */
  void Assembler::joinLargestEdge(){
-     /*
     // Find largest edge
-    auto edge = findLargestEdge();
+    auto biggest = findLargestEdge();
+	auto *source_node = &get<0>(biggest);
+	auto *target_node = &get<1>(biggest);
+    auto *merged_node =  OverlapGraph.addNode(mergeSequences(source_node->label,target_node->label));
+	auto z = OverlapGraph.beginNodes();
 
-    // Find the two nodes of the edge 
-    auto source_node = edge.source;
-    auto target_node = edge.target;
+	// print
+	//const char* RESET   = "\033[0m";
+	//const char* BLUE    = "\033[0;34m";
+	//auto Z1 = OverlapGraph.beginNodes();
+	//auto Z1E = OverlapGraph.endNodes();
+	//cout << BLUE <<" ||  => before+: s:";
+	//cout << source_node->label.getComment() << " t:" << target_node->label.getComment() << " w:" << get<2>(biggest)
+	//<< " -> " << merged_node->label.getComment() << " | ";
+	//for (; Z1 != Z1E; Z1++){ cout << Z1->label.getComment() << " "; }cout << "\n " << RESET;
 
-    // Create new Node with merged sequence
-    auto new_node = OverlapGraph.addNode(mergeSequences(source_node->label,target_node->label));
 
-    //creates new outgoing edges for the new node
-    auto target_target = target_node->out_edges.begin();
-    auto target_targets_end = target_node->out_edges.end();
-    for (; target_target != target_targets_end; target_target++){
-        OverlapGraph.addEdge(new_node, target_target->first, new_node->label.overlap(target_target->first->label));
-    }
+	// Wer zeigt alles auf den Startknoten oder Endknoten?
 
-    // Redirect all edges: 
-    auto node_beg = OverlapGraph.beginNodes();
-    while (node_beg != OverlapGraph.endNodes())
-    {
-        // Loop over all edges from the actual node
-        auto edge_beg = node_beg->out_edges.begin();
-        while (edge_beg != node_beg->out_edges.end())
-        {
-            if (edge_beg->first == target_node)
-            {
-                // Delete all edges ingoing the target node
-                //OverlapGraph.removeEdge(edge_beg);
-                //OverlapGraph.removeEdge(node_beg, target_node);
-                node_beg->out_edges.erase(edge_beg);
-                continue;
-            }
-            if (edge_beg->first == source_node)
-            {
-                // Redirect the edge to the new node
-                OverlapGraph.addEdge(node_beg.operator*(), new_node, node_beg->label.overlap(new_node->label));
-            }
-            ++edge_beg;
-        }
-        ++node_beg;
-    }
+	auto node_iter = OverlapGraph.beginNodes();
+	auto node_iterE = OverlapGraph.endNodes();
 
-    // delete old nodes
-    //auto nodes = OverlapGraph.getNodes();
-    //nodes.erase(source_node);
-    //nodes.erase(target_node);
-    //OverlapGraph->nodes_.erase(source_node);
-    //OverlapGraph->nodes_.erase(target_node);
-    OverlapGraph.removeNode(*source_node);
-    OverlapGraph.removeNode(*target_node);*/
+	// Zwischenspeicher für Kanten
+	std::vector<std::pair<Node*,Node*>> edgeStack;
+
+
+	// Lösche alle Kanten
+
+	for (; node_iter != node_iterE; node_iter++){ // iterate over nodes
+
+		auto edge_beg = node_iter->out_edges.begin();
+		while (edge_beg != node_iter->out_edges.end()) // iterate over edges
+		{
+			if (edge_beg->first->label.getComment() == source_node->label.getComment() ) // Is the target of this edge the old source or old target
+			{
+				// Create a new edge to the merged node
+				//cout << "\n zeigt auf source : "<< node_iter->label.getComment() << "->" << edge_beg->first->label.getComment();
+				std::pair<Node*,Node*> P(node_iter.operator->(),merged_node);
+				edgeStack.push_back(P);
+				//OverlapGraph.addEdge(node_iter.operator->(), merged_node, 0);
+
+				// delete the old edge and continue
+				node_iter->out_edges.erase(edge_beg);
+				continue;
+			}
+
+			if ( edge_beg->first->label.getComment() == target_node->label.getComment()) // Is the target of this edge the old source or old target
+			{
+				// Create a new edge to the merged node
+				//cout << "\n zeigt auf target : "<< node_iter->label.getComment() << "->" << edge_beg->first->label.getComment();
+				std::pair<Node*,Node*> P(node_iter.operator->(),merged_node);
+				edgeStack.push_back(P);
+				//OverlapGraph.addEdge(&node_iter.operator*(), merged_node, node_iter->label.overlap(merged_node->label));
+
+				// delete the old edge and continue
+				node_iter->out_edges.erase(edge_beg);
+				continue;
+			}
+			++edge_beg;
+		}
+	}
+
+	// Füge erkannte neue Kanten hinzu
+
+	auto stack_iter = edgeStack.begin();
+	auto stack_iterE = edgeStack.end();
+	for (; stack_iter != stack_iterE; stack_iter++){
+		size_t weight = stack_iter->first->label.overlap(stack_iter->second->label);
+		OverlapGraph.addEdge(stack_iter->first,stack_iter->second,weight);
+
+
+	}
+	
+
+	// Die Nachfolger von source
+
+	auto edge_iter = source_node->out_edges.begin();
+
+	while (edge_iter != source_node->out_edges.end()) // iterate over edges
+	{
+		// Replacing : Create new edge
+		//cout << "\n s nachfolger : " << edge_iter->first->label.getComment();
+		if (edge_iter->first->label.getComment() != target_node->label.getComment()) {
+		OverlapGraph.addEdge(merged_node, edge_iter->first, merged_node->label.overlap(edge_iter->first->label));}
+		// Replacing : Delete the old edge
+		source_node->out_edges.erase(edge_iter);
+
+	}
+
+	// Die Nachfolger von target
+
+	edge_iter = target_node->out_edges.begin();
+
+	while (edge_iter != target_node->out_edges.end()) // iterate over edges
+	{
+		// Replacing : Create new edge
+		//cout << "\n t nachfolger : " << edge_iter->first->label.getComment();
+		if (edge_iter->first->label.getComment() != source_node->label.getComment()) {
+		OverlapGraph.addEdge(merged_node, edge_iter->first, merged_node->label.overlap(edge_iter->first->label));}
+		// Replacing : Delete the old edge
+		target_node->out_edges.erase(edge_iter);
+
+	}
+
+	// Delete the old Nodes
+	//cout << BLUE << "\n||" ;
+	OverlapGraph.removeNode( &get<0>(biggest));
+	OverlapGraph.removeNode( &get<1>(biggest));
+
+	//auto n1 = OverlapGraph.beginNodes();
+	//auto n1E = OverlapGraph.endNodes();
+
+	//cout << "  => remaining: ";
+	//for (; n1 != n1E; n1++){ cout << n1->label.getComment() << " "; }
+	//cout << "\n" << RESET;
+
  }
 
-OGraph::Edge Assembler::findLargestEdge(){
-    /*auto node_beg = OverlapGraph.beginNodes();
-    std::pair<Node *, size_t> max_edge(node_beg, 0);
+
+Triple Assembler::findLargestEdge(){
+    auto node_beg = OverlapGraph.beginNodes();
+	// Create the start-triple
+	Triple max_edge(node_beg.operator*(),node_beg.operator*(),0);
+
     // Loop over all nodes 
     while (node_beg != OverlapGraph.endNodes())
     {
@@ -427,26 +492,28 @@ OGraph::Edge Assembler::findLargestEdge(){
         auto edge_beg = node_beg->out_edges.begin();
         while (edge_beg != node_beg->out_edges.end())
         {
-            if (edge_beg->second > max_edge->second){
-                max_edge = edge_beg;
+            if (edge_beg->second > get<2>(max_edge)){
+				// actualize the new Triple value from the bigger edge
+                std::get<0>(max_edge) = node_beg.operator*();
+				std::get<1>(max_edge) = *edge_beg->first;
+				std::get<2>(max_edge) = edge_beg->second;
             }
             ++edge_beg;
         }
         ++node_beg;
     }
-    return max_edge;*/
+    return max_edge;
  }
 
  /**
   * Write a numbered File in Graphviz-Format from the OGraph
   */
-void Assembler::WriteGreedyFile(OGraph G, const char* outputpath,
-                                const char* outputfile, int filenumber)
+void Assembler::WriteGreedyFile(OGraph G, std::string path, const char* outputfile, int filenumber)
 {
 	// TODO: Wie den outputpath bzw. Ordnerpfad hier hinzufügen?
 
 	std::stringstream filename;
-	filename << outputfile << "_" << setw(6) << setfill('0') << filenumber << ".digraph";
+	filename << path << outputfile << "_" << setw(6) << setfill('0') << filenumber << ".digraph";
 
 	std::ofstream output(filename.str());
 
@@ -455,3 +522,16 @@ void Assembler::WriteGreedyFile(OGraph G, const char* outputpath,
 	output << G;
 
 }
+
+int Assembler::getStepCount() {
+	return greedy_steps;
+}
+
+void Assembler::setOutputpath(std::string path) {outputpath = path; }
+
+std::string Assembler::getOutputpath() {return outputpath; }
+
+void Assembler::set_isgreedy() {is_greedy = true;}
+void Assembler::set_intermediatesteps(bool v) {intermediate_steps = v;}
+bool Assembler::get_isgreedy() {return is_greedy;}
+bool Assembler::get_intermediatesteps() {return intermediate_steps;}
