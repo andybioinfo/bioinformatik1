@@ -131,8 +131,20 @@ return 1;*/
 	auto result_sequence = Greedy.assemble();
 
 	console::EndMessage(Greedy.getStepCount() - 1);
+
 	cout << C::BYELLOW << "\n > ";
-	cout << C::BGREEN << result_sequence << "\n\n" << C::RESET;
+
+	int nodecount = Greedy.getGraph().numNodes();
+
+	if (nodecount == 1) {
+		cout << C::BGREEN << result_sequence << "\n\n" << C::RESET;}
+        else if (nodecount == 0) {
+			cout << C::BRED << "No merging possible with " << C::BYELLOW << nodecount << C::BRED
+			                    << "\n     sequences.\n\n" << C::RESET; }
+			else {
+				cout << C::BRED << "  Greedy-Algorithm couldn't merge all sequences." << C::BYELLOW << " => Remaining sequences: "  << nodecount << C::BRED
+				     << "\n     Choose " << C::BGREEN << "save intermediate-steps" << C::BRED << " for see the remaining sequences,\n     and their overlapping-values.\n\n" << C::RESET;
+			}
 
 	return 1;
 }

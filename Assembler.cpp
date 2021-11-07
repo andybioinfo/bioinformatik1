@@ -364,15 +364,22 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
     auto biggest = findLargestEdge();
 	auto *source_node = &get<0>(biggest);
 	auto *target_node = &get<1>(biggest);
+
+	// biggest has not found an edge -> break this
+	if ( get<2>(biggest) == 0) {return;}
+
+	// Create the merged node
     auto *merged_node =  OverlapGraph.addNode(mergeSequences(source_node->label,target_node->label));
 	auto z = OverlapGraph.beginNodes();
+
+
 
 	// print
 	//const char* RESET   = "\033[0m";
 	//const char* BLUE    = "\033[0;34m";
 	//auto Z1 = OverlapGraph.beginNodes();
 	//auto Z1E = OverlapGraph.endNodes();
-	//cout << BLUE <<" ||  => before+: s:";
+	//cout << BLUE <<"||  => before+: s:";
 	//cout << source_node->label.getComment() << " t:" << target_node->label.getComment() << " w:" << get<2>(biggest)
 	//<< " -> " << merged_node->label.getComment() << " | ";
 	//for (; Z1 != Z1E; Z1++){ cout << Z1->label.getComment() << " "; }cout << "\n " << RESET;
@@ -400,8 +407,6 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 				//cout << "\n zeigt auf source : "<< node_iter->label.getComment() << "->" << edge_beg->first->label.getComment();
 				std::pair<Node*,Node*> P(node_iter.operator->(),merged_node);
 				edgeStack.push_back(P);
-				//OverlapGraph.addEdge(node_iter.operator->(), merged_node, 0);
-
 				// delete the old edge and continue
 				node_iter->out_edges.erase(edge_beg);
 				continue;
@@ -413,8 +418,6 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 				//cout << "\n zeigt auf target : "<< node_iter->label.getComment() << "->" << edge_beg->first->label.getComment();
 				std::pair<Node*,Node*> P(node_iter.operator->(),merged_node);
 				edgeStack.push_back(P);
-				//OverlapGraph.addEdge(&node_iter.operator*(), merged_node, node_iter->label.overlap(merged_node->label));
-
 				// delete the old edge and continue
 				node_iter->out_edges.erase(edge_beg);
 				continue;
@@ -429,6 +432,7 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 	auto stack_iterE = edgeStack.end();
 	for (; stack_iter != stack_iterE; stack_iter++){
 		size_t weight = stack_iter->first->label.overlap(stack_iter->second->label);
+		if (weight == 0) {continue;}
 		OverlapGraph.addEdge(stack_iter->first,stack_iter->second,weight);
 
 
@@ -444,7 +448,9 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 		// Replacing : Create new edge
 		//cout << "\n s nachfolger : " << edge_iter->first->label.getComment();
 		if (edge_iter->first->label.getComment() != target_node->label.getComment()) {
-		OverlapGraph.addEdge(merged_node, edge_iter->first, merged_node->label.overlap(edge_iter->first->label));}
+			size_t weight = merged_node->label.overlap(edge_iter->first->label);
+			if (weight > 0) {OverlapGraph.addEdge(merged_node, edge_iter->first, weight);}
+		}
 		// Replacing : Delete the old edge
 		source_node->out_edges.erase(edge_iter);
 
@@ -459,7 +465,9 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 		// Replacing : Create new edge
 		//cout << "\n t nachfolger : " << edge_iter->first->label.getComment();
 		if (edge_iter->first->label.getComment() != source_node->label.getComment()) {
-		OverlapGraph.addEdge(merged_node, edge_iter->first, merged_node->label.overlap(edge_iter->first->label));}
+			size_t weight = merged_node->label.overlap(edge_iter->first->label);
+			if (weight > 0) {OverlapGraph.addEdge(merged_node, edge_iter->first, weight );}
+		}
 		// Replacing : Delete the old edge
 		target_node->out_edges.erase(edge_iter);
 
@@ -470,8 +478,8 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 	OverlapGraph.removeNode( &get<0>(biggest));
 	OverlapGraph.removeNode( &get<1>(biggest));
 
-	//auto n1 = OverlapGraph.beginNodes();
-	//auto n1E = OverlapGraph.endNodes();
+	auto n1 = OverlapGraph.beginNodes();
+	auto n1E = OverlapGraph.endNodes();
 
 	//cout << "  => remaining: ";
 	//for (; n1 != n1E; n1++){ cout << n1->label.getComment() << " "; }
@@ -485,6 +493,9 @@ Triple Assembler::findLargestEdge(){
 	// Create the start-triple
 	Triple max_edge(node_beg.operator*(),node_beg.operator*(),0);
 
+	// Counter
+	int success = 0;
+
     // Loop over all nodes 
     while (node_beg != OverlapGraph.endNodes())
     {
@@ -497,11 +508,13 @@ Triple Assembler::findLargestEdge(){
                 std::get<0>(max_edge) = node_beg.operator*();
 				std::get<1>(max_edge) = *edge_beg->first;
 				std::get<2>(max_edge) = edge_beg->second;
+				success++;
             }
             ++edge_beg;
         }
         ++node_beg;
     }
+
     return max_edge;
  }
 
