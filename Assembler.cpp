@@ -363,6 +363,7 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
   * join the Edge with the biggest weight and adapt the remain nodes and edges this removed edge
  */
  void Assembler::joinLargestEdge(){
+     /*
     // Find largest edge
     auto edge = findLargestEdge();
 
@@ -413,11 +414,11 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
     //OverlapGraph->nodes_.erase(source_node);
     //OverlapGraph->nodes_.erase(target_node);
     OverlapGraph.removeNode(*source_node);
-    OverlapGraph.removeNode(*target_node);
+    OverlapGraph.removeNode(*target_node);*/
  }
 
 OGraph::Edge Assembler::findLargestEdge(){
-    auto node_beg = OverlapGraph.beginNodes();
+    /*auto node_beg = OverlapGraph.beginNodes();
     std::pair<Node *, size_t> max_edge(node_beg, 0);
     // Loop over all nodes 
     while (node_beg != OverlapGraph.endNodes())
@@ -433,7 +434,7 @@ OGraph::Edge Assembler::findLargestEdge(){
         }
         ++node_beg;
     }
-    return max_edge;
+    return max_edge;*/
  }
 
  /**

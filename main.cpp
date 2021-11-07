@@ -32,6 +32,9 @@ using namespace std;
 #include <iostream>
 #include <ostream>
 #include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 using SeqList = std::vector<Sequence<Alphabet::DNA>>;
 using Node = Graph<Sequence<Alphabet::DNA>>::Node;
@@ -85,10 +88,17 @@ int main(int argc, char* argv[]) {
 	if (!input) {console::InputError("Input-File can't be read : ",infile_arg);console::Help();return -1;}
 
 	// ## getopt [-s] : Folder Check
-	char folder[] = "greedy_intermediates\"";
-	//if (outfolder_arg == NULL) {folder = "greedy_intermediates";} else {folder = outfolder_arg;} // if no folder choosen
+	char* folder;
+	char ordner[] = "~/greedy_intermediates/";
+	mkdir("greedy_intermediates", S_IWUSR);
+	if (outfolder_arg == NULL) {folder = ordner;} else {folder = outfolder_arg;} // if no folder choosen
+	if(chdir(folder) != 0){
+		cout << "\n NOT exist: Testing \n";
+	}
+
 	//DIR* dir = opendir(folder);
 	//if (dir) {cout << "\n exist: Testing \n";} else {cout << "\n NOT exist: Testing \n";} // folder already exist?
+	
 	// TODO: Wie erstellt man einen Ordner? kein Include der bekannten Bibliotheken möglich. Dateien werden provisorisch in Quellordner geschrieben.Ordner soll bevor FastaToGreedy startet erstellt sein und dieser Methode mitgegeben werden..
 	//std::ofstream outputter("Tester/asd.t"); if (!outputter) {cout << "error\n";}
 
