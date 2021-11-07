@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
 	// ## getopt [-s] : Folder Check
 	char* folder;
 	char ordner[] = "~/greedy_intermediates/";
-	mkdir("greedy_intermediates", S_IWUSR);
+	mkdir("greedy_intermediates", S_IROTH | S_IWOTH | S_IXOTH);
 	if (outfolder_arg == NULL) {folder = ordner;} else {folder = outfolder_arg;} // if no folder choosen
 	if(chdir(folder) != 0){
 		cout << "\n NOT exist: Testing \n";
