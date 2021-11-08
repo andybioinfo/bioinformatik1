@@ -2,9 +2,10 @@ digraph overlapgraph {
      nodecount=3
      B [sequence="CATAC"]
      E [sequence="ACCATCTT"]
-     [mergeSeqError] [sequence="TTGCCGGTCGCGACAA"]
+     (A^(D^C)) [sequence="CTTTGCCGGTCGCGACAA"]
      B -> E [weight=2 target_sequence="ACCATCTT"]
-     E -> [mergeSeqError] [weight=2 target_sequence="TTGCCGGTCGCGACAA"]
-     E -> [mergeSeqError] [weight=2 target_sequence="TTGCCGGTCGCGACAA"]
-     [mergeSeqError] -> E [weight=1 target_sequence="ACCATCTT"]
+     B -> (A^(D^C)) [weight=1 target_sequence="CTTTGCCGGTCGCGACAA"]
+     E -> (A^(D^C)) [weight=3 target_sequence="CTTTGCCGGTCGCGACAA"]
+     E -> (A^(D^C)) [weight=3 target_sequence="CTTTGCCGGTCGCGACAA"]
+     (A^(D^C)) -> E [weight=1 target_sequence="ACCATCTT"]
 }

@@ -1,4 +1,4 @@
 digraph overlapgraph { 
      nodecount=1
-     ((B^E)^[mergeSeqError]) [sequence="CATACCATCTTGCCGGTCGCGACAA"]
+     (B^(E^(A^(D^C)))) [sequence="CATACCATCTTTGCCGGTCGCGACAA"]
 }
