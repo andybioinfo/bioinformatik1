@@ -1,0 +1,10 @@
+digraph overlapgraph { 
+     nodecount=3
+     B [sequence="CATAC"]
+     E [sequence="ACCATCTT"]
+     [mergeSeqError] [sequence="TTGCCGGTCGCGACAA"]
+     B -> E [weight=2 target_sequence="ACCATCTT"]
+     E -> [mergeSeqError] [weight=2 target_sequence="TTGCCGGTCGCGACAA"]
+     E -> [mergeSeqError] [weight=2 target_sequence="TTGCCGGTCGCGACAA"]
+     [mergeSeqError] -> E [weight=1 target_sequence="ACCATCTT"]
+}

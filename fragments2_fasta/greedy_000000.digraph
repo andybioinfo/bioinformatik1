@@ -1,0 +1,16 @@
+digraph overlapgraph { 
+     nodecount=5
+     A [sequence="CTTTGC"]
+     B [sequence="CATAC"]
+     C [sequence="GGTCGCGACAA"]
+     D [sequence="TTGCCGGTCG"]
+     E [sequence="ACCATCTT"]
+     A -> B [weight=1 target_sequence="CATAC"]
+     A -> D [weight=4 target_sequence="TTGCCGGTCG"]
+     B -> A [weight=1 target_sequence="CTTTGC"]
+     B -> E [weight=2 target_sequence="ACCATCTT"]
+     C -> E [weight=1 target_sequence="ACCATCTT"]
+     D -> C [weight=5 target_sequence="GGTCGCGACAA"]
+     E -> A [weight=3 target_sequence="CTTTGC"]
+     E -> D [weight=2 target_sequence="TTGCCGGTCG"]
+}
