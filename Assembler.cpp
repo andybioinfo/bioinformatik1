@@ -235,7 +235,7 @@ Seq Assembler::assemble() {
 	int act_nodecount = getGraph().numNodes();
 	int after = act_nodecount;
 	// ## Write before-Graph in File (Step zero)
-	Assembler::WriteGreedyFile(getGraph(), getOutputpath(),"greedy",0);
+	if (get_intermediatesteps()) {Assembler::WriteGreedyFile(getGraph(), getOutputpath(),"greedy",0);}
 
 	// ## Greedy-Loop:
 		while (act_nodecount > 1) {
