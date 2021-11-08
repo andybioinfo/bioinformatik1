@@ -163,7 +163,7 @@ else
 			                    << "\n     sequences.\n\n" << C::RESET; }
 			else {
 				cout << C::BRED << "  Greedy-Algorithm couldn't merge all sequences." << C::BYELLOW << " => Remaining sequences: "  << nodecount << C::BRED
-				     << "\n     Choose " << C::BGREEN << "save intermediate-steps" << C::BRED << " for see the remaining sequences,\n     and their overlapping-values.\n\n" << C::RESET;
+				     << "\n     Choose " << C::BGREEN << "save intermediate-steps" << C::BRED << " for see the remaining sequences,\n     and their overlapping-values up to the last assembled step.\n\n" << C::RESET;
 			}
 
 	return 1;
