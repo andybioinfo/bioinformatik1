@@ -343,18 +343,22 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 	    Seq A_B = merge_helper (A,B);
 	    if (A_B.getComment() != "not merged sequence") {return A_B;}
 
-		// TODO: In diesem Fall fügt er es nicht zusammen wenn es 2 Möglichkeiten gibt des mergens
 		//  A suffix B loop
 		//  A:           |CCACA|TGA
 		//  B:        TTC|CCACA|
 	    Seq B_A = merge_helper (B,A);
 	    if (B_A.getComment() != "not merged sequence") {return B_A;}
 
-		// TODO: Was soll die Methode returnen wenn es nicht mergen lässt?
-	    //cout <<  "merging impossible\n";
+	    // TODO: Da diese Methode nie mit "overlap=0-Kanten" aufgerufen wird, müssen eine der beiden Aufrufe B_A oder A_B mergen können und returnen. 
+	    // Wenn nicht ist der Algorithmus des mergeSequences noch nicht 100% funktionsfähig und in dem Fall wenn das mergen fehlschlägt, 
+	    // trotz Overlap > 0, wird der Knoten mit [mergeSeqError] benannt und bekommt die Sequenz von A oder B übergeben, welches
+	    // man in den Ausgabendateien sehen kann.
 	    B_A.setComment("[mergeSeqError]");
 		return B_A;
  }
+
+
+
 
 /**
   * join the Edge with the biggest weight and adapt the remain nodes and edges this removed edge
@@ -488,6 +492,11 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
  }
 
 
+
+/**
+ * Returns a triple with source-node, target-node and weigth between it.
+ *
+ */
 Triple Assembler::findLargestEdge(){
     auto node_beg = OverlapGraph.beginNodes();
 	// Create the start-triple
@@ -514,36 +523,31 @@ Triple Assembler::findLargestEdge(){
         }
         ++node_beg;
     }
-
     return max_edge;
  }
+
+
 
  /**
   * Write a numbered File in Graphviz-Format from the OGraph
   */
 void Assembler::WriteGreedyFile(OGraph G, std::string path, const char* outputfile, int filenumber)
 {
-	// TODO: Wie den outputpath bzw. Ordnerpfad hier hinzufügen?
-
+        // Build filename with number 
 	std::stringstream filename;
 	filename << path << outputfile << "_" << setw(6) << setfill('0') << filenumber << ".digraph";
-
+        // Create File and write the graph in it
 	std::ofstream output(filename.str());
-
 	if (!output) { std::cerr << "> Error creating/writing/whatever file: \"" << filename.str() << "\"\n"; return; }
-
 	output << G;
-
 }
 
-int Assembler::getStepCount() {
-	return greedy_steps;
-}
 
+
+// Helper Methods (getter/setter) for the Greedy algorithm
+int Assembler::getStepCount() {	return greedy_steps; }
 void Assembler::setOutputpath(std::string path) {outputpath = path; }
-
 std::string Assembler::getOutputpath() {return outputpath; }
-
 void Assembler::set_isgreedy() {is_greedy = true;}
 void Assembler::set_intermediatesteps(bool v) {intermediate_steps = v;}
 bool Assembler::get_isgreedy() {return is_greedy;}
