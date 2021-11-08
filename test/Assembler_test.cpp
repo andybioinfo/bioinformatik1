@@ -33,6 +33,7 @@ TEST(Assembler, CreateGraphvizFileFromFasta)
 
 TEST(Assembler, AlgorithmCheck)
 {
+    
     // Create Graph with nodes and edges
     SeqList Seqs = SequenceCombinator(0, 3, false);
     Graph<Sequence<Alphabet::DNA>> g(Seqs);
@@ -62,3 +63,4 @@ TEST(Assembler, AlgorithmCheck)
     EXPECT_EQ(c->out_edges.front().first->label.getComment(), "DNA_D"); // Edge C -> D => DNA_D
     EXPECT_EQ(d->out_edges.front().first->label.getComment(), "DNA_C"); // Edge D -> C => DNA_C
 }
+
