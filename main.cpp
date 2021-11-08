@@ -116,7 +116,26 @@ return 1;*/
 	for (int i = 0 ; i < _path.str().size() ; i++) {
 		path_arr[i] = iter.operator*(); iter++;
 	}
-	mkdir(path_arr, S_IRUSR | S_IWUSR | S_IXUSR); // create folder
+	mkdir(path_arr, 0777); // create folder
+
+	DIR* dir = opendir(path_arr);
+if (dir)
+{
+    /* Directory exists. */
+    closedir(dir);
+}
+else if (ENOENT == errno)
+{
+    /* Directory does not exist. */
+	cout << C::BRED << "\n The folder can't created: '" << _path.str() << "'. your files will created without folder. \n\n" << C::RESET; 
+	_path.str("");
+}
+else
+{
+    /* opendir() failed for some other reason. */
+	cout << C::BRED << "\n The folder can't created: '" << _path.str() << "'. your files will created without folder. \n\n" << C::RESET; 
+	_path.str("");
+}
 
 
 	// ## Send inputs to Console
@@ -148,6 +167,8 @@ return 1;*/
 
 	return 1;
 }
+
+
 
 
 
