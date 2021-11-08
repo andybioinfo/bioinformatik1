@@ -89,6 +89,7 @@ void console::InputError(String message,char* message2) {
 }
 
 void console::InsertFoldername(std::string foldername) {
+    if (foldername == "") {folder = "/";return;}
     folder = foldername;
 }
 
