@@ -116,6 +116,7 @@ return 1;*/
 	for (int i = 0 ; i < _path.str().size() ; i++) {
 		path_arr[i] = iter.operator*(); iter++;
 	}
+if (Modus == SAVE) {
 	mkdir(path_arr, 0777); // create folder
 
 	DIR* dir = opendir(path_arr);
@@ -135,7 +136,7 @@ else
     /* opendir() failed for some other reason. */
 	cout << C::BRED << "\n The folder can't created: '" << _path.str() << "'. your files will created without folder. \n\n" << C::RESET; 
 	_path.str("");
-}
+}}
 
 
 	// ## Send inputs to Console
