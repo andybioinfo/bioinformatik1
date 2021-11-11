@@ -65,8 +65,20 @@ TEST(AssemblerUB3, JoinLargestEdge)
 	SeqList stack = SequenceCombinator(18,22,false); // The "Aufgabe 1: Greedy Ansatz" exercise sequences
 	Assembler B(stack);
 	Seq compareSeq = Sequence<Alphabet::DNA>::fromString("CATACCATCTTTGCCGGTCGCGACAA");
-	EXPECT_EQ(compareSeq, B.assemble());
+	EXPECT_EQ(compareSeq.toString(), B.assemble().toString());
 
+}
+
+TEST(Assembler,mergeSequenzen)
+{
+    Sequence<Alphabet::DNA> seq1 = Sequence<Alphabet::DNA>::fromString("CTTTGC");
+    Sequence<Alphabet::DNA> seq2 = Sequence<Alphabet::DNA>::fromString("TTGCCGGTCGCGACAA");
+    seq1.setComment("A");
+    seq2.setComment("D^C");
+    Sequence<Alphabet::DNA> compareSeq = Sequence<Alphabet::DNA>::fromString("CTTTGCCGGTCGCGACAA");
+    compareSeq.setComment("bla");
+    Sequence<Alphabet::DNA> result =Assembler::mergeSequences(seq1,seq2);
+    EXPECT_EQ(compareSeq.toString(), result.toString());
 }
 
 

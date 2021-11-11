@@ -1,0 +1,4 @@
+digraph overlapgraph { 
+     nodecount=1
+     (B^(E^(A^(D^C)))) [sequence="CATACCATCTTTGCCGGTCGCGACAA"]
+}

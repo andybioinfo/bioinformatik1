@@ -300,6 +300,7 @@ bool Assembler::isValid(const OGraph::Edge& e) {
  * Helper-method for mergeSequences
  * */
 Seq merge_helper (Seq A , Seq B) {
+	/*
 
     std::stringstream m("");
 	m << "(" << A.getComment() << "^" << B.getComment() << ")";
@@ -321,10 +322,16 @@ Seq merge_helper (Seq A , Seq B) {
 	//cout << "(cursor:" << cursor << " follow: " << follow << ") ";
 	while (follow > 0 && iterB != B.end()) {A.push_back(iterB.operator*());iterB++;}
 	if (follow > 0) {A.setComment(m.str());return A;}
-
-    // NOT WORKED:
+	 // NOT WORKED:
 	A.setComment("not merged sequence");
 	return A;
+	*/
+	std::stringstream m("");
+	m << "(" << A.getComment() << "^" << B.getComment() << ")";
+	auto lap = A.overlap(B);
+	Sequence<Alphabet::DNA> sequence = Sequence<Alphabet::DNA>::fromString(A.toString() + B.toString().substr((int) lap));
+	sequence.setComment(m.str());
+	return sequence;
 
 }
 
