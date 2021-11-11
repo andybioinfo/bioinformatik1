@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 	char *outfolder_arg = NULL;
 
 	// ## getopt : Look for input via getopt
-	// TODO: wie regeln das getopt neben -f -s auch --fasta --save annimmt, falls relevant??
+	
 	while ((opt = getopt(argc,argv, "hf:s:")) != -1) {
 		switch (opt) {
 			case 'h' : help_arg = true;break;
