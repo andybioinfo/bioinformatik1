@@ -169,8 +169,7 @@ typename Graph<NodeLabel>::Node *Graph<NodeLabel>::contractEdge(const Graph<Node
     // Find the two nodes on the edge
     auto source_node = rem.source;
     auto target_node = rem.target;
-    // std::cout << "\n folgende Kante soll gelöscht werden: " << source_node->label.getComment() << " -> " << target_node->label.getComment();
-
+    
     // walk the edges of the target node and rewrite the source nodes of the target node to the source node of the edge to be contracted
     auto target_target = target_node->out_edges.begin();
     auto target_targets_end = target_node->out_edges.end();
@@ -178,7 +177,7 @@ typename Graph<NodeLabel>::Node *Graph<NodeLabel>::contractEdge(const Graph<Node
     // iteration - read out and create new edges in Source-Node
     for (; target_target != target_targets_end; target_target++)
     {
-        // std::cout << "\n readfrom target->target_target :" << (target_node->label).getComment() << " -> " << (target_target->first->label).getComment() << " : schreibe source_node->target_target" << (source_node->label).getComment() << " -> " << (target_target->first->label).getComment() ;
+        
         //  create Edge
         addEdge(source_node, target_target->first, target_target->second);
     }
@@ -190,11 +189,9 @@ typename Graph<NodeLabel>::Node *Graph<NodeLabel>::contractEdge(const Graph<Node
     auto source_target = source_node->out_edges.begin();
     while (source_target != source_node->out_edges.end())
     {
-        // std::cout << "\n search source->source_target :" << source_node->label.getComment() << " -> " << source_target->first->label.getComment() << " : ";
-        if (source_target->first == target_node)
+    
         {
             source_node->out_edges.erase(source_target);
-            // cout << "deleted";
             break;
         }
         ++source_target;
@@ -210,9 +207,7 @@ typename Graph<NodeLabel>::Node *Graph<NodeLabel>::contractEdge(const Graph<Node
             if (edge_beg->first == target_node)
             {
                 // Redirect the edge to the source_node
-                // auto E = Edge(node_beg.operator->(), source_node, 0);
                 std::pair<Node *, size_t> P(source_node, 0);
-                // addEdge(node_beg,source_node,edge_beg->second);
                 node_beg->out_edges.erase(edge_beg);
                 node_beg->out_edges.push_back(P);
                 continue;
@@ -322,7 +317,7 @@ std::ostream &operator<<(std::ostream &stream, const Graph<NodeLabel> &graph)
     std::string graphname = "overlapgraph";
     stream << std::string("digraph ") << graphname << std::string(" { \n");
     stream << std::string("     nodecount=") << graph.numNodes() << std::string("\n");
-    // stream << "     sequencetype=" << "default" << "\n";
+    
 
     // Listing all Nodes of the Graph
     auto knoten_start = graph.beginNodes();
@@ -330,7 +325,7 @@ std::ostream &operator<<(std::ostream &stream, const Graph<NodeLabel> &graph)
 
     for (; knoten_start != knoten_ende; knoten_start++)
     {
-        //if (knoten_start->out_edges.size() == 0)
+        
         //{
             stream << std::string("     ");
 		    stream << knoten_start->label.getComment() << std::string(" [sequence=\"")

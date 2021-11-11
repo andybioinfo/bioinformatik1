@@ -66,7 +66,6 @@ void Assembler::FromFastaFileToGraph(const char *inputfile, const char *outputfi
 
     // First line '>'
     char first;
-    // if (first != '>') {return;}
     while (getline(input, line))
     {
         line.erase(0, 1);
@@ -182,7 +181,6 @@ Assembler Assembler::FastaToGreedy(const char *inputfile, std::string folder, bo
 
 	// First line '>'
 	char first;
-	// if (first != '>') {return;}
 	while (getline(input, line))
 	{
 		line.erase(0, 1);
@@ -300,32 +298,6 @@ bool Assembler::isValid(const OGraph::Edge& e) {
  * Helper-method for mergeSequences
  * */
 Seq merge_helper (Seq A , Seq B) {
-	/*
-
-    std::stringstream m("");
-	m << "(" << A.getComment() << "^" << B.getComment() << ")";
-
-	int cursor = 0;
-	int follow = 0;
-	auto iterA = A.begin();
-	auto iterA_END = A.end();
-	auto iterB = B.begin();
-
-	for (; iterA != iterA_END; iterA++) {
-		cursor++;
-		//cout << "\n " << DNA::toChar(iterA.operator*()) << " == " << DNA::toChar(iterB.operator*()) ;
-		if (iterA.operator*() == iterB.operator*()) { // same char
-			if (iterB == --B.end()) {follow++;A.setComment(m.str());return A;} // if B ends return Seq A ( B is full part of A)
-			follow++;iterB++;continue;}
-		if (follow > 0) {follow = 0; iterB = B.begin();} // different char > reset
-	}
-	//cout << "(cursor:" << cursor << " follow: " << follow << ") ";
-	while (follow > 0 && iterB != B.end()) {A.push_back(iterB.operator*());iterB++;}
-	if (follow > 0) {A.setComment(m.str());return A;}
-	 // NOT WORKED:
-	A.setComment("not merged sequence");
-	return A;
-	*/
 	std::stringstream m("");
 	m << "(" << A.getComment() << "^" << B.getComment() << ")";
 	auto lap = A.overlap(B);
@@ -384,28 +356,16 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 	auto z = OverlapGraph.beginNodes();
 
 
-
-	// print
-	//const char* RESET   = "\033[0m";
-	//const char* BLUE    = "\033[0;34m";
-	//auto Z1 = OverlapGraph.beginNodes();
-	//auto Z1E = OverlapGraph.endNodes();
-	//cout << BLUE <<"||  => before+: s:";
-	//cout << source_node->label.getComment() << " t:" << target_node->label.getComment() << " w:" << get<2>(biggest)
-	//<< " -> " << merged_node->label.getComment() << " | ";
-	//for (; Z1 != Z1E; Z1++){ cout << Z1->label.getComment() << " "; }cout << "\n " << RESET;
-
-
-	// Wer zeigt alles auf den Startknoten oder Endknoten?
+	// Who points to the start node or end node?
 
 	auto node_iter = OverlapGraph.beginNodes();
 	auto node_iterE = OverlapGraph.endNodes();
 
-	// Zwischenspeicher für Kanten
+	// stack for edges
 	std::vector<std::pair<Node*,Node*>> edgeStack;
 
 
-	// Lösche alle Kanten
+	// Delete all Edges
 
 	for (; node_iter != node_iterE; node_iter++){ // iterate over nodes
 
@@ -415,7 +375,6 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 			if (edge_beg->first->label.getComment() == source_node->label.getComment() ) // Is the target of this edge the old source or old target
 			{
 				// Create a new edge to the merged node
-				//cout << "\n zeigt auf source : "<< node_iter->label.getComment() << "->" << edge_beg->first->label.getComment();
 				std::pair<Node*,Node*> P(node_iter.operator->(),merged_node);
 				edgeStack.push_back(P);
 				// delete the old edge and continue
@@ -426,7 +385,6 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 			if ( edge_beg->first->label.getComment() == target_node->label.getComment()) // Is the target of this edge the old source or old target
 			{
 				// Create a new edge to the merged node
-				//cout << "\n zeigt auf target : "<< node_iter->label.getComment() << "->" << edge_beg->first->label.getComment();
 				std::pair<Node*,Node*> P(node_iter.operator->(),merged_node);
 				edgeStack.push_back(P);
 				// delete the old edge and continue
@@ -437,7 +395,7 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 		}
 	}
 
-	// Füge erkannte neue Kanten hinzu
+	// Add new Edges
 
 	auto stack_iter = edgeStack.begin();
 	auto stack_iterE = edgeStack.end();
@@ -450,14 +408,13 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 	}
 	
 
-	// Die Nachfolger von source
+	// The successor of source
 
 	auto edge_iter = source_node->out_edges.begin();
 
 	while (edge_iter != source_node->out_edges.end()) // iterate over edges
 	{
 		// Replacing : Create new edge
-		//cout << "\n s nachfolger : " << edge_iter->first->label.getComment();
 		if (edge_iter->first->label.getComment() != target_node->label.getComment()) {
 			size_t weight = merged_node->label.overlap(edge_iter->first->label);
 			if (weight > 0) {OverlapGraph.addEdge(merged_node, edge_iter->first, weight);}
@@ -467,14 +424,13 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 
 	}
 
-	// Die Nachfolger von target
+	// The successor of target
 
 	edge_iter = target_node->out_edges.begin();
 
 	while (edge_iter != target_node->out_edges.end()) // iterate over edges
 	{
 		// Replacing : Create new edge
-		//cout << "\n t nachfolger : " << edge_iter->first->label.getComment();
 		if (edge_iter->first->label.getComment() != source_node->label.getComment()) {
 			size_t weight = merged_node->label.overlap(edge_iter->first->label);
 			if (weight > 0) {OverlapGraph.addEdge(merged_node, edge_iter->first, weight );}
@@ -485,16 +441,11 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 	}
 
 	// Delete the old Nodes
-	//cout << BLUE << "\n||" ;
 	OverlapGraph.removeNode( &get<0>(biggest));
 	OverlapGraph.removeNode( &get<1>(biggest));
 
 	auto n1 = OverlapGraph.beginNodes();
 	auto n1E = OverlapGraph.endNodes();
-
-	//cout << "  => remaining: ";
-	//for (; n1 != n1E; n1++){ cout << n1->label.getComment() << " "; }
-	//cout << "\n" << RESET;
 
  }
 

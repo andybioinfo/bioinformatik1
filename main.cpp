@@ -49,28 +49,6 @@ enum Mode {
 
 int main(int argc, char* argv[]) {
 
-	/* Create Graph
-	SeqList stack = SequenceCombinator(18,22,false); // The "Aufgabe 1: Greedy Ansatz" exercise sequences
-	Assembler B(stack);
-    cout << "unbearbeitet: \n" << B.getGraph(); //   F.D -> F.C  weight: 5
-
-
-    B.joinLargestEdge();
-	cout << "first step" << B.getGraph();
-
-	B.joinLargestEdge();
-	cout << B.getGraph();
-
-	B.joinLargestEdge();
-	cout << B.getGraph();
-
-	B.joinLargestEdge();
-	cout << B.getGraph();
-
-	B.joinLargestEdge();
-	cout << B.getGraph();
-
-return 1;*/
 
 	// ## getopt : Create getopt variables
 	Mode Modus = NONE;
