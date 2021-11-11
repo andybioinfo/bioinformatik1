@@ -217,7 +217,7 @@ Assembler Assembler::FastaToGreedy(const char *inputfile, std::string folder, bo
 	// Make the Assembler ready for assembling with Greedy:
 	A.set_intermediatesteps(create_intermediates);
 	A.set_isgreedy();
-	A.setOutputpath(folder); // TODO: Outputpath noch anpassen
+	A.setOutputpath(folder); 
 
 	return A;
 
@@ -259,8 +259,8 @@ Seq Assembler::assemble() {
 	    }
 
     if (getGraph().numNodes() == 1) return getGraph().beginNodes()->label;
-    // TODO: Was soll der Assembler returnen wenn mehrere Knoten übrig sind?
-	return getGraph().beginNodes()->label; // TODO: in dem fall einfach den ersten knoten als Sequenz returnen
+  
+	return getGraph().beginNodes()->label;
 }
 
 
@@ -328,10 +328,6 @@ Seq Assembler::mergeSequences(Seq A, Seq B) {
 	    Seq B_A = merge_helper (B,A);
 	    if (B_A.getComment() != "not merged sequence") {return B_A;}
 
-	    // TODO: Da diese Methode nie mit "overlap=0-Kanten" aufgerufen wird, müssen eine der beiden Aufrufe B_A oder A_B mergen können und returnen. 
-	    // Wenn nicht ist der Algorithmus des mergeSequences noch nicht 100% funktionsfähig und in dem Fall wenn das mergen fehlschlägt, 
-	    // trotz Overlap > 0, wird der Knoten mit [mergeSeqError] benannt und bekommt die Sequenz von A oder B übergeben, welches
-	    // man in den Ausgabendateien sehen kann.
 	    B_A.setComment("[mergeSeqError]");
 		return B_A;
  }
