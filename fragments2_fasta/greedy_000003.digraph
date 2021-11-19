@@ -1,7 +1,0 @@
-digraph overlapgraph { 
-     nodecount=2
-     B [sequence="CATAC"]
-     (E^(A^(D^C))) [sequence="ACCATCTTTGCCGGTCGCGACAA"]
-     B -> (E^(A^(D^C))) [weight=2 target_sequence="ACCATCTTTGCCGGTCGCGACAA"]
-     B -> (E^(A^(D^C))) [weight=2 target_sequence="ACCATCTTTGCCGGTCGCGACAA"]
-}
