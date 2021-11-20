@@ -73,11 +73,14 @@ void console::Help(String message) {
     std::cout << C::BYELLOW <<  "     N E E D L E M A N   A L I G N M E N T \n" << C::BLUE;
     std::cout <<                "\n";
     std::cout << C::BRED <<     "        > " << message << "\n";
+    std::cout << C::BWHITE  <<  "\n Help:    " << C::BYELLOW << "$ \\.align [Sequence Type] [Gap-Cost] [Fasta-File]";
+    std::cout << C::BWHITE  <<  "\n Example: " << C::BGREEN  << "$ \\.align -DNA 2 ../fragments.fasta";
     std::cout <<                "\n";
-    std::cout << C::BYELLOW <<  " Help: $ \\.Align [value] [file]\n";
     std::cout <<                "\n";
-    std::cout << C::BGREEN  <<  "         [value] must be a valid integer in the range from 0 to whatever,\n";
-    std::cout <<                "         and the choosen [file] must be a valid file in FASTA format.\n\n";
+    std::cout << C::BWHITE  <<  " Options: " << C::BGREEN <<  "[Sequence Type] := " << C::BBLUE << " -DNA -RNA -PEPTIDE\n";
+    std::cout << C::BGREEN  <<  "          [Gap-Cost]      := " << C::BBLUE << " Integer in the range from 0 to whatever\n";
+    std::cout << C::BGREEN  <<  "          [Fasta-File]    := " << C::BBLUE << " A valid file in FASTA-format,\n";
+    std::cout << C::BGREEN  <<  "                             " << C::BBLUE << " with at least " << C::BRED << "2 Sequences\n\n";
     std::cout << C::RESET;
 }
 

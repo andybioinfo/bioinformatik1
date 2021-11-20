@@ -33,6 +33,7 @@ public:
     int getValue(int col, int row);
     void setValue(int col, int row, int value);
     void print();
+    void printTriangle(int col, int row);
 
     int ROW_MAX();
     int COL_MAX();
@@ -43,8 +44,8 @@ protected:
 
 };
 
-int Matrix::ROW_MAX() { return values_.at(0).size(); }
-int Matrix::COL_MAX() { return values_.size(); }
+int Matrix::ROW_MAX() { return values_.at(0).size()-1; }
+int Matrix::COL_MAX() { return values_.size()-1; }
 
 Matrix::Matrix(int cols, int rows) {
 
@@ -58,15 +59,25 @@ int Matrix::getValue(int col, int row) {return values_.at(col).at(row);}
 void Matrix::setValue(int col, int row, int value) {values_.at(col).at(row) = value;}
 
 void Matrix::print() {
-    cout << C::BGREEN << "\n MATRIX [ " << C::BBLUE << "cols: " << (COL_MAX()) << " rows: " << (ROW_MAX()) << C::BGREEN << " ]";
+    cout << C::BGREEN << "\n MATRIX [ " << C::BBLUE << "cols: " << (COL_MAX()+1) << " rows: " << (ROW_MAX()+1) << C::BGREEN << " ]";
     cout << "\n x " << C::BYELLOW;
-    for (int i = 0 ; i < ROW_MAX() ; i++) { cout << i << " ";}
-    for (int _col = 0 ; _col < COL_MAX() ; _col++) {
-        cout << "\n " << C::BYELLOW << _col << C::BRED << " ";
-        for (int _row = 0 ; _row < ROW_MAX() ; _row++) { cout << getValue(_col,_row) << " "; }
-    }
-    cout << "\n ";
+    for (int i = 0 ; i <= COL_MAX() ; i++) { cout << i << " ";}
 
+        for (int _row = 0 ; _row <= ROW_MAX() ; _row++) {
+
+            cout << "\n " << C::BYELLOW << _row << C::BRED << " ";
+
+            for (int _col = 0 ; _col <= ROW_MAX() ; _col++) { cout << getValue(_col,_row) << " "; }
+    }
+    cout << "\n " << C::RESET;
+
+}
+
+void Matrix::printTriangle(int col, int row) {
+    int up = getValue(col-1,row);
+    int left = getValue(col,row-1);
+    int diag = getValue(col-1,row-1);
+    cout << C::BBLUE << "[L: " << left << " D: " << diag << " U: " << up << " ]" << C::RESET;
 }
 
 #endif //MATRIX_H
