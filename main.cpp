@@ -99,8 +99,11 @@ int main(int argc, char* argv[]) {
         if (choosenSeqType == DNA) {
         DNAs line1;
         DNAs line2;
+		cout << "\n read Fasta 1 :=";
         input >> fromFasta(line1);
+		cout << "\n read Fasta 2 :=";
         input >> fromFasta(line2);
+		cout << "\n";
         stack_DNA.push_back(line1);
         stack_DNA.push_back(line2);
         sequence_count = stack_DNA.size();
