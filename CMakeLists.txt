@@ -48,5 +48,15 @@ add_executable(align main.cpp )
 # die sequence Bibliothek zum Programm "gelinkt" werden.
 target_link_libraries(align sequence ${CIP_STD_LIBS})
 
+# Aktiviere die Unittestfunktionalität von CMake.
+enable_testing()
+
+# Füge die Google Test Bibliothek zum Projekt hinzu.
+add_subdirectory(${GTEST_SRC_DIR} "gtest")
+
+# Füge die Unittests zum Project hinzu.
+add_subdirectory(test)
+
+
 
 
