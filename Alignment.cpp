@@ -16,14 +16,9 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     Matrix M(a.size()+1,b.size()+1);
 
-    // ## Print der Eingabensequenzen
-
-    //cout << C::BBLUE << "\n\n A: " << a;
-    //cout << "\n B: " << b << "\n";
-
     // ## Start Algorithm
 
-    //auto iter = a.begin();
+    auto iter = a.begin();
 
 
 
