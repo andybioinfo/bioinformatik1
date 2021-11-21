@@ -71,8 +71,8 @@ void console::Help(std::string message) {
     std::cout << C::BYELLOW <<  "     N E E D L E M A N   A L I G N M E N T \n" << C::BLUE;
     std::cout <<                "\n";
     std::cout << C::BRED <<     "        > " << message << "\n";
-    std::cout << C::BWHITE  <<  "\n Help:    " << C::BYELLOW << "$ \\.align [Sequence Type] [Gap-Cost] [Fasta-File]";
-    std::cout << C::BWHITE  <<  "\n Example: " << C::BGREEN  << "$ \\.align -DNA 2 ../fragments.fasta";
+    std::cout << C::BWHITE  <<  "\n Help:    " << C::BYELLOW << "$ ./align [Sequence Type] [Gap-Cost] [Fasta-File]";
+    std::cout << C::BWHITE  <<  "\n Example: " << C::BGREEN  << "$ ./align -DNA 1 ../fragments.fasta";
     std::cout <<                "\n";
     std::cout <<                "\n";
     std::cout << C::BWHITE  <<  " Options: " << C::BGREEN <<  "[Sequence Type] := " << C::BBLUE << " -DNA -RNA -PEPTIDE\n";
