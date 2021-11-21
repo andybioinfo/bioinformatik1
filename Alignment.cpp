@@ -1,6 +1,3 @@
-//
-// Created by manjaro on 21.11.21.
-//
 
 #include "Alignment.h"
 
@@ -14,15 +11,7 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     // ## Create Matrix
 
-    //cout << "\n Seq A :" << a.size() << " Seq B :" << b.size() ;
-
     Matrix M(a.size()+1,b.size()+1);
-    //cout << "\n MAX X :" << M.X_MAX() << " Y :" << M.Y_MAX() ;
-    //M.print();
-
-    // ## Print der Eingabensequenzen
-
-
 
     // ## Start Algorithm
 
@@ -53,38 +42,19 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
 
     // ## End Algorithm
-
-
-    /*
-    // Provisorisch Matrix mit Ergebnis füllen um Backtracer zu testen: (Matrix vom Übungsblatt)
-    M.setValue(0,0,0);M.setValue(1,0,1);M.setValue(2,0,2);M.setValue(3,0,3);M.setValue(4,0,4);M.setValue(5,0,5);M.setValue(6,0,6);
-    M.setValue(0,1,1);M.setValue(1,1,0);M.setValue(2,1,1);M.setValue(3,1,2);M.setValue(4,1,3);M.setValue(5,1,4);M.setValue(6,1,5);
-    M.setValue(0,2,2);M.setValue(1,2,1);M.setValue(2,2,0);M.setValue(3,2,1);M.setValue(4,2,2);M.setValue(5,2,3);M.setValue(6,2,4);
-    M.setValue(0,3,3);M.setValue(1,3,2);M.setValue(2,3,1);M.setValue(3,3,1);M.setValue(4,3,2);M.setValue(5,3,2);M.setValue(6,3,3);
-    M.setValue(0,4,4);M.setValue(1,4,3);M.setValue(2,4,2);M.setValue(3,4,1);M.setValue(4,4,2);M.setValue(5,4,3);M.setValue(6,4,3);
-    M.setValue(0,5,5);M.setValue(1,5,4);M.setValue(2,5,3);M.setValue(3,5,2);M.setValue(4,5,2);M.setValue(5,5,3);M.setValue(6,5,4);
-    M.setValue(0,6,6);M.setValue(1,6,5);M.setValue(2,6,4);M.setValue(3,6,3);M.setValue(4,6,3);M.setValue(5,6,3);M.setValue(6,6,3);
-    */
-
-    // Print Result-Matrix
+    
+    // ## Print Matrix:
 
     //M.print();
 
-    // Backtracing
+    // ## Backtracing
 
     int y = M.Y_MAX();
     int x = M.X_MAX();
     int score = M.getValue(x,y);
     Distance D;
-    //cout << C::BBLUE << "\n\n A: " << a;
-    //cout << "\n B: " << b << "\n";
-    //cout << C::BRED << "\n Backtracing {corner x:" << x << " y: "<< y <<" val: " << M.getValue(x,y) << " }  ";
-    //cout << "\n a[x]: " << Alpha::toChar(a[x-1]) <<  " b[y]: " <<Alpha::toChar(a[y-1]) << "\n";
-
 
     while(true) {
-
-        //M.printTriangle(x-1,y-1);
 
         bool poss_up = false;
         bool poss_diag = false;
@@ -101,7 +71,6 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
         // No direction possible? ( = LEFT_UP Corner)
         if (!(poss_diag && poss_left && poss_up)) {
-            //cout << "\n";
             break;}
 
         // Is at the current position the same char? => DIAG
@@ -109,7 +78,6 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
             res_B.push_back(b[y-1]);
             x--;
             y--;
-            //cout << C::BRED << " -> DIAG ";
             continue;
         }
 
@@ -118,7 +86,6 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
             res_A.push_back(a[x-1]);
             res_B.push_back(Alphabet::toCharacter('-'));
             x--;
-            //cout << C::BRED <<" -> LEFT ";
             continue;
 
 
@@ -141,25 +108,22 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
             res_B.push_back(b[y-1]);
             x--;
             y--;
-            //cout << C::BRED << " -> DIAG? ";
             continue;
 
         }
 
-        // DIAG ??
-
-        //cout << C::BRED << " [ERROR]\n";
         break;
 
     }
 
-    //cout << C::BBLUE << "\n" << C::RESET;
+
+    // ## 
 
     std::reverse(res_A.begin(),res_A.end());
     std::reverse(res_B.begin(),res_B.end());
 
     // Ist der Score, der returnt werden soll, der maximale Wert in der Matrix oder die rechte untere Ecke in der
-    //   das Backtracing beginnt
+    // das Backtracing beginnt?
 
      return score;
 
