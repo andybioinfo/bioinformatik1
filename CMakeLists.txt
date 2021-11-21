@@ -36,7 +36,7 @@ add_library(sequence SHARED
 	sequence/SequenceCombinator.h
 		Matrix.h
 		Distance.h
-		Alignment.h
+        Alignment.h
 		Alignment.cpp
 		
 	)

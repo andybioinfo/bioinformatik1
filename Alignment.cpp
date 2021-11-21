@@ -16,9 +16,13 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     Matrix M(a.size()+1,b.size()+1);
 
+    // ## Print der Eingabensequenzen
+
+
+
     // ## Start Algorithm
 
-    auto iter = a.begin();
+    //auto iter = a.begin();
 
 
 
@@ -49,14 +53,17 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     int x = M.ROW_MAX();
     int y = M.COL_MAX();
+    int score = M.getValue(x,y);
     Distance D;
-
+    //cout << C::BBLUE << "\n\n A: " << a;
+    //cout << "\n B: " << b << "\n";
     //cout << C::BRED << "\n Backtracing {corner x:" << x << " y: "<< y <<" val: " << M.getValue(x,y) << " }  ";
+    //cout << "\n a[x]: " << Alpha::toChar(a[x-1]) <<  " b[y]: " <<Alpha::toChar(a[y-1]) << "\n";
 
 
     while(true) {
 
-        //M.printTriangle(x,y);
+        //M.printTriangle(x-1,y-1);
 
         bool poss_up = false;
         bool poss_diag = false;
@@ -77,8 +84,8 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
             break;}
 
         // Is at the current position the same char? => DIAG
-        if (D(a[x],b[y])) {    res_A.push_back(a[x]);
-            res_B.push_back(b[y]);
+        if (!D(a[x-1],b[y-1])) {    res_A.push_back(a[x-1]);
+            res_B.push_back(b[y-1]);
             x--;
             y--;
             //cout << C::BRED << " -> DIAG ";
@@ -87,7 +94,7 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
         // Is LEFT the minimum?
         if(Distance::is_A_minValue(left_value,diag_value,up_value)) {
-            res_A.push_back(a[x]);
+            res_A.push_back(a[x-1]);
             res_B.push_back(Alphabet::toCharacter('-'));
             x--;
             //cout << C::BRED <<" -> LEFT ";
@@ -99,7 +106,7 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
         // Is UP the minimum?
         if(Distance::is_A_minValue(up_value,diag_value,left_value)) {
             res_A.push_back(Alphabet::toCharacter('-'));
-            res_B.push_back(b[y]);
+            res_B.push_back(b[y-1]);
             y--;
             //cout << C::BRED << " -> UP ";
             continue;
@@ -108,9 +115,9 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
         }
         // Is DIAG the minimum?
         if(Distance::is_A_minValue(diag_value,up_value,left_value)) {
-            res_A.push_back(a[x]);
+            res_A.push_back(a[x-1]);
 
-            res_B.push_back(b[y]);
+            res_B.push_back(b[y-1]);
             x--;
             y--;
             //cout << C::BRED << " -> DIAG? ";
@@ -130,9 +137,10 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
     std::reverse(res_A.begin(),res_A.end());
     std::reverse(res_B.begin(),res_B.end());
 
-    // Was für ein Integer soll align returnen?
+    // Ist der Score, der returnt werden soll, der maximale Wert in der Matrix oder die rechte untere Ecke in der
+    //   das Backtracing beginnt
 
-     return 99;
+     return score;
 
 }
 

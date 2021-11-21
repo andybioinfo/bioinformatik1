@@ -77,8 +77,8 @@ void Matrix::print() {
 }
 
 void Matrix::printTriangle(int col, int row) {
-    int up = getValue(col-1,row);
-    int left = getValue(col,row-1);
+    int up = getValue(col,row-1);
+    int left = getValue(col-1,row);
     int diag = getValue(col-1,row-1);
     cout << C::BBLUE << "[L: " << left << " D: " << diag << " U: " << up << " ]" << C::RESET;
 }
