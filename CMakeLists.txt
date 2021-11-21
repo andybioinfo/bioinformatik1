@@ -8,7 +8,7 @@ set(CXX_FLAGS
 )
 
 
-project(02_Graph)
+project(UB5_Sequence_Alignment)
 
 add_definitions(${CXX_FLAGS})
 
@@ -38,11 +38,12 @@ add_library(sequence SHARED
 		Distance.h
 		EditDistance.h
 		Alignment.h
+		Alignment.cpp
 		
 	)
 
 # Erstelle das Programm "Align".
-add_executable(align main.cpp)
+add_executable(align main.cpp )
 
 # Damit convert Ihren Code verwenden kann muss
 # die sequence Bibliothek zum Programm "gelinkt" werden.

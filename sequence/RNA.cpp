@@ -21,6 +21,8 @@ RNA::Characters RNA::toCharacter(char c)
 		case 'C':
 		case 'c':
 			return Characters::C;
+        case '-':
+            return Characters::GAP;
 		default:
 			throw InvalidCharacter(c);
 	}
@@ -37,6 +39,8 @@ char RNA::toChar(RNA::Characters c)
 			return 'G';
 		case Characters::C:
 			return 'C';
+        case Characters::GAP:
+            return '-';
 	}
 
 	assert("Unhandled character in RNA::toCharacter" && false);

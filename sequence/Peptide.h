@@ -32,7 +32,8 @@ class Peptide
 		Thr,
 		Trp,
 		Tyr,
-		Val
+		Val,
+        GAP
 	};
 
 	/**

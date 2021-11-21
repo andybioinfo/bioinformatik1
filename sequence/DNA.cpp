@@ -28,6 +28,8 @@ DNA::Characters DNA::toCharacter(char c)
 		case 'N':
 		case 'n':
 			return Characters::N;
+        case '-':
+            return Characters::GAP;
 		default:
 			throw InvalidCharacter(c);
 	}
@@ -54,6 +56,9 @@ char DNA::toChar(Characters c)
 			return 'c';
 		case Characters::N:
 			return 'N';
+        case Characters::GAP:
+            return '-';
+        default: return '_';
 	}
 
 	assert("Unhandled character in DNA::toChar" && false);

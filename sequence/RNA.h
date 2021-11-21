@@ -12,7 +12,7 @@ class RNA
 {
   public:
 	/// The characters available for RNA
-	enum class Characters { A, C, G, U };
+	enum class Characters { A, C, G, U , GAP };
 
 	/**
 	 * Converts a char to a Character. The conversion is case insensitive.

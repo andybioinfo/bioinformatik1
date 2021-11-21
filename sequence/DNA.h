@@ -21,7 +21,8 @@ class DNA
 		T, // Thymine exon
 		g, // Guanine intron
 		G, // Guanine exon
-		N  // Unknown. Valid characters are 'N' and 'n'.
+		N,  // Unknown. Valid characters are 'N' and 'n'.
+        GAP
 	};
 
 	/**

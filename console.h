@@ -5,14 +5,14 @@
 #include <string>
 #include <iostream>
 
-using String = typename std::string;
+
 
 /*
  * Constants to colorize the console text
  * */
 class C {
 public:
-    using String = typename std::string;
+
     static const char* RESET;
     static const char* BLUE;
     static const char* BBLUE;
@@ -40,35 +40,33 @@ const char* C::HBLUE   = "\033[0;94m";
  * */
 class console {
 public:
- static void Title(String filename, int cost);
- static void Help(String message);
- static void FastaMessage(int count, String type1, String type2, int seq1, int seq2);
+ static void Title(std::string filename, int cost);
+ static void Help(std::string message);
+ static void FastaMessage(int count, std::string type1, std::string type2, int seq1, int seq2);
 };
 
 
-void console::Title(String filename, int cost) {
+void console::Title(std::string filename, int cost) {
     std::cout << "\n";
     std::cout << C::BYELLOW <<  "     N E E D L E M A N   A L I G N M E N T \n" << C::BLUE;
     std::cout <<                "\n";
     std::cout <<                "\n";
     std::cout <<                "        > Gap Cost   : " << C::BWHITE << cost << C::BLUE <<" \n";
     std::cout <<                "        > Fasta-File : " << C::BWHITE <<  filename << C::BLUE <<" \n";
-    std::cout <<                "\n";
     std::cout << C::RESET;
 }
 
-void console::FastaMessage(int count, String type1, String type2, int seq1, int seq2) {
+void console::FastaMessage(int count, std::string type1, std::string type2, int seq1, int seq2) {
 
-    std::cout << C::BBLUE <<    "       => Sequences  : " << C::BWHITE << "found: " << count << C::BLUE << "\n";
-    std::cout <<                "                     \n";
-    std::cout <<                "       =>     Seq. A : " << C::BYELLOW << " ( length: "  << seq1 << " ) " << C::BWHITE << ": " << type1 << "\n" << C::BLUE;
-    std::cout <<                "       =>     Seq. B : " << C::BYELLOW << " ( length: "  << seq2 << " ) " << C::BWHITE << ": " << type2 << "\n" << C::BLUE;
+    std::cout << C::BBLUE <<    "        > Sequences  : " << C::BWHITE << "found: " << count << C::BBLUE << "\n";
+    std::cout <<                "        >     Seq. A : " << C::BYELLOW << " ( length: "  << seq1 << " ) " << C::BWHITE << ": " << type1 << "\n" << C::BBLUE;
+    std::cout <<                "        >     Seq. B : " << C::BYELLOW << " ( length: "  << seq2 << " ) " << C::BWHITE << ": " << type2 << "\n" << C::BBLUE;
     std::cout <<                "                     \n" << C::BRED;
     if (count < 2) {std::cout<< "       =>     Not Enough sequences: you need 2 for assign\n"; }
     std::cout <<                "\n"  << C::RESET;
 }
 
-void console::Help(String message) {
+void console::Help(std::string message) {
     std::cout << "\n";
     std::cout << C::BYELLOW <<  "     N E E D L E M A N   A L I G N M E N T \n" << C::BLUE;
     std::cout <<                "\n";

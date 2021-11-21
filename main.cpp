@@ -19,6 +19,7 @@ using namespace std;
 #include "sequence/Sequence.h"
 #include "Matrix.h"
 #include "Alignment.h"
+#include "Alignment.cpp"
 #include "Distance.h"
 #include "sequence/RNA.h"
 #include "sequence/Peptide.h"
@@ -106,7 +107,8 @@ int main(int argc, char* argv[]) {
         console::FastaMessage(sequence_count,"DNA","DNA",stack_DNA[0].size(),stack_DNA[1].size());
         if (sequence_count < 2) {return 0;}
         Alignment<Alphabet::DNA,Distance::EditDistance<Alphabet::DNA::Characters>> alinab(gap_cost);
-        cout << "\n align: " << alinab(stack_DNA[0],stack_DNA[1]);
+        cout << C::BGREEN << " Alignment Score: " << alinab(stack_DNA[0],stack_DNA[1])<< C::RESET;
+        cout << C::BBLUE << alinab << "\n" << C::RESET;
 
         }
 
@@ -122,7 +124,8 @@ int main(int argc, char* argv[]) {
         console::FastaMessage(sequence_count,"RNA","RNA",stack_RNA[0].size(),stack_RNA[1].size());
         if (sequence_count < 2) {return 0;}
         Alignment<Alphabet::RNA,Distance::EditDistance<Alphabet::RNA::Characters>> alinab(gap_cost);
-        cout << "\n align: " << alinab(stack_RNA[0],stack_RNA[1]);
+        cout << C::BGREEN << " Alignment Score: " << alinab(stack_RNA[0],stack_RNA[1]) << C::RESET;
+        cout << C::BBLUE << alinab << "\n" << C::RESET;
 
     }
 
@@ -138,7 +141,8 @@ int main(int argc, char* argv[]) {
         console::FastaMessage(sequence_count,"PEPTIDE","PEPTIDE",stack_PEPTIDE[0].size(),stack_PEPTIDE[1].size());
         if (sequence_count < 2) {return 0;}
         Alignment<Alphabet::Peptide,Distance::EditDistance<Alphabet::Peptide::Characters>> alinab(gap_cost);
-        cout << "\n align: " << alinab(stack_PEPTIDE[0],stack_PEPTIDE[1]);
+        cout << C::BGREEN << " Alignment Score: " << alinab(stack_PEPTIDE[0],stack_PEPTIDE[1]) << C::RESET;
+        cout << C::BBLUE << alinab << "\n" << C::RESET;
     }
 
 	return 1;

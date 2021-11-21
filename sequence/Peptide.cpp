@@ -69,6 +69,8 @@ Peptide::Characters Peptide::toCharacter(char c)
 		case 'V':
 		case 'v':
 			return Characters::Val;
+        case '-':
+            return Characters::GAP;
 		default:
 			throw InvalidCharacter(c);
 	}
@@ -117,6 +119,8 @@ char Peptide::toChar(Peptide::Characters c)
 			return 'Y';
 		case Characters::Val:
 			return 'V';
+        case Characters::GAP:
+            return '-';
 	}
 
 	assert("Unhandled character in Peptide::toCharacter" && false);

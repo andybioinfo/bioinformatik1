@@ -25,6 +25,9 @@
 
 #include <vector>
 #include "console.h"
+#include "sequence/Sequence.h"
+#include "Distance.h"
+using namespace std;
 
 class Matrix {
 public:
