@@ -106,7 +106,7 @@ std::istream& operator>>(std::istream& strm,
 		std::getline(strm, line);
 
 		for(auto c : line) {
-			reader.seq_.push_back(Alpha::toCharacter(c));
+			if (c != '\r') { reader.seq_.push_back(Alpha::toCharacter(c));}
 		}
 	}
 
