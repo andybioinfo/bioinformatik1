@@ -31,7 +31,7 @@ DNA::Characters DNA::toCharacter(char c)
         case '-':
             return Characters::GAP;
 		default:
-			throw InvalidCharacter(c);
+			return Characters::N;
 	}
 }
 
