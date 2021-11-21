@@ -14,7 +14,11 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     // ## Create Matrix
 
+    //cout << "\n Seq A :" << a.size() << " Seq B :" << b.size() ;
+
     Matrix M(a.size()+1,b.size()+1);
+    //cout << "\n MAX X :" << M.X_MAX() << " Y :" << M.Y_MAX() ;
+    //M.print();
 
     // ## Print der Eingabensequenzen
 
@@ -22,19 +26,36 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     // ## Start Algorithm
 
-    //auto iter = a.begin();
+
+    // Init Zero-rows/cols
+    for (int x = 0 ; x <= M.X_MAX() ; x++) {M.setValue(x,0,x);}
+    for (int y = 0 ; y <= M.Y_MAX() ; y++) {M.setValue(0,y,y);}
+
+    // LineByLine
+
+    for (int y = 1 ; y <= M.Y_MAX() ; y++) {
+
+        for (int x = 1 ; x <= M.X_MAX() ; x++) {
+            Distance D;
+            int diag_value = M.getValue(x-1,y-1) + D(a[x-1],b[y-1]);
+            int up_value   = M.getValue(x,y-1)      + GAP_COST;
+            int left_value = M.getValue(x-1,y)      + GAP_COST;
+
+            if(Distance::is_A_minValue(diag_value,left_value,up_value)) { M.setValue(x,y,diag_value);continue;}
+            if(Distance::is_A_minValue(left_value,diag_value,up_value)) { M.setValue(x,y,left_value);continue;}
+            if(Distance::is_A_minValue(up_value,left_value,diag_value)) { M.setValue(x,y,up_value);continue;}
+
+        }
 
 
 
-
-
-
-
-
+    }
 
 
     // ## End Algorithm
 
+
+    /*
     // Provisorisch Matrix mit Ergebnis füllen um Backtracer zu testen: (Matrix vom Übungsblatt)
     M.setValue(0,0,0);M.setValue(1,0,1);M.setValue(2,0,2);M.setValue(3,0,3);M.setValue(4,0,4);M.setValue(5,0,5);M.setValue(6,0,6);
     M.setValue(0,1,1);M.setValue(1,1,0);M.setValue(2,1,1);M.setValue(3,1,2);M.setValue(4,1,3);M.setValue(5,1,4);M.setValue(6,1,5);
@@ -43,7 +64,7 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
     M.setValue(0,4,4);M.setValue(1,4,3);M.setValue(2,4,2);M.setValue(3,4,1);M.setValue(4,4,2);M.setValue(5,4,3);M.setValue(6,4,3);
     M.setValue(0,5,5);M.setValue(1,5,4);M.setValue(2,5,3);M.setValue(3,5,2);M.setValue(4,5,2);M.setValue(5,5,3);M.setValue(6,5,4);
     M.setValue(0,6,6);M.setValue(1,6,5);M.setValue(2,6,4);M.setValue(3,6,3);M.setValue(4,6,3);M.setValue(5,6,3);M.setValue(6,6,3);
-
+    */
 
     // Print Result-Matrix
 
@@ -51,8 +72,8 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     // Backtracing
 
-    int x = M.ROW_MAX();
-    int y = M.COL_MAX();
+    int y = M.Y_MAX();
+    int x = M.X_MAX();
     int score = M.getValue(x,y);
     Distance D;
     //cout << C::BBLUE << "\n\n A: " << a;

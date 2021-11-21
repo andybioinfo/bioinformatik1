@@ -51,8 +51,8 @@ int Alignment<Alpha,Distance>::get_GAP_COST() {return GAP_COST;}
 template <typename Alpha, typename Distance>
 std::ostream& operator<<(std::ostream &out, const Alignment<Alpha, Distance> alignment) {
     /*
-     * This Operator . Line Break after 45 Characters for both
-     * lines
+     * Operator out: Aligment with Line Break after 45 Characters for both
+     * lines. Example:
      *
      * A | TGGAT TGGAT NNNAT CCGNN NNNAT CCGNN NNNAT CCGNN NNNAT
      * B | TGGAT TGGAT NNNAT CCGNN NNNAT NNNAT TGGAT NNNAT CCGNN
