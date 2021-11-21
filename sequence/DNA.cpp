@@ -9,7 +9,7 @@
 namespace Alphabet
 {
 DNA::Characters DNA::toCharacter(char c)
-{ std::cout << "read { " << c << " }";
+{ std::cout << "read { " << (int)c << " }";
 	switch (c) {
 		case 'A':
 			return Characters::A;
