@@ -28,9 +28,20 @@
 using namespace Alphabet;
 
 
-TEST(ALIGN_MATRIX, init)
+TEST(ALIGN_MATRIX, CreateMatrix_test)
 {
-	std::cout << "> GTAATC";
+	std::cout << "";
     
 }
 
+TEST(ALIGN_MATRIX, GetSetValue_test)
+{
+	std::cout << "";
+    
+}
+
+TEST(ALIGN_MATRIX, YX_MAX_test)
+{
+	std::cout << "";
+    
+}
