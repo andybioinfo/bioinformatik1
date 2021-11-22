@@ -47,4 +47,33 @@ TEST(ALIGN, RNA_Align_Test)
 
 }
 
+TEST(ALIGN, Output_Operator_Test)
+{
 
+
+}
+
+TEST(ALIGN, SetGetGapCost_Test)
+{
+
+
+}
+
+TEST(ALIGN, ScoreReturn_Test)
+{
+
+
+}
+
+
+TEST(DISTANCE, Distance_Operator_Test)
+{
+
+
+}
+
+TEST(DISTANCE, Minimum_Test)
+{
+
+
+}
