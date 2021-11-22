@@ -7,6 +7,16 @@ set(CXX_FLAGS
 	-Wall                    # Aktiviere alle Warnungen
 )
 
+# Diese Datei ist so vorkonfiguriert, dass sie auf den Bioinformatik
+# CIPs problemlos funktioniert. Sollten Sie Ihren Code auf einem anderen
+# Rechner testen wollen müssen sie einen aktuellen Compiler installiert
+# haben (clang >= 3.5 || gcc >= 4.9) und cmake folgendermaßen aufrufen
+# cmake .. -DUSE_CIPS=OFF -DGTEST_SRC_DIR=/path/to/googletest
+option(USE_CIPS "Are we compiling on the Bioinformatics CIPs?" ON)
+
+if(USE_CIPS)
+	set(GTEST_SRC_DIR /usr/src/googletest/googletest/)
+endif()
 
 project(UB5_Sequence_Alignment)
 
@@ -47,6 +57,16 @@ add_executable(align main.cpp )
 # Damit convert Ihren Code verwenden kann muss
 # die sequence Bibliothek zum Programm "gelinkt" werden.
 target_link_libraries(align sequence ${CIP_STD_LIBS})
+
+# Aktiviere die Unittestfunktionalität von CMake.
+enable_testing()
+
+# Füge die Google Test Bibliothek zum Projekt hinzu.
+add_subdirectory(${GTEST_SRC_DIR} "gtest")
+
+# Füge die Unittests zum Project hinzu.
+add_subdirectory(test)
+
 
 
 
