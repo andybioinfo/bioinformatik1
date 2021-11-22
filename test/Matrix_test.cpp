@@ -30,7 +30,12 @@ using namespace Alphabet;
 
 TEST(ALIGN_MATRIX, CreateMatrix_test)
 {
-	std::cout << "";
+	auto ma = Matrix(3, 3);
+	for(int i = 0; i<3; i++){
+		for(int j = 0; j<3; j++){
+		EXPECT_EQ(0, ma.getValue(i, j));
+		}
+	}
     
 }
 
