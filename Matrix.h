@@ -47,8 +47,8 @@ protected:
 
 };
 
-int Matrix::Y_MAX() { return values_.at(0).size()-1; }
-int Matrix::X_MAX() { return values_.size()-1; }
+int Matrix::X_MAX() { return values_.at(0).size()-1; }
+int Matrix::Y_MAX() { return values_.size()-1; }
 
 Matrix::Matrix(int y, int x) {
 
@@ -57,9 +57,15 @@ Matrix::Matrix(int y, int x) {
     values_ = all;
 }
 
-int Matrix::getValue(int y, int x) {return values_.at(y).at(x);}
+int Matrix::getValue(int y, int x) {
+    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of bounds" );}
+    return values_.at(y).at(x);
+    }
 
-void Matrix::setValue(int y, int x, int value) {values_.at(y).at(x) = value;}
+void Matrix::setValue(int y, int x, int value) {
+    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of bounds" );}
+    values_.at(y).at(x) = value;
+    }
 
 void Matrix::print() {
     cout << C::BGREEN << "\n MATRIX [ " << C::BBLUE << "X_cols: " << (X_MAX()+1) << " Y_rows: " << (Y_MAX()+1) << C::BGREEN << " ]";
