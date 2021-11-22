@@ -20,9 +20,8 @@
 using namespace Alphabet;
 
 
-TEST(ALIGN, init)
+TEST(ALIGN, GAB_COST)
 {
-	std::cout << "> GTAATC";
     
 }
 
