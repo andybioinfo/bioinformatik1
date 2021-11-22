@@ -36,14 +36,14 @@ TEST(ALIGN, DNA_Align_Test)
 
 TEST(ALIGN, PEPTIDE_Align_Test)
 {
-    Sequence<DNA> A = Sequence<DNA>::fromString("IWANTREALLYNICETASTYSVSHI");
-    Sequence<DNA> B = Sequence<DNA>::fromString("WALEAWANICESTSVSHITYHIHIIIHH");
+    Sequence<Peptide> A = Sequence<Peptide>::fromString("IWANTREALLYNICETASTYSVSHI");
+    Sequence<Peptide> B = Sequence<Peptide>::fromString("WALEAWANICESTSVSHITYHIHIIIHH");
 }
 
 TEST(ALIGN, RNA_Align_Test)
 {
-    Sequence<DNA> A = Sequence<DNA>::fromString("UAUUAGGC");
-    Sequence<DNA> B = Sequence<DNA>::fromString("UAAUUGCC");
+    Sequence<RNA> A = Sequence<RNA>::fromString("UAUUAGGC");
+    Sequence<RNA> B = Sequence<RNA>::fromString("UAAUUGCC");
 
 }
 
