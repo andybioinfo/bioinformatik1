@@ -46,6 +46,9 @@ public:
 };
 
 
+/*
+* send the title to std::cout
+* */
 void console::Title(std::string filename, int cost) {
     std::cout << "\n";
     std::cout << C::BYELLOW <<  "     N E E D L E M A N   A L I G N M E N T \n" << C::BLUE;
@@ -56,6 +59,10 @@ void console::Title(std::string filename, int cost) {
     std::cout << C::RESET;
 }
 
+
+/*
+* send the inputs to std::cout
+* */
 void console::FastaMessage(int count, std::string type1, std::string type2, int seq1, int seq2) {
 
     std::cout << C::BBLUE <<    "        > Sequences  : " << C::BWHITE << "found: " << count << C::BBLUE << "\n";
@@ -66,6 +73,11 @@ void console::FastaMessage(int count, std::string type1, std::string type2, int 
     std::cout <<                "\n"  << C::RESET;
 }
 
+
+/*
+ *
+* send the help-message to std::cout
+* */
 void console::Help(std::string message) {
     std::cout << "\n";
     std::cout << C::BYELLOW <<  "     N E E D L E M A N   A L I G N M E N T \n" << C::BLUE;
