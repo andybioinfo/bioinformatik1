@@ -36,18 +36,7 @@ using DNAs =  Sequence<Alphabet::DNA>;
 using PEPTIDEs =  Sequence<Alphabet::Peptide>;
 using RNAs =  Sequence<Alphabet::RNA>;
 
-
-
-
-
-
-
 enum SeqType { ERROR , DNA, RNA, PEPTIDE };
-
-
-
-
-
 
 
 int main(int argc, char* argv[]) { 

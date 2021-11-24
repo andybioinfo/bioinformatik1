@@ -5,7 +5,6 @@
  
   ####  M A T R I X - C L A S S
 
-
  Example:
 
  Matrix (4,4) creates a 4 column x 4 rows matrix
@@ -18,27 +17,28 @@
  c 0 0 0 0
  d 0 0 0 0
 
-
- 
-
   */
 
 #include <vector>
 #include "console.h"
 #include "sequence/Sequence.h"
 #include "Distance.h"
+
 using namespace std;
 
 class Matrix {
 public:
 
     Matrix(int y, int x);
+
     int getValue(int y, int x);
+
     void setValue(int y, int x, int value);
+
     void print();
-    void printTriangle(int col, int row);
 
     int Y_MAX();
+
     int X_MAX();
 
 protected:
@@ -47,26 +47,62 @@ protected:
 
 };
 
-int Matrix::X_MAX() { return values_.at(0).size()-1; }
-int Matrix::Y_MAX() { return values_.size()-1; }
 
+/*
+ * Max value x matrix-object
+ * @return the maximum x value of the columns
+ * */
+int Matrix::X_MAX() {
+        return values_.at(0).size()-1;
+    }
+
+
+/*
+ * Max value y matrix-object
+ * @return the maximum y value of the rows
+ * */
+int Matrix::Y_MAX() {
+        return values_.size()-1;
+    }
+
+
+/*
+ * Constructor for build the matrix-object
+ * @y the count of the rows
+ * @x the count of the columns
+ * */
 Matrix::Matrix(int y, int x) {
+        std::vector<int> _rows(x,0);
+        std::vector<std::vector<int>> all(y,_rows);
+        values_ = all;
+    }
 
-    std::vector<int> _rows(x,0);
-    std::vector<std::vector<int>> all(y,_rows);
-    values_ = all;
-}
 
+/*
+ * Returns a value from the matrix-object
+ * @return value at (X,Y)
+ * */
 int Matrix::getValue(int y, int x) {
     if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of bounds" );}
     return values_.at(y).at(x);
     }
 
+
+/*
+* Set a new value at the matrix-object
+ * @y the position at the rows
+ * @x the position at the columns
+* */
 void Matrix::setValue(int y, int x, int value) {
     if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of bounds" );}
     values_.at(y).at(x) = value;
     }
 
+
+/*
+ * Prints the matrix to std::cout for see the dimensions and the
+ * values
+* */
 void Matrix::print() {
     cout << C::BGREEN << "\n MATRIX [ " << C::BBLUE << "X_cols: " << (X_MAX()+1) << " Y_rows: " << (Y_MAX()+1) << C::BGREEN << " ]";
     cout << "\n x " << C::BYELLOW;
@@ -85,11 +121,5 @@ void Matrix::print() {
 
 }
 
-void Matrix::printTriangle(int col, int row) {
-    int up = getValue(col,row-1);
-    int left = getValue(col-1,row);
-    int diag = getValue(col-1,row-1);
-    cout << C::BBLUE << "[L: " << left << " D: " << diag << " U: " << up << " ]" << C::RESET;
-}
 
 #endif //MATRIX_H

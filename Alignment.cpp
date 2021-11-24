@@ -1,10 +1,12 @@
 
 #include "Alignment.h"
 
+
 /*
- * Align-Algorithm with 2 Sequences
+ * Align-Algorithm with 2 Sequences,
  * @a First Sequence
  * @b Second Sequence
+ * @return the calculated score
  * */
 template <typename Alpha, typename Distance>
 int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
@@ -15,8 +17,8 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     // ## Start Algorithm
 
-
     // Init Zero-rows/cols
+
     for (int x = 0 ; x <= M.X_MAX() ; x++) {M.setValue(x,0,x);}
     for (int y = 0 ; y <= M.Y_MAX() ; y++) {M.setValue(0,y,y);}
 
@@ -36,17 +38,11 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
         }
 
-
-
     }
 
 
     // ## End Algorithm
     
-    // ## Print Matrix:
-
-    //M.print();
-
     // ## Backtracing
 
     int y = M.Y_MAX();
@@ -117,13 +113,12 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
     }
 
 
-    // ## 
+    // ## reverse the backtraced sequence
 
     std::reverse(res_A.begin(),res_A.end());
     std::reverse(res_B.begin(),res_B.end());
 
-    // Ist der Score, der returnt werden soll, der maximale Wert in der Matrix oder die rechte untere Ecke in der
-    // das Backtracing beginnt?
+    // finish
 
      return score;
 

@@ -8,33 +8,46 @@
 using namespace std;
 
 /*
- * ???
+ * Class for calculate the Alignment between 2 Sequences with the
+ * Needleman Algorithm
  * */
 template <typename Alpha, typename Distance>
 class Alignment {
 
 public:
-using Alphabet = Alpha;
-using Characters = typename Alphabet::Characters;
-Alignment(int gap_costs);
-typedef Sequence<Alphabet> Seq;
-int operator()(const Seq&a, const Seq&b);
-    template <typename A, typename D>
-friend std::ostream& operator<<(std::ostream &out, const Alignment<A, D> alignment) ;
 
-int get_GAP_COST();
+    using Alphabet = Alpha;
+
+    using Characters = typename Alphabet::Characters;
+
+    Alignment(int gap_costs);
+
+    typedef Sequence<Alphabet> Seq;
+
+    int operator()(const Seq&a, const Seq&b);
+
+    template <typename A, typename D>
+    friend std::ostream& operator<<(std::ostream &out, const Alignment<A, D> alignment) ;
+
+    int get_GAP_COST();
+
 private:
-int GAP_COST;
-Seq res_A;
-Seq res_B;
+
+    int GAP_COST;
+    Seq res_A;
+    Seq res_B;
+
 };
 
 /*
+ *
  * Alignment-Object
  * @gap_costs Set the Gap-Costs for this Alignment-Object
  * */
 template <typename Alpha, typename Distance>
-Alignment<Alpha,Distance>::Alignment(int gap_costs) {GAP_COST = gap_costs;}
+    Alignment<Alpha,Distance>::Alignment(int gap_costs) {
+        GAP_COST = gap_costs;
+    }
 
 
 /*
@@ -42,25 +55,27 @@ Alignment<Alpha,Distance>::Alignment(int gap_costs) {GAP_COST = gap_costs;}
  * @return the Gap-Costs of this alignment-instance
  * */
 template <typename Alpha, typename Distance>
-int Alignment<Alpha,Distance>::get_GAP_COST() {return GAP_COST;}
+    int Alignment<Alpha,Distance>::get_GAP_COST() {
+        return GAP_COST;
+    }
 
 /*
- * Operator to s
- * @return the Gap-Costs of this alignment-instance
+ * Operator for outstream
+ * @return the aligned sequences together
  * */
 template <typename Alpha, typename Distance>
-std::ostream& operator<<(std::ostream &out, const Alignment<Alpha, Distance> alignment) {
-    /*
-     * Operator out: Aligment with Line Break after 45 Characters for both
-     * lines. Example:
-     *
-     * A | TGGAT TGGAT NNNAT CCGNN NNNAT CCGNN NNNAT CCGNN NNNAT
-     * B | TGGAT TGGAT NNNAT CCGNN NNNAT NNNAT TGGAT NNNAT CCGNN
-     *
-     * A | CCGNN TG
-     * B | CCGCC NN
-     *
-     * */
+    std::ostream& operator<<(std::ostream &out, const Alignment<Alpha, Distance> alignment) {
+        /*
+         * Operator out: Aligment with Line Break after 45 Characters for both
+         * lines. Example:
+         *
+         * A | TGGAT TGGAT NNNAT CCGNN NNNAT CCGNN NNNAT CCGNN NNNAT
+         * B | TGGAT TGGAT NNNAT CCGNN NNNAT NNNAT TGGAT NNNAT CCGNN
+         *
+         * A | CCGNN TG
+         * B | CCGCC NN
+         *
+         * */
 
      auto iter_A = alignment.res_A.begin();
      auto iter_B = alignment.res_B.begin();
