@@ -14,14 +14,14 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
     // ## Create Matrix
 
     Matrix M(a.size()+1,b.size()+1);
-
+    M.print();
     // ## Start Algorithm
 
     // Init Zero-rows/cols
 
     for (int x = 0 ; x <= M.X_MAX() ; x++) {M.setValue(x,0,x);}
     for (int y = 0 ; y <= M.Y_MAX() ; y++) {M.setValue(0,y,y);}
-
+    M.print();
     // LineByLine
 
     for (int y = 1 ; y <= M.Y_MAX() ; y++) {

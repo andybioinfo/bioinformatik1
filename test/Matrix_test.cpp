@@ -42,8 +42,6 @@ TEST(ALIGN_MATRIX, CreateMatrix_test)
 TEST(ALIGN_MATRIX, GetSetValue_test)
 {
 	auto ma = Matrix(5, 7);
-	EXPECT_EQ(6, ma.X_MAX());
-	EXPECT_EQ(4, ma.Y_MAX());
 	ma.setValue(3, 2, 5);
 	EXPECT_EQ(5, ma.getValue(3, 2));
 	EXPECT_THROW(ma.getValue(10, 4),std::invalid_argument);

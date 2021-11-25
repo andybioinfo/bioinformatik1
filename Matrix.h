@@ -52,7 +52,7 @@ protected:
  * Max value x matrix-object
  * @return the maximum x value of the columns
  * */
-int Matrix::X_MAX() {
+int Matrix::Y_MAX() {
         return values_.at(0).size()-1;
     }
 
@@ -61,7 +61,7 @@ int Matrix::X_MAX() {
  * Max value y matrix-object
  * @return the maximum y value of the rows
  * */
-int Matrix::Y_MAX() {
+int Matrix::X_MAX() {
         return values_.size()-1;
     }
 
@@ -94,7 +94,8 @@ int Matrix::getValue(int y, int x) {
  * @x the position at the columns
 * */
 void Matrix::setValue(int y, int x, int value) {
-    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of bounds" );}
+
+    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of " );}
     values_.at(y).at(x) = value;
     }
 
