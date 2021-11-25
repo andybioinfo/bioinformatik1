@@ -52,7 +52,7 @@ protected:
  * Max value x matrix-object
  * @return the maximum x value of the columns
  * */
-int Matrix::Y_MAX() {
+int Matrix::X_MAX() {
         return values_.at(0).size()-1;
     }
 
@@ -61,7 +61,7 @@ int Matrix::Y_MAX() {
  * Max value y matrix-object
  * @return the maximum y value of the rows
  * */
-int Matrix::X_MAX() {
+int Matrix::Y_MAX() {
         return values_.size()-1;
     }
 
