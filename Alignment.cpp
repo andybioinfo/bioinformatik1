@@ -13,7 +13,7 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     // ## Create Matrix
 
-    Matrix M(a.size()+1,b.size()+1);
+    Matrix M(b.size()+1,a.size()+1);
     // ## Start Algorithm
 
     // Init Zero-rows/cols
