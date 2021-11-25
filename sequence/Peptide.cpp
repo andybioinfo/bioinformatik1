@@ -3,6 +3,7 @@
 #include "InvalidCharacter.h"
 
 #include <cassert>
+#include <iostream>
 
 namespace Alphabet
 {
@@ -121,6 +122,7 @@ char Peptide::toChar(Peptide::Characters c)
 			return 'V';
         case Characters::GAP:
             return '-';
+        default : return '-';
 	}
 
 	assert("Unhandled character in Peptide::toCharacter" && false);

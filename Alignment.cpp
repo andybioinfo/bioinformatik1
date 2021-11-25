@@ -12,28 +12,28 @@ template <typename Alpha, typename Distance>
 int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     // ## Create Matrix
-
     Matrix M(b.size()+1,a.size()+1);
+
     // ## Start Algorithm
 
     // Init Zero-rows/cols
 
-    for (int x = 0 ; x <= M.X_MAX() ; x++) {M.setValue(x,0,x);}
-    for (int y = 0 ; y <= M.Y_MAX() ; y++) {M.setValue(0,y,y);}
-    
+    for (int x = 0 ; x <= M.X_MAX() ; x++) {M.setValue(0,x,x);}
+    for (int y = 0 ; y <= M.Y_MAX() ; y++) {M.setValue(y,0,y);}
+
     // LineByLine
 
     for (int y = 1 ; y <= M.Y_MAX() ; y++) {
 
         for (int x = 1 ; x <= M.X_MAX() ; x++) {
             Distance D;
-            int diag_value = M.getValue(x-1,y-1) + D(a[x-1],b[y-1]);
-            int up_value   = M.getValue(x,y-1)      + GAP_COST;
-            int left_value = M.getValue(x-1,y)      + GAP_COST;
+            int diag_value = M.getValue(y-1,x-1) + D(a[x-1],b[y-1]);
+            int up_value   = M.getValue(y,x-1)      + GAP_COST;
+            int left_value = M.getValue(y-1,x)      + GAP_COST;
 
-            if(Distance::is_A_minValue(diag_value,left_value,up_value)) { M.setValue(x,y,diag_value);continue;}
-            if(Distance::is_A_minValue(left_value,diag_value,up_value)) { M.setValue(x,y,left_value);continue;}
-            if(Distance::is_A_minValue(up_value,left_value,diag_value)) { M.setValue(x,y,up_value);continue;}
+            if(Distance::is_A_minValue(diag_value,left_value,up_value)) { M.setValue(y,x,diag_value);continue;}
+            if(Distance::is_A_minValue(left_value,diag_value,up_value)) { M.setValue(y,x,left_value);continue;}
+            if(Distance::is_A_minValue(up_value,left_value,diag_value)) { M.setValue(y,x,up_value);continue;}
 
         }
 
@@ -46,7 +46,7 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
 
     int y = M.Y_MAX();
     int x = M.X_MAX();
-    int score = M.getValue(x,y);
+    int score = M.getValue(y,x);
     Distance D;
 
     while(true) {
@@ -60,9 +60,9 @@ int Alignment<Alpha,Distance>::operator()(const Seq&a, const Seq&b) {
         int left_value = INT32_MAX;
 
         // Load the possible directions and Values from DIAG, LEFT, UP
-        if (x-1 >= 0 && y-1 >= 0) {diag_value = M.getValue(x-1,y-1);poss_diag = true;}
-        if (y-1 >= 0) {up_value = M.getValue(x,y-1);poss_up = true;}
-        if (x-1 >= 0) {left_value = M.getValue(x-1,y);poss_left = true;}
+        if (x-1 >= 0 && y-1 >= 0) {diag_value = M.getValue(y-1,x-1);poss_diag = true;}
+        if (y-1 >= 0) {up_value = M.getValue(y-1,x);poss_up = true;}
+        if (x-1 >= 0) {left_value = M.getValue(y,x-1);poss_left = true;}
 
         // No direction possible? ( = LEFT_UP Corner)
         if (!(poss_diag && poss_left && poss_up)) {

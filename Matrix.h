@@ -83,7 +83,7 @@ Matrix::Matrix(int y, int x) {
  * @return value at (X,Y)
  * */
 int Matrix::getValue(int y, int x) {
-    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of bounds" );}
+    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "m out of bounds" );}
     return values_.at(y).at(x);
     }
 
@@ -94,8 +94,7 @@ int Matrix::getValue(int y, int x) {
  * @x the position at the columns
 * */
 void Matrix::setValue(int y, int x, int value) {
-
-    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of bounds setter" );}
+    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "m out of bounds" );}
     values_.at(y).at(x) = value;
     }
 

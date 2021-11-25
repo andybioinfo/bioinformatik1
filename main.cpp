@@ -41,6 +41,7 @@ enum SeqType { ERROR , DNA, RNA, PEPTIDE };
 
 int main(int argc, char* argv[]) { 
 
+
       // correct arg-count?
         if (argc < 4) { console::Help("ERROR : Not enough arguments!");return 0; }
         if (argc > 4) { console::Help("ERROR : Too many arguments!");return 0; }
