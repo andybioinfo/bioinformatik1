@@ -95,7 +95,7 @@ int Matrix::getValue(int y, int x) {
 * */
 void Matrix::setValue(int y, int x, int value) {
 
-    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of " );}
+    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "out of bounds setter" );}
     values_.at(y).at(x) = value;
     }
 

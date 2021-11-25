@@ -39,8 +39,9 @@ TEST(ALIGN, DNA_Align_Test)
 
 TEST(ALIGN, PEPTIDE_Align_Test)
 {
-    Sequence<Peptide> A = Sequence<Peptide>::fromString("IWANTREALLYNICETASTYSVSHI");
+    Sequence<Peptide> A = Sequence<Peptide>::fromString("IWANT");
     Sequence<Peptide> B = Sequence<Peptide>::fromString("W");
+    //REALLYNICETASTYSVSHI
      //ALEAWANICESTSVSHITYHIHIIIHH
     Alignment<Alphabet::Peptide,Distance::EditDistance<Alphabet::Peptide::Characters>> alinab(2);
     EXPECT_EQ(3, alinab(A,B));
