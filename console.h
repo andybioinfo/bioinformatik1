@@ -45,7 +45,7 @@ public:
  static void Title(std::string filename,std::string root,std::string target);
  static void Help(std::string message);
  static void Matrix(int nc,int ec,std::string message,bool okay);
- static void Result(int value,std::string root,std::string target,std::string path);
+ static void Result(int weight_value,int length,std::string root,std::string target,std::string path_output) ;
 };
 
 
@@ -93,12 +93,11 @@ void console::Matrix(int nc,int ec,std::string message,bool okay) {
 * */
 void console::Result(int weight_value,int length,std::string root,std::string target,std::string path_output) {
 
-    std::cout << C::BYELLOW  <<  " Shortest path from  " << C::BGREEN << "{" <<  root << "} --> {" << target << "}" << C::BLUE <<" \n";
-    std::cout << C::BYELLOW  <<  "        > Value    : " << C::BGREEN <<  value << "      " << C::BLUE <<" \n";
+    std::cout << C::BYELLOW  <<  " Shortest path from      " << C::BGREEN << "{" <<  root  << "} --> {" << target  << "}" << C::BLUE <<" \n";
+    std::cout << C::BYELLOW  <<  "        > path-weight  : " << C::BGREEN <<  weight_value << "      "  << C::BLUE <<" \n";
+    std::cout << C::BYELLOW  <<  "        > path-length  : " << C::BGREEN <<  length       << "      "  << C::BLUE <<" \n";
     std::cout << C::BYELLOW  <<  "\n";
-
-    std::cout <<                "\n";
-    std::cout << C::BBLUE <<    path_output;
+    std::cout << C::BBLUE    <<  path_output;
     std::cout << C::RESET;
 }
 

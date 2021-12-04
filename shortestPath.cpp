@@ -8,14 +8,16 @@
 #include <stdlib.h>
 
 #include "/opt/gurobi912/linux64/include/gurobi_c++.h"
+#include "Graph.h"
+#include "console.h"
+#include "Gurobi.h"
 
 using namespace std;
 
 int main(int   argc, char *argv[])
 {
-  
-  
-    console::Title("filefsd","A","B");
+
+    console::Title("file","A","B");
 
     std::ifstream input("../matrix.txt");
     if (!input) { console::Help("file error");
@@ -23,16 +25,16 @@ int main(int   argc, char *argv[])
     }
     input.close();
 
+    // ## Create Graph
+
     Graph G = Graph::createFromAdjacencyMatrixFile("../matrix.txt");
-
-    G.addToPath(&G.getNodes().at(0));
-    G.addToPath(&G.getNodes().at(1));
-    G.addToPath(&G.getNodes().at(2));
-    G.addToPath(&G.getNodes().at(3));
-    G.addToPath(&G.getNodes().at(2));
-    G.addToPath(&G.getNodes().at(0));
-
     console::Matrix(G.getNodes().size(),G.getEdges().size(),"OK",true);
+
+    // ## Start Algorithm
+
+    Gurobi::startAlgorithm(G,"A","B");
+
+    // ## Return result
 
     console::Result(G.getPathWeight(),G.getPath().size(),"A","B",G.pathToString());
   return 0;
