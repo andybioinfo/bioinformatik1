@@ -25,4 +25,5 @@ add_library(test_driver main_test.cpp)
 # Zeile für neue Tests einfach kopieren und anpassen.
 add_gtest(Align_test LIBRARIES sequence)
 add_gtest(Matrix_test LIBRARIES sequence)
+add_gtest(Gurobi_test LIBRARIES sequence)
 
