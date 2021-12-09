@@ -62,7 +62,8 @@ class Graph {
         void addToPath(Node* _node);
         std::vector<Edge> getEdges();
         std::string pathToString();
-        int getPathWeight();
+        int stringToID(std::string nodestr);
+
 
     private:
         std::vector<Node> _nodes;
@@ -116,11 +117,6 @@ Graph Graph::createFromAdjacencyMatrixFile(std::string filename) {
 
         }
 
-    // test: print all nodes:
-
-       // cout << "nodecount: " << G._nodes.size();
-        //for (auto n : G._nodes) {cout << "\n" << n;}cout << "\n";
-
     // ## read the remain matrix
 
         int row = 0;
@@ -159,11 +155,6 @@ Graph Graph::createFromAdjacencyMatrixFile(std::string filename) {
                                 G._edges.push_back(e); }
         }
 
-    // ##
-
-        //cout << "\nedgecount: " << G._edges.size();
-        //for (auto e : G._edges) {cout << "\n" << e;}cout << "\n";
-
         input.close();
 
     return G;
@@ -198,6 +189,24 @@ std::vector<Edge> Graph::getEdges() {
 std::vector<Node*> Graph::getPath() {
     return _path;
 }
+
+
+/*
+ * returns the node_id to a given string
+ * @return node_id
+ *
+ * */
+int Graph::stringToID(std::string nodestr) {
+
+    for (auto n : _nodes) {
+        if (n.label == nodestr) {return n.id;}
+
+    }
+    return -1;
+}
+
+
+
 
 
 
@@ -242,26 +251,5 @@ std::string Graph::pathToString() {
 }
 
 
-/*
- * Calculates the weight of the complete path
- *
- * @return the path-weight
- *
- * */
-int Graph::getPathWeight() {
-    
-    int res = 0;
-    if (_path.size() < 2) {return 0;}
-
-    for (auto n : _path) {
-
-   // TODO
-
-
-    }
-
-
-    return res;
-}
 
 #endif //SHORT_GRAPH_H
