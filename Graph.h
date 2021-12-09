@@ -63,6 +63,7 @@ class Graph {
         std::vector<Edge> getEdges();
         std::string pathToString();
         int stringToID(std::string nodestr);
+        int getEdgeWeight(int start, int target);
 
 
     private:
@@ -206,7 +207,12 @@ int Graph::stringToID(std::string nodestr) {
 }
 
 
-
+int Graph::getEdgeWeight(int start, int target){
+    for (auto e : _edges) {
+        if (e.source == start && e.target == target){return e.weight;}
+    }
+    return -1;
+}
 
 
 

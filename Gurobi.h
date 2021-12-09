@@ -58,16 +58,9 @@ int Gurobi::startAlgorithm(Graph &G, std::string start, std::string target) {
 
     // variablen
     auto n = (int) G.getNodes().size();
-    int s = 0;
-    int t = 0;
-    for (int i = 0; i < n; i++) {
-      if(G.getNodes().at(i) == start){
-        s = i;
-      }
-      if(G.getNodes().at(i)->label == target){
-        t = i;
-      }
-    }
+    int s = G.stringToID(start);
+    int t = G.stringToID(target);
+    
 
     GRBVar edges[n][n];
 
@@ -81,8 +74,8 @@ int Gurobi::startAlgorithm(Graph &G, std::string start, std::string target) {
     GRBLinExpr obj = 0.0;
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
-
-        obj += w*edges[i][j];
+        auto weight = G.getEdgeWeight(i,j);
+        obj += weight*edges[i][j];
       }
     }
     model.setObjective(obj, GRB_MINIMIZE);
@@ -134,18 +127,19 @@ int Gurobi::startAlgorithm(Graph &G, std::string start, std::string target) {
     model.optimize();
 
     //result
+    int pathWeight = 0;
     int j = s;
     while(j != t){
       for (int i = 0; i < n; i++) {
         if(edges[j][i].get(GRB_DoubleAttr_X) == 1.0){
           G.addToPath(&G.getNodes().at(0));
+          pathWeight += G.getEdgeWeight(j,i);
           j = i;
           break;
         }
       }
     }
-
-  return model.get(GRB_DoubleAttr_ObjVal);
+    return pathWeight;
 
   } catch(GRBException e) {
     std::cout << "Error code = " << e.getErrorCode() << std::endl;
