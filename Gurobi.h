@@ -35,16 +35,6 @@ int Gurobi::startAlgorithm(Graph &G, std::string start, std::string target) {
 // Füge mit dieser Methode einen kürzesten Pfad zusammen, indem mit G.addToPath die Knoten
 // in der richtigen Reihenfolge eingefügt werden.
 
-/**
-// nur zum Testen:
-    G.addToPath(&G.getNodes().at(0));
-    G.addToPath(&G.getNodes().at(1));
-    G.addToPath(&G.getNodes().at(2));
-    G.addToPath(&G.getNodes().at(3));
-    G.addToPath(&G.getNodes().at(2));
-    G.addToPath(&G.getNodes().at(0));
-**/
-
   try {
 
    // Create an environment
@@ -131,7 +121,7 @@ int Gurobi::startAlgorithm(Graph &G, std::string start, std::string target) {
     int j = s;
     while(j != t){
       for (int i = 0; i < n; i++) {
-        if(edges[j][i].get(GRB_DoubleAttr_X) == 1.0){
+        if(edges[j][i].get(GRB_DoubleAttr_X) == 1.0){ // checks if the edge is an edge of the path
           G.addToPath(&G.getNodes().at(0));
           pathWeight += G.getEdgeWeight(j,i);
           j = i;
