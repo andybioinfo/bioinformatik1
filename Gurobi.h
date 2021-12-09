@@ -12,14 +12,14 @@
 class Gurobi {
 
 public:
-    static void startAlgorithm(Graph &G, std::string start, std::string target) ;
+    static int startAlgorithm(Graph &G, std::string start, std::string target) ;
 
 };
 
 
 
 
-void Gurobi::startAlgorithm(Graph &G, std::string start, std::string target) {
+int Gurobi::startAlgorithm(Graph &G, std::string start, std::string target) {
 
   /*
 
@@ -145,13 +145,15 @@ void Gurobi::startAlgorithm(Graph &G, std::string start, std::string target) {
       }
     }
 
+  return model.get(GRB_DoubleAttr_ObjVal);
+
   } catch(GRBException e) {
     std::cout << "Error code = " << e.getErrorCode() << std::endl;
     std::cout << e.getMessage() << std::endl;
   } catch(...) {
     std::cout << "Exception during optimization" << std::endl;
   }
-
+  return -1;
 }
 
 
