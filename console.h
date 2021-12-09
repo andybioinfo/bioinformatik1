@@ -93,7 +93,7 @@ void console::Matrix(int nc,int ec,std::string message,bool okay) {
 * */
 void console::Result(int weight_value,int length,std::string root,std::string target,std::string path_output) {
 
-    std::cout << C::BYELLOW  <<  " Shortest path from      " << C::BGREEN << "{" <<  root  << "} --> {" << target  << "}" << C::BLUE <<" \n";
+    std::cout << C::BWHITE  <<  "\n         Shortest path from      " << C::BGREEN << "{" <<  root  << "} --> {" << target  << "}" << C::BLUE <<" \n";
     std::cout << C::BYELLOW  <<  "        > path-weight  : " << C::BGREEN <<  weight_value << "      "  << C::BLUE <<" \n";
     std::cout << C::BYELLOW  <<  "        > path-length  : " << C::BGREEN <<  length       << "      "  << C::BLUE <<" \n";
     std::cout << C::BYELLOW  <<  "\n";
@@ -116,13 +116,13 @@ void console::Help(std::string message) {
     std::cout << C::BRED    <<  "        > " << message << "\n";
     std::cout << C::BWHITE  <<  "\n";
     std::cout << C::BWHITE  <<  "\n   Help:    " << C::BYELLOW << "$ ./shortestPath [-h] [-f] [File] [-r] [root] [-t] [target]";
-    std::cout << C::BWHITE  <<  "\n   Example: " << C::BGREEN  << "$ ./shortestPath -f adjacency_matrix.txt -r A -t E";
+    std::cout << C::BWHITE  <<  "\n   Example: " << C::BGREEN  << "$ ./shortestPath -f adjacency_matrix.csv -r A -t E";
     std::cout << C::BWHITE  <<  "\n";
     std::cout << C::BWHITE  <<  "\n";
-    std::cout << C::BGREEN  <<  "  -h / --help              " << C::BWHITE << "| " << C::BYELLOW << " Show this help.\n";
-    std::cout << C::BGREEN  <<  "  -f / --file    [FILE]    " << C::BWHITE << "| " << C::BYELLOW << " An adjacency-matrix file\n";
-    std::cout << C::BGREEN  <<  "  -r / --root    [String]  " << C::BWHITE << "| " << C::BYELLOW << " your start node\n";
-    std::cout << C::BGREEN  <<  "  -t / --target  [String]  " << C::BWHITE << "| " << C::BYELLOW << " your final node\n";
+    std::cout << C::BGREEN  <<  "  -h           " << C::BWHITE << "| " << C::BYELLOW << " Show this help.\n";
+    std::cout << C::BGREEN  <<  "  -f [FILE]    " << C::BWHITE << "| " << C::BYELLOW << " An adjacency-matrix file\n";
+    std::cout << C::BGREEN  <<  "  -r [String]  " << C::BWHITE << "| " << C::BYELLOW << " your start node\n";
+    std::cout << C::BGREEN  <<  "  -t [String]  " << C::BWHITE << "| " << C::BYELLOW << " your final node\n";
     std::cout << C::BGREEN  <<  "\n\n";
     std::cout << C::RESET ;
 }
