@@ -23,8 +23,8 @@ target_link_libraries(example ${CIP_STD_LIBS} ${GUROBI_LIBRARIES})
 add_executable(shortestPath shortestPath.cpp)
 target_link_libraries(shortestPath ${CIP_STD_LIBS} ${GUROBI_LIBRARIES})
 
-#
-#enable_testing()
-#add_subdirectory(${GTEST_SRC_DIR} "gtest")
-#add_subdirectory(test)
+
+enable_testing()
+add_subdirectory(${GTEST_SRC_DIR} "gtest")
+add_subdirectory(test)
 

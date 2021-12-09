@@ -11,8 +11,8 @@
 #include <sstream>
 #include <iostream>
 
-#include "Graph.h"
-#include "Gurobi.h"
+#include "../Graph.h"
+#include "../Gurobi.h"
 
 TEST(GUROBI_TEST, createFromAdjacencyMatrixFile){
     Graph G = Graph::createFromAdjacencyMatrixFile("../adjacency_matrix.csv");
@@ -43,5 +43,6 @@ TEST(GUROBI_TEST, getEdgeWeight){
 }
 
 TEST(GUROBI_TEST, stringToID){
-
+    Graph G = Graph::createFromAdjacencyMatrixFile("../adjacency_matrix.csv");
+    EXPECT_EQ(1,G.stringToID("A"));
 }
