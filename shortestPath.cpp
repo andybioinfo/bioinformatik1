@@ -32,10 +32,10 @@ int main(int   argc, char *argv[])
 
     // ## Start Algorithm
 
-    Gurobi::startAlgorithm(G,"A","B");
+    auto weight = Gurobi::startAlgorithm(G,"A","B");
 
     // ## Return result
-
-    console::Result(G.getPathWeight(),G.getPath().size(),"A","B",G.pathToString());
+    
+    console::Result(weight,G.getPath().size(),"A","B",G.pathToString());
   return 0;
 }
