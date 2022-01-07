@@ -1,4 +1,4 @@
-project(02_Graph_Tests)
+project(Viterbi_Tests)
 
 include_directories("${GTEST_SRC_DIR}/include")
 
@@ -23,5 +23,5 @@ add_library(test_driver main_test.cpp)
 
 # Füge einen Test hinzu. Sie können die folgende
 # Zeile für neue Tests einfach kopieren und anpassen.
-add_gtest(Viterbi_test LIBRARIES sequence)
+add_gtest(Viterbi_test LIBRARIES himamo)
 
