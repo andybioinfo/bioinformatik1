@@ -11,33 +11,38 @@
 #include <sstream>
 #include <iostream>
 #include "../Viterbi.h"
+#include "../Markov.h"
+
+
+
+
 
 // Are all values successfully loaded per constructor in his fields?
 TEST(VITERBI, InitTest)
 {
     std::vector<Flip> seq;
     seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);seq.push_back(Head);
-    Viterbi v(0.25,0.35,0.10,seq);
+    Markov m(0.2,0.5,0.4);
+    Viterbi v(m,0.3,seq);
     EXPECT_EQ(4   , v.get_Sequence().size());
     EXPECT_EQ(0   , v.get_Result().size());
-    EXPECT_EQ(0.25, v.get_p_begin());
-    EXPECT_EQ(0.35, v.get_p_unfair());
-    EXPECT_EQ(0.10, v.get_p_change());
+    EXPECT_EQ(0.3, v.get_p_begin());
+    EXPECT_EQ(0.2, v.get_markov_matrices().changeProbability(Fair,Unfair));
+    EXPECT_EQ(0.4, v.get_markov_matrices().prodProbability(Unfair,Tail));
 }
 
-// Exception-Test if sequence empty or/and the values out of range
+// Exception-Test if sequence empty or/and the begin-value out of range
 TEST(VITERBI, InitExceptionTest)
 {
     std::vector<Flip> seqEmpty;
     std::vector<Flip> seqOne;
     seqOne.push_back(Head);
-
-    Viterbi empty(0.25,0.35,0.40,seqEmpty);
+    Markov m(0.2,0.5,0.4);
+    Viterbi empty(m,0.35,seqEmpty);
     EXPECT_EQ(0.10, 9.0);
 
-    Viterbi invalidA(0.25,-9000.0,2.0e+99,seqOne);
-    Viterbi invalidB(0.25,-9000.0,1.0,seqOne);
-    Viterbi invalidC(100.0,0.0,1.0,seqOne);
+    Viterbi invalidA(m,2.0e+99,seqEmpty);
+    Viterbi invalidB(m,-9000.0,seqEmpty);
     EXPECT_EQ(0.10, 9.0);
 }
 
@@ -46,17 +51,19 @@ TEST(VITERBI, BacktrackingLength)
 {
     std::vector<Flip> seq;
     seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);seq.push_back(Head);
-    Viterbi v(0.25,0.35,0.10,seq);
+    Markov m(0.2,0.5,0.3);
+    Viterbi v(m,0.35,seq);
     v.backtracking();
     EXPECT_EQ(v.get_Result().size() , v.get_Sequence().size());
 }
 
-// No coin change, begin with 1ẞ0% Fair -> begin with Fair ==> all Coin-throws are fair
+// No coin change, begin with 100% Fair -> begin with Fair ==> all Coin-throws are fair
 TEST(VITERBI, OnlyFairCoinTest)
 {
     std::vector<Flip> seq;
     seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);
-    Viterbi v(1.0,0.0,0.0,seq);
+    Markov m(0,0.5,0.8);
+    Viterbi v(m,1,seq);
     v.backtracking();
     for (Coin c : v.get_Result()) {
         EXPECT_EQ(Fair, c);
@@ -68,7 +75,8 @@ TEST(VITERBI, OnlyUnfairCoinTest)
 {
     std::vector<Flip> seq;
     seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);
-    Viterbi v(0.0,1.0,0.0,seq);
+    Markov m(0,0.5,0.8);
+    Viterbi v(m,0,seq);
     v.backtracking();
     for (Coin c : v.get_Result()) {
         EXPECT_EQ(Fair, c);
