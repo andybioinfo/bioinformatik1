@@ -110,7 +110,15 @@ TEST(VITERBI, HMM_MatrixValues_Test)
 
 }
 
+// Matrix calculation formula Test
+TEST(VITERBI, MatrixFormulaTest)
+{
+double res = Viterbi::formula(double p_w_at_coin,double max_a1,double max_a2,double max_b1,double max_b2);
+EXPECT_EQ(res, c);
 
+)
+
+}
 
 
 // Sequence_toString-Test
