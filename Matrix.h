@@ -23,6 +23,7 @@
 #include <sstream>
 #include "console.h"
 
+
 using namespace std;
 
 class Matrix {
@@ -98,21 +99,6 @@ void Matrix::setValue(int y, int x, double value) {
     }
 
 
-    std::string format(int x) {
-        std::ostringstream out;
-        out.width(9);
-        out.precision(4);
-        out << x;
-        return out.str();
-    }
-
-    std::string format(double x) {
-        std::ostringstream out;
-        out.width(9);
-        out.precision(4);
-        out << x;
-        return out.str();
-    }
 
 /*
  * Prints the matrix to std::cout for see the dimensions and the
@@ -121,14 +107,14 @@ void Matrix::setValue(int y, int x, double value) {
 void Matrix::print() {
     cout << C::BGREEN << "\n MATRIX [ " << C::BBLUE << "X_cols: " << (X_MAX()+1) << " Y_rows: " << (Y_MAX()+1) << C::BGREEN << " ]";
     cout << "\n x " << C::BYELLOW;
-    for (int x = 0 ; x <= X_MAX() ; x++) { cout << format(x) << " ";}
+    for (int x = 0 ; x <= X_MAX() ; x++) { cout << Format(x) << " ";}
 
     for (int _y = 0 ; _y <= Y_MAX() ; _y++) {
 
         cout << "\n " << C::BYELLOW << _y << C::BRED << " ";
 
         for (int _x = 0 ; _x <= X_MAX() ; _x++) {
-            cout << format(getValue(_y,_x)) << " ";
+            cout << Format(getValue(_y,_x)) << " ";
         }
 
     }

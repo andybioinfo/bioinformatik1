@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+
+
 /*
  * Constants to colorize the console text
  * */
@@ -73,13 +75,22 @@ void console::ShowHeader() {
 /*
 * send input infos to std::cout
 * */
-void console::ShowInputs(double begin, double unfair, double change , std::string sequence) {
+void console::ShowInputs(double begin, double unfair, double change, std::string sequence) {
 
-    std::cout << C::BWHITE  <<  "\n       INPUTS   \n";
-    std::cout << C::BYELLOW  <<  "        > p unfair begin  : " << C::BGREEN <<  begin   << "      "  << C::BLUE <<" \n";
-    std::cout << C::BYELLOW  <<  "        > p change type   : " << C::BGREEN <<  change  << "      "  << C::BLUE <<" \n";
-    std::cout << C::BYELLOW  <<  "        > p throw unfair  : " << C::BGREEN <<  unfair    << "      "  << C::BLUE <<" \n";
-    std::cout << C::BYELLOW  <<  "        > throw sequence  : " << C::BGREEN <<  "(coin flips: " << sequence.length() << ") = " << sequence << C::BLUE <<" \n\n";
+    std::string fair_begin = Format(begin);
+    std::string unfair_begin = Format(1.0 - begin);
+    std::string _change = Format(change);
+    std::string no_change = Format(1.0 - change);
+    std::string unfair_head = Format(1.0 - unfair);
+    std::string unfair_tail = Format(unfair);
+
+
+
+    std::cout << C::BWHITE  <<   "\n     INPUTS";
+    std::cout << C::BYELLOW  <<  "\n      > p(begin)  : " << C::BMAGENTA << "Fair -> " << C::BBLUE << fair_begin  << " "<< C::BCYAN << "|" << C::BMAGENTA << " Unfair -> " << C::BBLUE << unfair_begin;
+    std::cout << C::BYELLOW  <<  "\n      > p(change) : " << C::BMAGENTA << "Yes  -> " << C::BBLUE << _change     << " "<< C::BCYAN << "|" << C::BMAGENTA << " No     -> " << C::BBLUE << no_change;
+    std::cout << C::BYELLOW  <<  "\n      > p(unfair) : " << C::BMAGENTA << "Head -> " << C::BBLUE << unfair_head << " "<< C::BCYAN << "|" << C::BMAGENTA << " Tail   -> " << C::BBLUE << unfair_tail;
+    std::cout << C::BYELLOW  <<  "\n      > Sequence  : " << C::BLUE <<  "(coin flips: " << sequence.length() << ") = " << C::BBLUE << sequence <<" \n\n";
     std::cout << C::RESET;
 }
 
@@ -102,7 +113,7 @@ std::cout << C::BWHITE  <<  "\n";
 std::cout << C::BWHITE  <<  "   Help:    " << C::BYELLOW << " $ ./viterbi [begin] [change] [unfair] [sequence]\n" ;
 std::cout << C::BWHITE  <<  "   Example: " << C::BGREEN  << " $ ./viterbi 0.4 0.05 0.1 0101010111             \n" ;
 std::cout << C::BWHITE  <<  "\n" ;
-std::cout << C::BGREEN  <<  " [float]  begin    " << C::BWHITE << "| " << C::BYELLOW << " the probability of start with a unfair coin [0.0 - 1.0]\n" ;
+std::cout << C::BGREEN  <<  " [float]  begin    " << C::BWHITE << "| " << C::BYELLOW << " the probability of start with a fair coin [0.0 - 1.0]\n" ;
 std::cout << C::BGREEN  <<  " [float]  change   " << C::BWHITE << "| " << C::BYELLOW << " the prob. of replace un/fair coin [0.0 - 1.0]\n" ;
 std::cout << C::BGREEN  <<  " [float]  unfair   " << C::BWHITE << "| " << C::BYELLOW << " the prob. of throw Tail with the unfair coin [0.0 - 1.0];\n" ;
 std::cout << C::BGREEN  <<  " [String] sequence " << C::BWHITE << "| " << C::BYELLOW << " the coin-throw sequence {'0' or '1'}\n" ;
@@ -115,8 +126,8 @@ std::cout << C::BWHITE  <<  "             > "<< C::BRED << message << C::RESET <
  * send the result to std::cout
  * */
 void console::Result(std::string res) {
-    std::cout << C::BWHITE  <<  "       RESULT   \n";
-    std::cout << C::BYELLOW <<  "        > Result-Sequence : " << C::GREEN << "(GREEN = fair throw) " << C::RED << "(RED = unfair throw) \n\n";
+    std::cout << C::BWHITE  <<  "     RESULT   \n";
+    std::cout << C::BYELLOW <<  "      > Result-Sequence : " << C::GREEN << "(GREEN = fair throw) " << C::RED << "(RED = unfair throw) \n\n";
     std::cout << C::BWHITE  <<  "   :=  " << res << "\n\n";
     std::cout << C::RESET ;
 }
