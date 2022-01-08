@@ -39,6 +39,7 @@ add_library(himamo SHARED
         console.h
         Markov.cpp
         Markov.h
+	Format.h
 
         )
 
