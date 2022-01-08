@@ -133,7 +133,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
        double last_fair   = 0.0; // at row 0 (y = 0)
        double last_unfair = 0.0; // at row 1 (y = 1)
        int actual_column  = 2;
-       int max_col        = _sequence.size();
+       int max_col        = _sequence.size() + 1;
        double pw_at_coin = 0.0;
        double max_a1 = 0.0;
        double max_a2 = 0.0;
@@ -155,7 +155,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
            // FLip at Column
 
-           Xi = _sequence[actual_column];
+           Xi = _sequence[actual_column - 1];
 
            // row 0 (fair)
            pw_at_coin = _markov.prodProbability(Fair,Xi);
