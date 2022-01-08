@@ -24,4 +24,4 @@ add_library(test_driver main_test.cpp)
 # Füge einen Test hinzu. Sie können die folgende
 # Zeile für neue Tests einfach kopieren und anpassen.
 add_gtest(Viterbi_test LIBRARIES himamo)
-
+add_gtest(Markov_test LIBRARIES himamo)
