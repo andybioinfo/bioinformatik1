@@ -13,28 +13,24 @@ using namespace std;
 class Viterbi {
 public:
     // Create HMM
-        Viterbi(double p_begin, double p_unfair, double p_change, vector<Flip> _sequence);
+        Viterbi(Markov _markov,double p_begin, vector<Flip> _sequence);
     // Backtracking
         void backtracking();
     // Getter for Testing
-       // Matrix getMatrix();
+        Matrix getMatrix();
         double get_p_begin();
-        double get_p_unfair();
-        double get_p_change();
+        Markov get_markov_matrices();
         std::vector<Flip> get_Sequence();
         std::vector<Coin> get_Result();
     // Result-String for Console Output
         string Sequence_toString(bool with_result);
 private:
     Matrix M = Matrix(0, 0);
+    Markov _markov;
     double p_begin;
-    double p_unfair;
-    double p_change;
     std::vector<Flip> sequence;
     std::vector<Coin> result;
 };
-
-
 
 
 /** Returns the Sequence of the Coin-Flips, if with_result chosen,
@@ -84,18 +80,14 @@ string Viterbi::Sequence_toString(bool with_result) {
  * @_sequence  The Coin-Throw sequence Values: Flip{Head, Tail}
  * @return     Viterbi-Object with filled matrix
  * */
-Viterbi::Viterbi(double p_begin, double p_unfair, double p_change, vector<Flip> _sequence) {
+Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
     // Check Arguments
-    if (p_begin < 0.0 || p_begin > 1.0 )   {throw std::invalid_argument("argument p_begin out of range!");  }
-    if (p_unfair < 0.0 || p_unfair > 1.0 ) {throw std::invalid_argument("argument p_unfair out of range!"); }
-    if (p_change < 0.0 || p_change > 1.0 ) {throw std::invalid_argument("argument p_change out of range!"); }
-    if (_sequence.empty())                 {throw std::invalid_argument("argument _sequence is empty!"); }
+    if (_sequence.empty())   {throw std::invalid_argument("argument _sequence is empty!"); }
 
     // Initialize Fields
-    this->p_begin  = p_begin;
-    this->p_unfair = p_unfair;
-    this->p_change = p_change;
+    this->_markov = _markov;
+    this->p_begin = p_begin;
     this->sequence = _sequence;
 
     // Initialize Matrix
@@ -104,25 +96,17 @@ Viterbi::Viterbi(double p_begin, double p_unfair, double p_change, vector<Flip> 
 
     // Start Algorithm (Fill Matrix)
 
-    std::ostringstream out;
-    out.width(5);
-    out.precision(4);
-    out << 0.34235431;
+    //_markov.print_matrices();
 
-    //cout << "double formatted: \n" << out.str();
+    _markov.changeProbability(Fair,Fair);
+    _markov.changeProbability(Fair,Unfair);
 
-    /*M.setValue(0,0,234234234230.012);
-    M.setValue(0,1,0.23445345345345);
-    M.setValue(0,2,0.0000012344565453);
-    M.setValue(0,3,4);
+    _markov.prodProbability(Fair,Head);
+    _markov.prodProbability(Unfair,Tail);
+
+    M.setValue(1,3,4); // y = zeile // x = spalte
     M.setValue(0,4,5);
 
-    M.setValue(1,0,6);
-    M.setValue(1,1,7);
-    M.setValue(1,2,8);
-    M.setValue(1,3,9);
-    M.setValue(1,4,10);
-    */
 
     //M.print();
 
@@ -131,6 +115,11 @@ Viterbi::Viterbi(double p_begin, double p_unfair, double p_change, vector<Flip> 
 
 
 }
+
+
+
+
+
 
 /** Backtracking in matrix for create the Result-Sequence of Coin{Fair,Unfair}
  *  for evaluate the Input/Throw-Sequence.
@@ -176,15 +165,15 @@ void Viterbi::backtracking() {
 
 
 
-result.push_back(Unfair);
-result.push_back(Fair);
-result.push_back(Fair);
-result.push_back(Unfair);
-result.push_back(Unfair);
-result.push_back(Fair);
-result.push_back(Unfair);
-result.push_back(Fair);
-result.push_back(Unfair);
+    result.push_back(Unfair);
+    result.push_back(Fair);
+    result.push_back(Fair);
+    result.push_back(Unfair);
+    result.push_back(Unfair);
+    result.push_back(Fair);
+    result.push_back(Unfair);
+    result.push_back(Fair);
+    result.push_back(Unfair);
 
 }
 
@@ -199,12 +188,11 @@ result.push_back(Unfair);
 
 
 // Getter
-//Matrix Viterbi::getMatrix()      { return M; }
+Matrix Viterbi::getMatrix()      { return M; }
 double Viterbi::get_p_begin()    { return p_begin; }
-double Viterbi::get_p_unfair()   { return p_unfair; }
-double Viterbi::get_p_change()   { return p_change; }
 std::vector<Flip> Viterbi::get_Sequence() { return sequence;}
 std::vector<Coin> Viterbi::get_Result() { return result;}
+Markov Viterbi::get_markov_matrices() { return _markov;}
 
 
 #endif //BIOINFOUB10_VITERBI_H

@@ -13,6 +13,8 @@ public:
     static const char* RESET;
     static const char* BLUE;
     static const char* BBLUE;
+    static const char* BMAGENTA;
+    static const char* BCYAN;
     static const char* BWHITE;
     static const char* BGREEN;
     static const char* GREEN;
@@ -26,6 +28,8 @@ public:
 const char* C::RESET   = "\033[0m";
 const char* C::BLUE    = "\033[0;34m";
 const char* C::BBLUE   = "\033[1;34m";
+const char* C::BMAGENTA= "\033[1;35m";
+const char* C::BCYAN   = "\033[1;36m";
 const char* C::BWHITE  = "\033[1;37m";
 const char* C::BGREEN  = "\033[1;32m";
 const char* C::GREEN  = "\033[0;32m";
@@ -67,7 +71,7 @@ void console::ShowHeader() {
 
 
 /*
-* send result infos to std::cout
+* send input infos to std::cout
 * */
 void console::ShowInputs(double begin, double unfair, double change , std::string sequence) {
 
@@ -80,30 +84,30 @@ void console::ShowInputs(double begin, double unfair, double change , std::strin
 }
 
 
-
 /*
  *
 * send the help-message to std::cout
 * */
 void console::Help(std::string message) {
-    std::cout << C::BWHITE  <<  " \n ";
-    std::cout << C::BGREEN  <<  "   [HMM] " << C::BYELLOW  <<  "  V I T E R B I  A L G O R I T M  \n" ;
-    std::cout << C::BWHITE  <<  "\n This algorithm calculates with the hidden MM the process of a coin-flip-game";
-    std::cout << C::BWHITE  <<  "\n for uncover coin-flip-cheaters. { 1 = Head ; 0 = Tail }";
-    std::cout << C::BWHITE  <<  "\n";
-    std::cout << C::BWHITE  <<  "\n";
-    std::cout << C::BRED    <<  "        > " << message << "\n";
-    std::cout << C::BWHITE  <<  "\n";
-    std::cout << C::BWHITE  <<  "\n   Help:    " << C::BYELLOW << "$ ./viterbi [begin] [change] [unfair] [sequence]";
-    std::cout << C::BWHITE  <<  "\n   Example: " << C::BGREEN  << "$ ./viterbi -f adjacency_matrix.csv 0101010111";
-    std::cout << C::BWHITE  <<  "\n";
-    std::cout << C::BWHITE  <<  "\n";
-    std::cout << C::BGREEN  <<  "   [float] begin     " << C::BWHITE << "| " << C::BYELLOW << " the probability of start with a unfair coin [0.0 - 1.0]\n";
-    std::cout << C::BGREEN  <<  "   [float] change    " << C::BWHITE << "| " << C::BYELLOW << " the prob. of replace un/fair coin [0.0 - 1.0]\n";
-    std::cout << C::BGREEN  <<  "   [float] unfair    " << C::BWHITE << "| " << C::BYELLOW << " the prob. of throw Tail with the unfair coin [0.0 - 1.0]\n";
-    std::cout << C::BGREEN  <<  "   [String] sequence " << C::BWHITE << "| " << C::BYELLOW << " the coin-throw sequence {0 or 1}\n";
-    std::cout << C::BGREEN  <<  "\n\n";
-    std::cout << C::RESET ;
+std::cout << C::BWHITE  <<  "\n" ;
+std::cout << C::BWHITE  <<  "    .______.    V I T E R B I  A L G O R I T M \n" ;
+std::cout << C::BWHITE  <<  "   /\\       \\      \n" ;
+std::cout << C::BWHITE  <<  "  /()\\   ()  \\ " << C::BLUE << "   This algorithm calculates for a sequence\n" ;
+std::cout << C::BWHITE  <<  " /    \\.______\\" << C::BLUE << "    of Coin-Flips " << C::BMAGENTA << "{ 0 = Tail , 1 = Head } \n" ;
+std::cout << C::BWHITE  <<  " \\    /()     /" << C::BLUE << "   with 2 different coins " << C::BCYAN << "{ Fair , Unfair }\n" ;
+std::cout << C::BWHITE  <<  "  \\()/   ()  / " << C::BLUE << "  with the parameters the resulting \n" ;
+std::cout << C::BWHITE  <<  "   \\/_____()/  " << C::BLUE << " sequence of " << C::BLUE << "fair/unfair Coin-Flips\n" ;
+std::cout << C::BWHITE  <<  "               " << C::BLUE << "to uncover coin-flip-cheaters.\n" ;
+std::cout << C::BWHITE  <<  "\n";
+std::cout << C::BWHITE  <<  "   Help:    " << C::BYELLOW << " $ ./viterbi [begin] [change] [unfair] [sequence]\n" ;
+std::cout << C::BWHITE  <<  "   Example: " << C::BGREEN  << " $ ./viterbi 0.4 0.05 0.1 0101010111             \n" ;
+std::cout << C::BWHITE  <<  "\n" ;
+std::cout << C::BGREEN  <<  " [float]  begin    " << C::BWHITE << "| " << C::BYELLOW << " the probability of start with a unfair coin [0.0 - 1.0]\n" ;
+std::cout << C::BGREEN  <<  " [float]  change   " << C::BWHITE << "| " << C::BYELLOW << " the prob. of replace un/fair coin [0.0 - 1.0]\n" ;
+std::cout << C::BGREEN  <<  " [float]  unfair   " << C::BWHITE << "| " << C::BYELLOW << " the prob. of throw Tail with the unfair coin [0.0 - 1.0];\n" ;
+std::cout << C::BGREEN  <<  " [String] sequence " << C::BWHITE << "| " << C::BYELLOW << " the coin-throw sequence {'0' or '1'}\n" ;
+std::cout << C::BWHITE  <<  "\n" ;
+std::cout << C::BWHITE  <<  "             > "<< C::BRED << message << C::RESET << "\n\n" ;
 }
 
 /*
@@ -113,7 +117,7 @@ void console::Help(std::string message) {
 void console::Result(std::string res) {
     std::cout << C::BWHITE  <<  "       RESULT   \n";
     std::cout << C::BYELLOW <<  "        > Result-Sequence : " << C::GREEN << "(GREEN = fair throw) " << C::RED << "(RED = unfair throw) \n\n";
-    std::cout << C::BWHITE  <<  "  :=  " << res << "\n";
+    std::cout << C::BWHITE  <<  "   :=  " << res << "\n\n";
     std::cout << C::RESET ;
 }
 

@@ -12,49 +12,14 @@ Example $ ./viterbi 0.3 0.1 0.2 0101010111
 
 using namespace std;
 
-#include "console.h"
-#include "Coin.h"
-#include "Viterbi.h"
 #include <vector>
 #include <sstream>
 
-
-
 #include <iostream>
-
-
-
-
-
-/*
-
-
-*/
-double Range(double val) {
-    if (val > 1.0) { return 1.0; }
-    if (val < 0.0) { return 0.0; }
-    return val;
- }
-
-/*
-
-*/
-std::vector<Flip> String2Sequence(string str) {
-    std::vector<Flip> seq;
-    for ( char& c : str) {
-        // 0 is Tail
-        if (c == '0') { seq.push_back(Tail); continue; }
-        // 1 is Head
-        if (c == '1') { seq.push_back(Head); continue; }
-        // other char = return empty List
-        seq.clear();
-        break;
-    }
-    return seq;
-}
-
-
-
+#include "console.h"
+#include "Coin.h"
+#include "Markov.h"
+#include "Viterbi.h"
 
 int main(int argc , char* argv[]) {
 
@@ -76,30 +41,30 @@ int main(int argc , char* argv[]) {
         std::vector<Flip> sequence;
 
       // Arg 1 : read and check Begin - Value
-        try {p_begin = stod(argv[1]);} catch (invalid_argument) {
+        try {p_begin = stod(argv[1]);} catch (const std::invalid_argument&) {
             msg << "ERROR : invalid float/double { "<< arg_Begin << " }";
             console::Help(msg.str()); return 0;}
 
       // Arg 2 : read and check Change - Value
-        try {p_change = stod(argv[2]);} catch (invalid_argument) {
+        try {p_change = stod(argv[2]);} catch (const std::invalid_argument&) {
             msg << "ERROR : invalid float/double { "<< arg_Change << " }";
             console::Help(msg.str()); return 0;}
 
       // Arg 3 : read and check Unfair - Value
-        try {p_unfair = stod(argv[3]);} catch (invalid_argument) {
+        try {p_unfair = stod(argv[3]);} catch (const std::invalid_argument&) {
             msg << "ERROR : invalid float/double { "<< arg_Unfair << " }";
             console::Help(msg.str()); return 0;}
 
       // Arg 4 : Convert the String to a sequence
-        sequence = String2Sequence(arg_Seq);     
+        sequence = Markov::String2Sequence(arg_Seq);
 	    if(sequence.size() == 0) {
             msg << "ERROR : invalid char in sequence { only '1' or '0' is valid }";
             console::Help(msg.str()); return 0;}
         
       // all input doubles : Set the doubles in Range from 0.0 <-> 1.0
-        p_begin  = Range( p_begin );
-        p_change = Range( p_change );
-        p_unfair = Range( p_unfair );
+        p_begin  = Markov::Range( p_begin );
+        p_change = Markov::Range( p_change );
+        p_unfair = Markov::Range( p_unfair );
 
       // The Program likes your Inputs: we can start!
         console::ShowHeader();
@@ -107,7 +72,9 @@ int main(int argc , char* argv[]) {
 
       // Viterbi Start
 
-      Viterbi v(p_begin,p_unfair,p_change,sequence);
+      Markov _markov(p_change,0.5,(1.0-p_unfair));
+
+      Viterbi v(_markov,p_begin,sequence);
 
       v.backtracking();
 
