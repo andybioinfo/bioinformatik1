@@ -14,14 +14,20 @@ class Viterbi {
 public:
     // Create HMM
         Viterbi(Markov _markov,double p_begin, vector<Flip> _sequence);
+
+    // matrix calculate formula
+        static double formula(double p_w_at_coin,double max_a1,double max_a2,double max_b1,double max_b2);
+
     // Backtracking
         void backtracking();
+
     // Getter for Testing
         Matrix getMatrix();
         double get_p_begin();
         Markov get_markov_matrices();
         std::vector<Flip> get_Sequence();
         std::vector<Coin> get_Result();
+
     // Result-String for Console Output
         string Sequence_toString(bool with_result);
 private:
@@ -31,6 +37,8 @@ private:
     std::vector<Flip> sequence;
     std::vector<Coin> result;
 };
+
+
 
 
 /** Returns the Sequence of the Coin-Flips, if with_result chosen,
@@ -71,6 +79,30 @@ string Viterbi::Sequence_toString(bool with_result) {
 }
 
 
+
+/** Calculate a cell from the matrix.
+ *
+ * @p_w_at_coin   probabilty of this FLip with this coin
+ * @max_a1
+ * @max_a2
+ * @max_b1
+ * @max_b2
+ * */
+double Viterbi::formula(double p_w_at_coin, double max_a1, double max_a2, double max_b1, double max_b2) {
+
+    double a = max_a1 * max_a2;
+    double b = max_b1 * max_b2;
+
+    double max_value = std::max(a,b);
+
+    return p_w_at_coin * max_value;
+}
+
+
+
+
+
+
 /** Returns an Viterbi-Object ans create the HMM_Matrix inside and fill
  *  his with the algorithm with values.
  *
@@ -94,7 +126,67 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
     this->M = Matrix(2,_sequence.size() + 1);
 
-    // Start Algorithm (Fill Matrix)
+    // ## Start Algorithm (Fill Matrix)
+
+       // init
+
+       double last_fair   = 0.0; // at row 0 (y = 0)
+       double last_unfair = 0.0; // at row 1 (y = 1)
+       int actual_column  = 2;
+       int max_col        = _sequence.size();
+       double pw_at_coin = 0.0;
+       double max_a1 = 0.0;
+       double max_a2 = 0.0;
+       double max_b1 = 0.0;
+       double max_b2 = 0.0;
+       double resA    = 0.0;
+       double resB    = 0.0;
+
+       Flip Xi = _sequence[0];
+
+       // column 1
+
+       last_fair   = formula(p_begin,1,1,0,0);
+       last_unfair = formula(1.0-p_begin,1,1,0,0);
+
+       // remaining colums
+
+       while (actual_column <= max_col) { // start at col 2
+
+           // FLip at Column
+
+           Xi = _sequence[actual_column];
+
+           // row 0 (fair)
+           pw_at_coin = _markov.prodProbability(Fair,Xi);
+           max_a1     = last_fair;
+           max_a2     = 0.0; // _markov.changeProbability(Fair,Fair);
+           max_b1     = last_unfair;
+           max_b2     = 0.0;
+
+           resA       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2);
+
+           M.setValue(0,actual_column,resA);
+
+           // row 1 (unfair)
+           pw_at_coin = _markov.prodProbability(Unfair,Xi);
+           max_a1     = last_fair;
+           max_a2     = 0.0;
+           max_b1     = last_unfair;
+           max_b2     = 0.0;
+
+           resB       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2);
+
+           M.setValue(0,actual_column,resB);
+
+           // set last values for next column
+
+           last_fair   = resA;
+           last_unfair = resB;
+
+           // continue to next column
+           actual_column++;;
+       }
 
     //_markov.print_matrices();
 
@@ -193,6 +285,11 @@ double Viterbi::get_p_begin()    { return p_begin; }
 std::vector<Flip> Viterbi::get_Sequence() { return sequence;}
 std::vector<Coin> Viterbi::get_Result() { return result;}
 Markov Viterbi::get_markov_matrices() { return _markov;}
+
+
+
+
+
 
 
 #endif //BIOINFOUB10_VITERBI_H
