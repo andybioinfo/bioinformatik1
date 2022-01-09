@@ -177,9 +177,9 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
            // row 1 (unfair)
            pw_at_coin = _markov.prodProbability(Unfair,Xi);
            max_a1     = last_fair;
-           max_a2     = _markov.changeProbability(Unfair,Unfair);
+           max_a2     = _markov.changeProbability(Fair,Unfair);
            max_b1     = last_unfair;
-           max_b2     = _markov.changeProbability(Fair,Unfair);
+           max_b2     = _markov.changeProbability(Unfair,Unfair);
 
            resB       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2);
 

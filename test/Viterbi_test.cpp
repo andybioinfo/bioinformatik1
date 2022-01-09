@@ -97,7 +97,14 @@ TEST(VITERBI, BacktrackingResult)
 // Correct Matrix-Size after Creating with Constructor?
 TEST(VITERBI, HMM_MatrixSize_Test)
 {
-
+    std::vector<Flip> seq;
+    seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);
+    Markov m(0,0.5,0.8);
+    Viterbi v(m,0,seq);
+    auto M = v.getMatrix();
+    
+    EXPECT_EQ(1, M.Y_MAX());
+    EXPECT_EQ(5, M.X_MAX());
 
 }
 
@@ -105,18 +112,26 @@ TEST(VITERBI, HMM_MatrixSize_Test)
 // Correct Matrix-Values after Creating/Algorithm with Constructor?
 TEST(VITERBI, HMM_MatrixValues_Test)
 {
-
+    std::vector<Flip> seq;
+    seq.push_back(Head);seq.push_back(Tail);
+    Markov m(0.1,0.5,0.75);
+    Viterbi v(m,0.9,seq);
+    auto M = v.getMatrix();
+    
+    EXPECT_EQ(0.45, M.getValue(0,0));
+    
 
 }
 
 // Matrix calculation formula Test
 TEST(VITERBI, MatrixFormulaTest)
 {
+    /*
 double res = Viterbi::formula(double p_w_at_coin,double max_a1,double max_a2,double max_b1,double max_b2);
 EXPECT_EQ(res, c);
 
 )
-
+*/
 }
 
 
