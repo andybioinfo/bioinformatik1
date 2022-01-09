@@ -16,7 +16,6 @@ using namespace std;
 #include <sstream>
 
 #include <iostream>
-#include "Format.h"
 #include "console.h"
 #include "Coin.h"
 #include "Markov.h"

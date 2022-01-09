@@ -50,7 +50,24 @@ public:
  static void Help(std::string message);
  static void ShowInputs(double begin, double unfair, double change , std::string sequence) ;
  static void Result(std::string res);
+ static std::string double2String(double x);
 };
+
+/* Convert a number in a String with
+ * a constant String length (for tables ect.) Example: 0.023 -> "    0.023"
+ *
+ * @x      double
+ * @return String of length 9
+ * */
+std::string console::double2String(double x) {
+    std::ostringstream out;
+    out.width(9);
+    out.precision(4);
+    out << x;
+    return out.str();
+}
+
+
 
 /*
 * sends a big-font Ascii-Art-Header to std::cout
@@ -77,12 +94,12 @@ void console::ShowHeader() {
 * */
 void console::ShowInputs(double begin, double unfair, double change, std::string sequence) {
 
-    std::string fair_begin = Format(begin);
-    std::string unfair_begin = Format(1.0 - begin);
-    std::string _change = Format(change);
-    std::string no_change = Format(1.0 - change);
-    std::string unfair_head = Format(1.0 - unfair);
-    std::string unfair_tail = Format(unfair);
+    std::string fair_begin = double2String(begin);
+    std::string unfair_begin =double2String(1.0 - begin);
+    std::string _change = double2String(change);
+    std::string no_change = double2String(1.0 - change);
+    std::string unfair_head = double2String(1.0 - unfair);
+    std::string unfair_tail = double2String(unfair);
 
 
 

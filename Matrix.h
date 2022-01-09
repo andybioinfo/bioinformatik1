@@ -41,6 +41,9 @@ public:
 
     int X_MAX();
 
+    static std::string int2String(int x) ;
+    static std::string double2String(double x);
+
 protected:
 
     std::vector<std::vector<double>> values_;
@@ -98,7 +101,33 @@ void Matrix::setValue(int y, int x, double value) {
     values_.at(y).at(x) = value;
     }
 
+/* Convert a number in a String with
+ * a constant String length (for tables ect.) Example: 0.023 -> "    0.023"
+ *
+ * @x      int
+ * @return String of length 9
+ * */
+std::string Matrix::int2String(int x) {
+    std::ostringstream out;
+    out.width(9);
+    out.precision(4);
+    out << x;
+    return out.str();
+}
 
+/* Convert a number in a String with
+ * a constant String length (for tables ect.) Example: 0.023 -> "    0.023"
+ *
+ * @x      double
+ * @return String of length 9
+ * */
+std::string Matrix::double2String(double x) {
+    std::ostringstream out;
+    out.width(9);
+    out.precision(4);
+    out << x;
+    return out.str();
+}
 
 /*
  * Prints the matrix to std::cout for see the dimensions and the
@@ -107,14 +136,14 @@ void Matrix::setValue(int y, int x, double value) {
 void Matrix::print() {
     cout << C::BGREEN << "\n MATRIX [ " << C::BBLUE << "X_cols: " << (X_MAX()+1) << " Y_rows: " << (Y_MAX()+1) << C::BGREEN << " ]";
     cout << "\n x " << C::BYELLOW;
-    for (int x = 0 ; x <= X_MAX() ; x++) { cout << Format(x) << " ";}
+    for (int x = 0 ; x <= X_MAX() ; x++) { cout << int2String(x) << " ";}
 
     for (int _y = 0 ; _y <= Y_MAX() ; _y++) {
 
         cout << "\n " << C::BYELLOW << _y << C::BRED << " ";
 
         for (int _x = 0 ; _x <= X_MAX() ; _x++) {
-            cout << Format(getValue(_y,_x)) << " ";
+            cout << double2String(getValue(_y,_x)) << " ";
         }
 
     }
