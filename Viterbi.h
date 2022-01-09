@@ -6,7 +6,6 @@
 #include "Coin.h"
 #include "console.h"
 #include "Matrix.h"
-#include "Format.h"
 #include "Markov.h"
 
 using namespace std;
@@ -184,7 +183,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
            resB       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2);
 
-           M.setValue(0,actual_column,resB);
+           M.setValue(1,actual_column,resB);
 
            // set last values for next column
 
