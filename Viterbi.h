@@ -190,6 +190,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
     //_markov.print_matrices();
 
+    /*
     _markov.changeProbability(Fair,Fair);
     _markov.changeProbability(Fair,Unfair);
 
@@ -198,7 +199,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
     M.setValue(1,3,4); // y = zeile // x = spalte
     M.setValue(0,4,5);
-
+*/
 
     //M.print();
 
@@ -238,6 +239,8 @@ void Viterbi::backtracking() {
 
         // next column
         actual_column--;
+
+
     }
 
 
