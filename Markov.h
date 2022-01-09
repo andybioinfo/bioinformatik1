@@ -35,6 +35,10 @@ class Markov {
     // String to Flip-Sequence
     static std::vector<Flip> String2Sequence(string str);
 
+    // Getter for Testing
+    Matrix getChangeMatrix();
+    Matrix getProductMatrix();
+
     private:
 
     Matrix change = Matrix(2,2);   // 0 = Unfair, 1 = Fair
@@ -206,5 +210,7 @@ Markov::Markov() { // Default
 
 }
 
+Matrix Markov::getChangeMatrix()      { return change; }
+Matrix Markov::getProductMatrix()      { return product; }
 
 #endif //VITERBI_MARKOV_H

@@ -48,8 +48,19 @@ EXPECT_EQ(1.0, 0.0);
 // Create markov and check his matrices
 TEST(MARKOV, Create_Markov_Test)
 {
+    Markov m(0.1,0.5,0.75);
+    auto change = m.getChangeMatrix();
+    auto product = m.getProductMatrix();
 
+    EXPECT_EQ(0.1, change.getValue(0,0));
+    EXPECT_EQ(0.1, change.getValue(1,1));
+    EXPECT_EQ(0.9, change.getValue(1,0));
+    EXPECT_EQ(0.9, change.getValue(0,1));
 
+    EXPECT_EQ(0.5, product.getValue(1,0));
+    EXPECT_EQ(0.5, product.getValue(1,1));
+    EXPECT_EQ(0.75, product.getValue(1,0));
+    EXPECT_EQ(0.25, product.getValue(0,0));
 
 }
 
