@@ -6,6 +6,8 @@
 #include "Coin.h"
 #include "console.h"
 #include "Matrix.h"
+#include "Format.h"
+#include "Markov.h"
 
 using namespace std;
 
@@ -132,8 +134,8 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
        double last_fair   = 0.0; // at row 0 (y = 0)
        double last_unfair = 0.0; // at row 1 (y = 1)
-       int actual_column  = 2;
-       int max_col        = _sequence.size() + 1;
+       int actual_column  = 1;
+       int max_col        = _sequence.size() ;
        double pw_at_coin = 0.0;
        double max_a1 = 0.0;
        double max_a2 = 0.0;
@@ -146,8 +148,13 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
        // column 1
 
-       last_fair   = formula(p_begin,1,1,0,0);
-       last_unfair = formula(1.0-p_begin,1,1,0,0);
+       //last_fair   = formula(p_begin,1,1,0,0);
+       //last_unfair = formula(1.0-p_begin,1,1,0,0);
+     
+       last_fair = p_begin*_markov.prodProbability(Fair,Xi);
+       last_unfair = (1.0-p_begin)*_markov.prodProbability(Unfair,Xi);
+       M.setValue(0,0,last_fair);
+       M.setValue(1,0,last_unfair);
 
        // remaining colums
 
@@ -155,14 +162,14 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
            // FLip at Column
 
-           Xi = _sequence[actual_column - 1];
+           Xi = _sequence[actual_column];
 
            // row 0 (fair)
            pw_at_coin = _markov.prodProbability(Fair,Xi);
            max_a1     = last_fair;
-           max_a2     = 0.0; // _markov.changeProbability(Fair,Fair);
+           max_a2     = _markov.changeProbability(Fair,Fair);
            max_b1     = last_unfair;
-           max_b2     = 0.0;
+           max_b2     = _markov.changeProbability(Unfair,Fair);
 
            resA       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2);
 
@@ -171,9 +178,9 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
            // row 1 (unfair)
            pw_at_coin = _markov.prodProbability(Unfair,Xi);
            max_a1     = last_fair;
-           max_a2     = 0.0;
+           max_a2     = _markov.changeProbability(Unfair,Unfair);
            max_b1     = last_unfair;
-           max_b2     = 0.0;
+           max_b2     = _markov.changeProbability(Fair,Unfair);
 
            resB       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2);
 
@@ -189,7 +196,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
        }
 
     //_markov.print_matrices();
-
+/*
     _markov.changeProbability(Fair,Fair);
     _markov.changeProbability(Fair,Unfair);
 
@@ -198,15 +205,17 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
     M.setValue(1,3,4); // y = zeile // x = spalte
     M.setValue(0,4,5);
+*/
 
-
-    //M.print();
+    M.print();
 
 
 
 
 
 }
+
+
 
 
 
