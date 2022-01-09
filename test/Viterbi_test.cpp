@@ -16,7 +16,6 @@
 
 
 
-
 // Are all values successfully loaded per constructor in his fields?
 TEST(VITERBI, InitTest)
 {
@@ -124,6 +123,7 @@ EXPECT_EQ(res, c);
 // Sequence_toString-Test
 TEST(VITERBI, Result_toString_Test)
 {
+  
 
 
 }
