@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <math.h>
+#include <algorithm>
 #include "Coin.h"
 #include "console.h"
 #include "Matrix.h"
@@ -89,11 +90,11 @@ string Viterbi::Sequence_toString(bool with_result) {
 /** Calculate a cell from the matrix.
  *
  * @p_w_at_coin   probabilty of this FLip with this coin
- * @decision
- * @max_fair1
- * @max_fair2
- * @max_unfair1
- * @max_unfair2
+ * @decision      The Cointype of the biggest value of max1+2 will return in this list for backtracking
+ * @max_fair1     last value
+ * @max_fair2     prob. of change
+ * @max_unfair1   last value
+ * @max_unfair2   prob. of change
  * */
 double Viterbi::formula(double p_w_at_coin, double max_fair1, double max_fair2, double max_unfair1, double max_unfair2, vector<Coin>& decision) {
 
@@ -106,6 +107,7 @@ double Viterbi::formula(double p_w_at_coin, double max_fair1, double max_fair2, 
 
     return log(p_w_at_coin) + max_value;
 }
+
 
 
 
@@ -158,16 +160,16 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
     //last_fair   = formula(p_begin,1,1,0,0);
     //last_unfair = formula(1.0-p_begin,1,1,0,0);
 
-    last_fair = log(p_begin)+log(_markov.prodProbability(Fair,Xi));
-    last_unfair = log(1.0-p_begin)+log(_markov.prodProbability(Unfair,Xi));
+    last_fair   = log(p_begin)     + log(_markov.prodProbability(Fair,Xi));
+    last_unfair = log(1.0-p_begin) + log(_markov.prodProbability(Unfair,Xi));
     M.setValue(0,0,last_fair);
     M.setValue(1,0,last_unfair);
 
     // remaining colums
 
-    while (actual_column <= max_col) { // start at col 2
+    while (actual_column <= max_col) { // start next column
 
-        // FLip at Column
+        // Flip at Column
 
         Xi = _sequence[actual_column];
 
@@ -202,23 +204,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
         actual_column++;;
     }
 
-    //_markov.print_matrices();
-/*
-    /*
-    _markov.changeProbability(Fair,Fair);
-    _markov.changeProbability(Fair,Unfair);
-    _markov.prodProbability(Fair,Head);
-    _markov.prodProbability(Unfair,Tail);
-    M.setValue(1,3,4); // y = zeile // x = spalte
-    M.setValue(0,4,5);
-*/
-
     M.print();
-    //M.print();
-
-
-
-
 
 }
 
@@ -236,7 +222,20 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
  * */
 void Viterbi::backtracking() {
 
-    // set position on end of the input-sequence
+    /* let this cat show you where the most
+       likely way through the matrix is
+
+                 (meow!)
+         /\_/\   )/
+   ((   (=^.^=)
+   ))    )   (
+    (( /      \    ' '
+     (   ) || ||     ' '
+     '----''-''-'  >+++°>
+
+    */
+
+    // set the position on end of the input-sequence
     int actual_column = sequence.size() - 1;
 
     // read first value in the actual column
@@ -252,18 +251,32 @@ void Viterbi::backtracking() {
     // Start backtracker
     while (actual_column >= 0) { // start at last column and move to first column
 
+        // Add Type to Result-List
         result.push_back(actual);
 
-        if (actual == Fair)   { actual = decision_resA[actual_column];}
+        // Jump to Cell of the last max of Fair
+        if (actual == Fair)   { actual = decision_resA[actual_column];
+                                actual_column--;
+                                continue;
+                              }
 
-        if (actual == Unfair) { actual = decision_resB[actual_column];}
-
+        // Jump to Cell of the last max of Unfair
+        if (actual == Unfair) { actual = decision_resB[actual_column];
+                                actual_column--;
+                                continue;
+                                }
         actual_column--;
     }
 
     // reverse the backtracking-list
 
     std::reverse(result.begin(),result.end());
+
+    /*
+
+
+    */
+
 
 }
 
