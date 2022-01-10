@@ -206,10 +206,17 @@ void Markov::print_matrices() {
 
 }
 
-Markov::Markov() { // Default
+/** Default Constructor
+ *
+ * */
+Markov::Markov() { 
 
 }
 
+
+/** Getter for Testing
+ *
+ * */
 Matrix Markov::getChangeMatrix()      { return change; }
 Matrix Markov::getProductMatrix()      { return product; }
 
