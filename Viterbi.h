@@ -15,29 +15,33 @@ using namespace std;
 class Viterbi {
 public:
     // Create HMM
-        Viterbi(Markov _markov,double p_begin, vector<Flip> _sequence);
+    Viterbi(Markov _markov,double p_begin, vector<Flip> _sequence);
 
     // matrix calculate formula
-        static double formula(double p_w_at_coin,double max_a1,double max_a2,double max_b1,double max_b2);
+    static double formula(double p_w_at_coin,double max_fair1, double max_fair2, double max_unfair1, double max_unfair2, vector<Coin>& decision);
 
     // Backtracking
-        void backtracking();
+    void backtracking();
 
     // Getter for Testing
-        Matrix getMatrix();
-        double get_p_begin();
-        Markov get_markov_matrices();
-        std::vector<Flip> get_Sequence();
-        std::vector<Coin> get_Result();
+    Matrix getMatrix();
+    double get_p_begin();
+    Markov get_markov_matrices();
+    std::vector<Flip> get_Sequence();
+    std::vector<Coin> get_Result();
+    std::vector<Coin> get_Decision_resA();
+    std::vector<Coin> get_Decision_resB();
 
     // Result-String for Console Output
-        string Sequence_toString(bool with_result);
+    string Sequence_toString(bool with_result);
 private:
     Matrix M = Matrix(0, 0);
     Markov _markov;
     double p_begin;
     std::vector<Flip> sequence;
     std::vector<Coin> result;
+    std::vector<Coin> decision_resA;
+    std::vector<Coin> decision_resB;
 };
 
 
@@ -85,15 +89,18 @@ string Viterbi::Sequence_toString(bool with_result) {
 /** Calculate a cell from the matrix.
  *
  * @p_w_at_coin   probabilty of this FLip with this coin
- * @max_a1
- * @max_a2
- * @max_b1
- * @max_b2
+ * @decision
+ * @max_fair1
+ * @max_fair2
+ * @max_unfair1
+ * @max_unfair2
  * */
-double Viterbi::formula(double p_w_at_coin, double max_a1, double max_a2, double max_b1, double max_b2) {
+double Viterbi::formula(double p_w_at_coin, double max_fair1, double max_fair2, double max_unfair1, double max_unfair2, vector<Coin>& decision) {
 
-    double a = max_a1 + log(max_a2);
-    double b = max_b1 + log(max_b2);
+    double a = max_fair1 + log(max_fair2); // fair
+    double b = max_unfair1 + log(max_unfair2); // unfair
+
+    if (a > b) {decision.push_back(Fair);} else {decision.push_back(Unfair);}
 
     double max_value = std::max(a,b);
 
@@ -130,81 +137,78 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
     // ## Start Algorithm (Fill Matrix)
 
-       // init
+    // init
 
-       double last_fair   = 0.0; // at row 0 (y = 0)
-       double last_unfair = 0.0; // at row 1 (y = 1)
-       int actual_column  = 1;
-       int max_col        = _sequence.size()-1 ;
-       double pw_at_coin = 0.0;
-       double max_a1 = 0.0;
-       double max_a2 = 0.0;
-       double max_b1 = 0.0;
-       double max_b2 = 0.0;
-       double resA    = 0.0;
-       double resB    = 0.0;
+    double last_fair   = 0.0; // at row 0 (y = 0)
+    double last_unfair = 0.0; // at row 1 (y = 1)
+    int actual_column  = 1;
+    int max_col        = _sequence.size()-1 ;
+    double pw_at_coin = 0.0;
+    double max_a1 = 0.0;
+    double max_a2 = 0.0;
+    double max_b1 = 0.0;
+    double max_b2 = 0.0;
+    double resA    = 0.0;
+    double resB    = 0.0;
 
-       Flip Xi = _sequence[0];
+    Flip Xi = _sequence[0];
 
-       // column 1
+    // column 1
 
-       //last_fair   = formula(p_begin,1,1,0,0);
-       //last_unfair = formula(1.0-p_begin,1,1,0,0);
-     
-       last_fair = log(p_begin)+log(_markov.prodProbability(Fair,Xi));
-       last_unfair = log(1.0-p_begin)+log(_markov.prodProbability(Unfair,Xi));
-       M.setValue(0,0,last_fair);
-       M.setValue(1,0,last_unfair);
+    //last_fair   = formula(p_begin,1,1,0,0);
+    //last_unfair = formula(1.0-p_begin,1,1,0,0);
 
-       // remaining colums
+    last_fair = log(p_begin)+log(_markov.prodProbability(Fair,Xi));
+    last_unfair = log(1.0-p_begin)+log(_markov.prodProbability(Unfair,Xi));
+    M.setValue(0,0,last_fair);
+    M.setValue(1,0,last_unfair);
 
-       while (actual_column <= max_col) { // start at col 2
+    // remaining colums
 
-           // FLip at Column
+    while (actual_column <= max_col) { // start at col 2
 
-           Xi = _sequence[actual_column];
+        // FLip at Column
 
-           // row 0 (fair)
-           pw_at_coin = _markov.prodProbability(Fair,Xi);
-           max_a1     = last_fair;
-           max_a2     = _markov.changeProbability(Fair,Fair);
-           max_b1     = last_unfair;
-           max_b2     = _markov.changeProbability(Unfair,Fair);
+        Xi = _sequence[actual_column];
 
-           resA       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2);
+        // row 0 (fair)
+        pw_at_coin = _markov.prodProbability(Fair,Xi);
+        max_a1     = last_fair;
+        max_a2     = _markov.changeProbability(Fair,Fair);
+        max_b1     = last_unfair;
+        max_b2     = _markov.changeProbability(Unfair,Fair);
 
-           M.setValue(0,actual_column,resA);
+        resA       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2,decision_resA);
 
-           // row 1 (unfair)
-           pw_at_coin = _markov.prodProbability(Unfair,Xi);
-           max_a1     = last_fair;
-           max_a2     = _markov.changeProbability(Fair,Unfair);
-           max_b1     = last_unfair;
-           max_b2     = _markov.changeProbability(Unfair,Unfair);
+        M.setValue(0,actual_column,resA);
 
-           resB       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2);
+        // row 1 (unfair)
+        pw_at_coin = _markov.prodProbability(Unfair,Xi);
+        max_a1     = last_fair;
+        max_a2     = _markov.changeProbability(Fair,Unfair);
+        max_b1     = last_unfair;
+        max_b2     = _markov.changeProbability(Unfair,Unfair);
 
-           M.setValue(1,actual_column,resB);
+        resB       = formula(pw_at_coin,max_a1,max_a2,max_b1,max_b2,decision_resB);
 
-           // set last values for next column
+        M.setValue(1,actual_column,resB);
 
-           last_fair   = resA;
-           last_unfair = resB;
+        // set last values for next column
 
-           // continue to next column
-           actual_column++;;
-       }
+        last_fair   = resA;
+        last_unfair = resB;
+
+        // continue to next column
+        actual_column++;;
+    }
 
     //_markov.print_matrices();
 /*
-
     /*
     _markov.changeProbability(Fair,Fair);
     _markov.changeProbability(Fair,Unfair);
-
     _markov.prodProbability(Fair,Head);
     _markov.prodProbability(Unfair,Tail);
-
     M.setValue(1,3,4); // y = zeile // x = spalte
     M.setValue(0,4,5);
 */
@@ -298,6 +302,8 @@ Matrix Viterbi::getMatrix()      { return M; }
 double Viterbi::get_p_begin()    { return p_begin; }
 std::vector<Flip> Viterbi::get_Sequence() { return sequence;}
 std::vector<Coin> Viterbi::get_Result() { return result;}
+std::vector<Coin> Viterbi::get_Decision_resA() { return decision_resA;}
+std::vector<Coin> Viterbi::get_Decision_resB() { return decision_resB;}
 Markov Viterbi::get_markov_matrices() { return _markov;}
 
 
