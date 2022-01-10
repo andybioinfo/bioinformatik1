@@ -33,8 +33,9 @@ public:
     std::vector<Coin> get_Decision_resA();
     std::vector<Coin> get_Decision_resB();
 
-    // Result-String for Console Output
+    // Create Result-String for Console Output
     string Sequence_toString(bool with_result);
+    
 private:
     Matrix M = Matrix(0, 0);
     Markov _markov;
@@ -212,9 +213,6 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
 
 
-
-
-
 /** Backtracking in matrix for create the Result-Sequence of Coin{Fair,Unfair}
  *  for evaluate the Input/Throw-Sequence.
  *
@@ -222,8 +220,8 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
  * */
 void Viterbi::backtracking() {
 
-    /* let this cat show you where the most
-       likely way through the matrix is
+    /* let this cat show you, where the most
+       likely path is through this matrix
 
                  (meow!)
          /\_/\   )/
@@ -271,26 +269,17 @@ void Viterbi::backtracking() {
     // reverse the backtracking-list
 
     std::reverse(result.begin(),result.end());
-
-    /*
-
-
-    */
-
+    
+    // ##
 
 }
 
 
 
 
-
-
-
-
-
-
-
-// Getter
+/** Getter for Testing
+ *
+ * */
 Matrix Viterbi::getMatrix()      { return M; }
 double Viterbi::get_p_begin()    { return p_begin; }
 std::vector<Flip> Viterbi::get_Sequence() { return sequence;}
@@ -298,11 +287,6 @@ std::vector<Coin> Viterbi::get_Result() { return result;}
 std::vector<Coin> Viterbi::get_Decision_resA() { return decision_resA;}
 std::vector<Coin> Viterbi::get_Decision_resB() { return decision_resB;}
 Markov Viterbi::get_markov_matrices() { return _markov;}
-
-
-
-
-
 
 
 #endif //BIOINFOUB10_VITERBI_H
