@@ -236,54 +236,34 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
  * */
 void Viterbi::backtracking() {
 
-    // Create result sequence
+    // set position on end of the input-sequence
+    int actual_column = sequence.size() - 1;
 
-    int actual_column = sequence.size();
+    // read first value in the actual column
+    double row_A = M.getValue(0,actual_column);
 
-    while (actual_column >= 0) { // start at last column an move to first column
+    // read second value in the actual column
+    double row_B = M.getValue(1,actual_column);
 
-        // read first value in the actual column
-        double row_A = M.getValue(0,actual_column);
-        // read second value in the actual column
-        double row_B = M.getValue(1,actual_column);
+    // Set row/coin cursor
+    Coin actual;
+    if (row_A > row_B) { actual = Fair; } else { actual = Unfair; }
 
-        // do something ... and add Fair or Unfair to result
+    // Start backtracker
+    while (actual_column >= 0) { // start at last column and move to first column
 
-        //result.push_back(Unfair);
-        //result.push_back(Fair);
+        result.push_back(actual);
 
-        // next column
+        if (actual == Fair)   { actual = decision_resA[actual_column];}
+
+        if (actual == Unfair) { actual = decision_resB[actual_column];}
+
         actual_column--;
-
-
     }
 
+    // reverse the backtracking-list
 
-
-
-
-// reverse the backtracking-list
-
-
-
-// - Backtracking END -
-
-
-
-
-
-
-
-
-    result.push_back(Unfair);
-    result.push_back(Fair);
-    result.push_back(Fair);
-    result.push_back(Unfair);
-    result.push_back(Unfair);
-    result.push_back(Fair);
-    result.push_back(Unfair);
-    result.push_back(Fair);
-    result.push_back(Unfair);
+    std::reverse(result.begin(),result.end());
 
 }
 
