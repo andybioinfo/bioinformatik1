@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <math.h>
 #include "Coin.h"
 #include "console.h"
 #include "Matrix.h"
@@ -91,12 +92,12 @@ string Viterbi::Sequence_toString(bool with_result) {
  * */
 double Viterbi::formula(double p_w_at_coin, double max_a1, double max_a2, double max_b1, double max_b2) {
 
-    double a = max_a1 * max_a2;
-    double b = max_b1 * max_b2;
+    double a = max_a1 + log(max_a2);
+    double b = max_b1 + log(max_b2);
 
     double max_value = std::max(a,b);
 
-    return p_w_at_coin * max_value;
+    return log(p_w_at_coin) + max_value;
 }
 
 
@@ -150,8 +151,8 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
        //last_fair   = formula(p_begin,1,1,0,0);
        //last_unfair = formula(1.0-p_begin,1,1,0,0);
      
-       last_fair = p_begin*_markov.prodProbability(Fair,Xi);
-       last_unfair = (1.0-p_begin)*_markov.prodProbability(Unfair,Xi);
+       last_fair = log(p_begin)+log(_markov.prodProbability(Fair,Xi));
+       last_unfair = log(1.0-p_begin)+log(_markov.prodProbability(Unfair,Xi));
        M.setValue(0,0,last_fair);
        M.setValue(1,0,last_unfair);
 
