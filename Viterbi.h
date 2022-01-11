@@ -158,13 +158,14 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 
     // column 1
 
-    //last_fair   = formula(p_begin,1,1,0,0);
-    //last_unfair = formula(1.0-p_begin,1,1,0,0);
-
     last_fair   = log(p_begin)     + log(_markov.prodProbability(Fair,Xi));
     last_unfair = log(1.0-p_begin) + log(_markov.prodProbability(Unfair,Xi));
+    
     M.setValue(0,0,last_fair);
     M.setValue(1,0,last_unfair);
+
+    decision_resA.push_back(Fair);
+    decision_resB.push_back(Unfair);
 
     // remaining colums
 
