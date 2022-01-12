@@ -135,23 +135,17 @@ Markov::Markov(double p_coinchange, double p_head_fair, double p_head_unfair) {
  * */
 void Markov::print_matrices() {
 
-    char RESET[]   = "\033[0m";
-    char BBLUE[]   = "\033[1;34m";
-    char BWHITE[]  = "\033[1;37m";
-    char RED[]     = "\033[0;31m";
-    char BYELLOW[] = "\033[1;33m";
+    std::cout << C::BWHITE << "\n | Markov - Change-Matrix" << C::BBLUE; // 0 = Unfair, 1 = Fair
+    std::cout << C::RED    << "\n | Fair   -> Fair   : " << C::BYELLOW << change.getValue(1,1);
+    std::cout << C::RED    << "\n | Fair   -> Unfair : " << C::BYELLOW << change.getValue(1,0);
+    std::cout << C::RED    << "\n | Unfair -> Fair   : " << C::BYELLOW << change.getValue(0,1);
+    std::cout << C::RED    << "\n | Unfair -> Unfair : " << C::BYELLOW << change.getValue(0,0) << "\n";
 
-    std::cout << BWHITE << "\n | Markov - Change-Matrix" << BBLUE; // 0 = Unfair, 1 = Fair
-    std::cout << RED    << "\n | Fair   -> Fair   : " << BYELLOW << change.getValue(1,1);
-    std::cout << RED    << "\n | Fair   -> Unfair : " << BYELLOW << change.getValue(1,0);
-    std::cout << RED    << "\n | Unfair -> Fair   : " << BYELLOW << change.getValue(0,1);
-    std::cout << RED    << "\n | Unfair -> Unfair : " << BYELLOW << change.getValue(0,0) << "\n";
-
-    std::cout << BWHITE << "\n | Markov - Production-Matrix" << BBLUE; // x0 = Tail, x1 = Head ; y0 = Unfair, y1 = Fair
-    std::cout << RED    << "\n | Fair   -> Head   : " << BYELLOW << product.getValue(1,1);
-    std::cout << RED    << "\n | Fair   -> Tail   : " << BYELLOW << product.getValue(1,0);
-    std::cout << RED    << "\n | Unfair -> Head   : " << BYELLOW << product.getValue(0,1);
-    std::cout << RED    << "\n | Unfair -> Tail   : " << BYELLOW << product.getValue(0,0) << RESET << "\n";
+    std::cout << C::BWHITE << "\n | Markov - Production-Matrix" << C::BBLUE; // x0 = Tail, x1 = Head ; y0 = Unfair, y1 = Fair
+    std::cout << C::RED    << "\n | Fair   -> Head   : " << C::BYELLOW << product.getValue(1,1);
+    std::cout << C::RED    << "\n | Fair   -> Tail   : " << C::BYELLOW << product.getValue(1,0);
+    std::cout << C::RED    << "\n | Unfair -> Head   : " << C::BYELLOW << product.getValue(0,1);
+    std::cout << C::RED    << "\n | Unfair -> Tail   : " << C::BYELLOW << product.getValue(0,0) << C::RESET << "\n";
 
 }
 
