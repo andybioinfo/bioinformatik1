@@ -157,7 +157,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
         actual_column++;;
     }
 
-    M.print();
+    printViterbi();
 
 }
 
@@ -219,12 +219,75 @@ void Viterbi::backtracking() {
     }
 
     // reverse the backtracking-list
-
+  /*
+    string res = "\n";
+    for (Coin f : result) {
+        if (f == Fair) {res += "Fair ";}
+        if (f == Unfair) {res += "Unfair ";}
+    }
+    cout << res;
+*/
     std::reverse(result.begin(),result.end());
 
     // ##
+/*
+    res = "\n";
+    for (Coin f : result) {
+        if (f == Fair) {res += "Fair ";}
+        if (f == Unfair) {res += "Unfair ";}
+    }
+    cout << res;
+*/
+}
+
+/** Print the Matrix to console
+ *  Value Green = Predecessor ist Fair
+ *  Value Green = Predecessor ist Unfair
+ * */
+void Viterbi::printViterbi() {
+
+    cout << C::BWHITE << "   | Backtracking: " << C::BBLUE << "Value Green: Predecessor is Fair, Value Red: Predecessor is Unfair" ;
+    string line1 = "   |";
+    string line2 = " F |";
+    string line3 = "UF |";
+    int pos = 0;
+    int max = sequence.size();
+
+    while (pos < max) {
+
+        // create Xi's Strings
+        if (sequence[pos] == Tail) {line1 += "     Tail";} else if (sequence[pos] == Head) {line1 += "     Head";} else {line1 += "    Error";}
+
+        // create Fair's Strings
+        if (decision_resA[pos] == Fair)  {line2 += C::BGREEN;} else if (decision_resA[pos] == Unfair) {line2 += C::BRED;} else {line2 += C::BWHITE;}
+        line2 += Matrix::double2String(M.getValue(0,pos));
+
+        // create Unfair's Strings
+        if (decision_resB[pos] == Fair)  {line3 += C::BGREEN;} else if (decision_resB[pos] == Unfair) {line3 += C::BRED;} else {line3 += C::BWHITE;}
+        line3 += Matrix::double2String(M.getValue(1,pos));
+
+        // if last :
+        if (pos == (max-1)) {
+            double row_A = M.getValue(0,pos);
+            double row_B = M.getValue(1,pos);
+            if (row_A > row_B) { line2 += C::BWHITE;line2 += " <<"; } else { line3 += C::BWHITE;line3 += " <<"; }
+
+        }
+
+        pos++;
+
+    }
+
+    cout << "\n" << C::BWHITE  << line1;
+    cout << "\n" << C::BWHITE  << line2;
+    cout << "\n" << C::BWHITE  << line3 << "\n\n";
+    cout << C::RESET;
 
 }
+
+
+
+
 
 
 
@@ -239,5 +302,9 @@ std::vector<Coin> Viterbi::get_Result() { return result;}
 std::vector<Coin> Viterbi::get_Decision_resA() { return decision_resA;}
 std::vector<Coin> Viterbi::get_Decision_resB() { return decision_resB;}
 Markov Viterbi::get_markov_matrices() { return _markov;}
+
+
+
+
 
 
