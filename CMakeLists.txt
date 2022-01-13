@@ -31,14 +31,18 @@ add_definitions(${CXX_FLAGS})
 # erzeugen wollen.
 add_library(himamo SHARED
 
-        main.cpp
-        Matrix.h
-        Viterbi.h
-        Viterbi.cpp
-        Coin.h
-        console.h
-        Markov.cpp
-        Markov.h
+main.cpp
+Matrix.h
+Viterbi.h
+Viterbi.cpp
+Coin.h
+console.h
+Markov.cpp
+Markov.h
+console.cpp 
+Color.cpp 
+Color.h 
+Matrix.cpp
 
         )
 
