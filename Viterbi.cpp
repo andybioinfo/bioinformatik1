@@ -1,5 +1,22 @@
 #include "Viterbi.h"
 
+
+
+
+/** Compare two doubles up to 2 digits
+ *  
+ * @a first value
+ * @b second value
+ * */
+    bool Viterbi::doubleCompare(double a, double b) {
+    
+    double cmp = abs(a - b);
+        if (cmp < 0.01) {return true;} 
+        return false;    
+    
+    }
+
+
 /** Returns the Sequence of the Coin-Flips, if with_result chosen,
  *  the calculated Fair/Unfair throw will colorized in the String:
  *   [Red   = unfair throw]
