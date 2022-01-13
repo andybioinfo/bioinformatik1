@@ -38,7 +38,7 @@ TEST(MARKOV, String2Flip_Sequence)
 auto a = Markov::String2Sequence("1");
 auto b = Markov::String2Sequence("0");
 auto c = Markov::String2Sequence("101011");
-auto c = Markov::String2Sequence("1010112");
+auto c2 = Markov::String2Sequence("1010112");
 auto d = Markov::String2Sequence("");
 auto e = Markov::String2Sequence("pizzafleischkääsweck");
 EXPECT_EQ(1.0, 0.0);

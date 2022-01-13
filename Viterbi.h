@@ -36,6 +36,9 @@ public:
 
     // Create Result-String for Console Output
     string Sequence_toString(bool with_result);
+
+    //print Viterbi 
+    void printViterbi();
     
 private:
     Matrix M = Matrix(0, 0);
