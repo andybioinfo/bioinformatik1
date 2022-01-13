@@ -40,6 +40,9 @@ public:
     //print Viterbi 
     void printViterbi();
     
+    // double compare
+    bool doubleCompare(double a, double b);
+    
 private:
     Matrix M = Matrix(0, 0);
     Markov _markov;
