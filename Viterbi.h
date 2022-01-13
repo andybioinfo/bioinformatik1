@@ -233,7 +233,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
 void Viterbi::backtracking() {
 
     // Create result sequence
-
+    /*
     int actual_column = sequence.size();
 
     while (actual_column >= 0) { // start at last column an move to first column
@@ -280,7 +280,7 @@ void Viterbi::backtracking() {
     result.push_back(Unfair);
     result.push_back(Fair);
     result.push_back(Unfair);
-
+*/
 }
 
 

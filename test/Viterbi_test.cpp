@@ -118,8 +118,10 @@ TEST(VITERBI, HMM_MatrixValues_Test)
     Viterbi v(m,0.9,seq);
     auto M = v.getMatrix();
     
-    EXPECT_EQ(0.45, M.getValue(0,0));
-    
+    EXPECT_EQ( -0.798508, M.getValue(0,0));
+    EXPECT_EQ( -2.59027, M.getValue(1,0));
+    EXPECT_EQ( -1.59702, M.getValue(0,1));
+    EXPECT_EQ( -4.08192, M.getValue(1,1));
 
 }
 
