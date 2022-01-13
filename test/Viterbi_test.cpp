@@ -27,7 +27,7 @@ TEST(VITERBI, InitTest)
     EXPECT_EQ(0   , v.get_Result().size());
     EXPECT_EQ(0.3, v.get_p_begin());
     EXPECT_EQ(0.2, v.get_markov_matrices().changeProbability(Fair,Unfair));
-    EXPECT_EQ(0.4, v.get_markov_matrices().prodProbability(Unfair,Tail));
+    EXPECT_EQ(0.4, v.get_markov_matrices().prodProbability(Unfair,Head));
 }
 
 // Exception-Test if sequence empty or/and the begin-value out of range
@@ -37,12 +37,11 @@ TEST(VITERBI, InitExceptionTest)
     std::vector<Flip> seqOne;
     seqOne.push_back(Head);
     Markov m(0.2,0.5,0.4);
-    Viterbi empty(m,0.35,seqEmpty);
-    EXPECT_EQ(0.10, 9.0);
-
-    Viterbi invalidA(m,2.0e+99,seqEmpty);
-    Viterbi invalidB(m,-9000.0,seqEmpty);
-    EXPECT_EQ(0.10, 9.0);
+    EXPECT_ANY_THROW(Viterbi empty(m,0.35,seqEmpty));
+    
+    EXPECT_ANY_THROW(Viterbi invalidA(m,2.0e+99,seqEmpty));
+    EXPECT_ANY_THROW(Viterbi invalidB(m,-9000.0,seqEmpty));
+   
 }
 
 // Is the Result-sequence-Length the same as the Input-sequence-length
@@ -78,7 +77,7 @@ TEST(VITERBI, OnlyUnfairCoinTest)
     Viterbi v(m,0,seq);
     v.backtracking();
     for (Coin c : v.get_Result()) {
-        EXPECT_EQ(Fair, c);
+        EXPECT_EQ(Unfair, c);
     }
 }
 
@@ -89,7 +88,16 @@ TEST(VITERBI, OnlyUnfairCoinTest)
 // Correct HMM-Throw-Result for a given Input-Sequence?
 TEST(VITERBI, BacktrackingResult)
 {
-
+    std::vector<Flip> seq;
+    seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);seq.push_back(Tail);
+    Markov m(0.5,0.5,0.1);
+    Viterbi v(m,0.4,seq);
+    v.backtracking();
+    
+    std::vector<Coin> com;
+    com.push_back(Unfair);com.push_back(Fair);com.push_back(Unfair);com.push_back(Fair);com.push_back(Unfair);com.push_back(Fair);
+    std::reverse(com.begin(), com.end());
+    EXPECT_EQ(com, v.get_Result());
 
 }
 
@@ -118,29 +126,42 @@ TEST(VITERBI, HMM_MatrixValues_Test)
     Viterbi v(m,0.9,seq);
     auto M = v.getMatrix();
     
-    EXPECT_EQ( -0.798508, M.getValue(0,0));
-    EXPECT_EQ( -2.59027, M.getValue(1,0));
-    EXPECT_EQ( -1.59702, M.getValue(0,1));
-    EXPECT_EQ( -4.08192, M.getValue(1,1));
+    EXPECT_TRUE(v.doubleCompare(-0.798508,M.getValue(0,0)));
+    EXPECT_TRUE(v.doubleCompare(-2.59027,M.getValue(1,0)));
+    EXPECT_TRUE(v.doubleCompare(-1.59702,M.getValue(0,1)));
+    EXPECT_TRUE(v.doubleCompare(-4.08192,M.getValue(1,1)));
 
 }
 
 // Matrix calculation formula Test
 TEST(VITERBI, MatrixFormulaTest)
 {
-    /*
-double res = Viterbi::formula(double p_w_at_coin,double max_a1,double max_a2,double max_b1,double max_b2);
-EXPECT_EQ(res, c);
+    std::vector<Flip> seq;
+    seq.push_back(Head);seq.push_back(Tail);
+    Markov m(0.1,0.5,0.75);
+    Viterbi v(m,0.9,seq);
 
-)
-*/
+    std::vector<Coin> coin;
+    coin.push_back(Fair);
+
+    std::vector<Coin> coinCompare;
+    coinCompare.push_back(Fair);coinCompare.push_back(Fair);
+    EXPECT_EQ(1, v.formula(1,1,1,0,1,coin));
+    EXPECT_EQ(coinCompare, coin);
 }
 
 
 // Sequence_toString-Test
 TEST(VITERBI, Result_toString_Test)
 {
-  
+  std::vector<Flip> seq;
+    seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);seq.push_back(Head);seq.push_back(Tail);seq.push_back(Head);
+    Markov m(0,0.5,0.8);
+    Viterbi v(m,0,seq);
+    v.backtracking();
+    
+    EXPECT_EQ("\x1B[1;37m{ 101101 }\x1B[0m", v.Sequence_toString(false));
+    
 
 
 }
