@@ -11,7 +11,7 @@
     bool Viterbi::doubleCompare(double a, double b) {
     
     double cmp = abs(a - b);
-        if (cmp < 0.01) {return true;} 
+        if (cmp < 0.001) {return true;} 
         return false;    
     
     }
@@ -174,7 +174,7 @@ Viterbi::Viterbi(Markov _markov, double p_begin, vector<Flip> _sequence) {
         actual_column++;;
     }
 
-    printViterbi();
+
 
 }
 
@@ -236,25 +236,11 @@ void Viterbi::backtracking() {
     }
 
     // reverse the backtracking-list
-  /*
-    string res = "\n";
-    for (Coin f : result) {
-        if (f == Fair) {res += "Fair ";}
-        if (f == Unfair) {res += "Unfair ";}
-    }
-    cout << res;
-*/
+
     std::reverse(result.begin(),result.end());
 
     // ##
-/*
-    res = "\n";
-    for (Coin f : result) {
-        if (f == Fair) {res += "Fair ";}
-        if (f == Unfair) {res += "Unfair ";}
-    }
-    cout << res;
-*/
+
 }
 
 /** Print the Matrix to console
