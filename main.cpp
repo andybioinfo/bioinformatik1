@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
 
     Snipper S(arg_In);
 
+    console::ShowHeader();
     console::ShowInputs(arg_In,arg_Out,S);
 
 

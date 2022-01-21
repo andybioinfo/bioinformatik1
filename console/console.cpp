@@ -10,18 +10,15 @@
 * sends a big-font Ascii-Art-Header to std::cout
 * */
 void console::ShowHeader() {
-    std::cout << "\n" << C::BGREEN ;
-    std::cout << " ____   ____ __  __              ___     __          " << "\n";
-    std::cout << " \\   \\ /   /|__|/  |_  __________\\_ |__ |__|         " << "\n";
-    std::cout << "  \\   Y   / |  \\   __\\/ __ \\_  __ \\ __ \\|  |         " << "\n";
-    std::cout << "   \\     /  |  ||  | \\  ___/|  | \\/ \\_\\ \\  |         " << "\n";
-    std::cout << "    \\___/   |__||__|  \\___  >__|  |___  /__|         " << "\n";
-    std::cout << "          __              \\/        __\\/__           " << "\n";
-    std::cout << "  _____  |  |    ____   ___________|__|/  |_  _____  " << "\n";
-    std::cout << "  \\__  \\ |  |   / ___\\ /  _ \\_  __ \\  \\   __\\/     \\ " << "\n";
-    std::cout << "   / __ \\|  |__/ /_/  >  <_> >  | \\/  ||  | |  Y Y  \\" << "\n";
-    std::cout << "  (____  /____/\\___  / \\____/|__|  |__||__| |__|_|  /" << "\n";
-    std::cout << "       \\/     /_____/                             \\/ " << "\n";
+    std::cout << "\n";
+    std::cout << C::BYELLOW <<  "\n    )\\.--.   )\\  )\\ " << C::BRED << " .'(  " << C::BYELLOW << "   /`-.  " << C::BRED << "   /`-.   )\\.---.     /`-.  ";
+    std::cout << C::BYELLOW <<  "\n   (   ._.' (  \\, / " << C::BRED << " \\  ) " << C::BYELLOW << " ,' _  \\ " << C::BRED << " ,' _  \\ (   ,-._(  ,' _  \\ ";
+    std::cout << C::BYELLOW <<  "\n    `-.`.    ) \\ (  " << C::BRED << " ) (  " << C::BYELLOW << "(  '-' ( " << C::BRED << "(  '-' (  \\  '-,   (  '-' ( ";
+    std::cout << C::BYELLOW <<  "\n   ,_ (  \\  ( ( \\ \\ " << C::BRED << " \\  ) " << C::BYELLOW << " ) ,._.' " << C::BRED << " ) ,._.'   ) ,-`    ) ,_ .' ";
+    std::cout << C::BYELLOW <<  "\n  (  '.)  )  `.)/  )" << C::BRED << "  ) \\ " << C::BYELLOW << "(  '     " << C::BRED << "(  '      (  ``-.  (  ' ) \\ ";
+    std::cout << C::BYELLOW <<  "\n   '._,_.'      '.( " << C::BRED << "   )/ " << C::BYELLOW << " )/      " << C::BRED << " )/        )..-.(   )/   )/ ";
+    std::cout << "\n";
+    std::cout << "\n " << C::BYELLOW << " SN" << C::BRED << "I" << C::BYELLOW << "P" << C::BRED << "PER  ---- " << C::BYELLOW << "  \n";
     std::cout << C::RESET;
 }
 
@@ -30,7 +27,6 @@ void console::ShowHeader() {
 * send input infos to std::cout
 * */
 void console::ShowInputs(std::string filein, std::string fileout, Snipper &begin) {
-
     std::string BG1      =  S::getStyle(Red,Non,None);
     std::string BG2      =  S::getStyle(Blue,Non,None);
     std::string R        =  S::RESET;
@@ -43,7 +39,7 @@ void console::ShowInputs(std::string filein, std::string fileout, Snipper &begin
 
     // File
 
-    std::cout << "\n"<<BG1<<"       " << T_input << "INPUT" <<"        " << T_in << T_UL<< "file in" << R << BG1 << " : " <<T1 << R ;
+    std::cout << "\n\n"<<BG1<<"       " << T_input << "INPUT" <<"        " << T_in << T_UL<< "file in" << R << BG1 << " : " <<T1 << R ;
     std::cout << "\n"<<BG1<<"                   " << T_in << T_UL << T_C << "file out" << R << BG1 << " : " << T2;
     std::cout << R <<"\n" << R;
 
@@ -75,7 +71,8 @@ void console::ShowInputs(std::string filein, std::string fileout, Snipper &begin
 * send the help-message to std::cout
 * */
 void console::Help(std::string message) {
-    std::cout << C::BWHITE  <<  "\n" ;/*
+    console::ShowHeader();
+    std::cout << C::BWHITE  <<  "" ;/*
     std::cout << C::BWHITE  <<  "    .______.    S N P  A L G O R I T M \n" ;
     std::cout << C::BWHITE  <<  "   /\\       \\      \n" ;
     std::cout << C::BWHITE  <<  "  /()\\   ()  \\ " << C::BLUE << "   This algorithm calculates for a sequence\n" ;
@@ -84,9 +81,9 @@ void console::Help(std::string message) {
     std::cout << C::BWHITE  <<  "  \\()/   ()  / " << C::BLUE << "  with the parameters the resulting \n" ;
     std::cout << C::BWHITE  <<  "   \\/_____()/  " << C::BLUE << " sequence of " << C::BLUE << "fair/unfair Coin-Flips\n" ;
     std::cout << C::BWHITE  <<  "               " << C::BLUE << "to uncover coin-flip-cheaters.\n" ;*/
-    std::cout << C::BWHITE  <<  "\n";
-    std::cout << C::BWHITE  <<  "   Help:    " << C::BYELLOW << " $ ./snipper [input] [output] \n" ;
-    std::cout << C::BWHITE  <<  "   Example: " << C::BGREEN  << " $ ./snipper ../snp.txt ../out.snp            \n" ;
+    std::cout << C::BWHITE  <<  "";
+    std::cout << C::BWHITE  <<  "  Help:    " << C::BYELLOW << " $ ./snipper [input] [output] \n" ;
+    std::cout << C::BWHITE  <<  "  Example: " << C::BGREEN  << " $ ./snipper ../snp.txt ../out.snp            \n" ;
     std::cout << C::BWHITE  <<  "\n" ;
     std::cout << C::BGREEN  <<  " [FILE]  input    " << C::BWHITE << "| " << C::BYELLOW << " a SNP matrix file\n" ;
     std::cout << C::BGREEN  <<  " [FILE]  output   " << C::BWHITE << "| " << C::BYELLOW << " ? surprise ?\n" ;
