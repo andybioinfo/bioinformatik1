@@ -13,39 +13,48 @@ class Snipper {
 
 public:
 
-    // Create Snipper without file (for testing)
-    Snipper();
+    // ### SnipperFile ###
 
-    // Create Snipper with file
-    Snipper(std::string filename);
+        // Create Snipper without file (for testing)
+        Snipper();
 
-    // Get SNP'S
-    SingleSNP operator [](int idx) const;
+        // Create Snipper with file
+        Snipper(std::string filename);
 
-    // add a new SNP-Vector to the array
-    Snipper & operator<<(SingleSNP const &s)
-    {
-        _snpstack.push_back(s);
-        return *this;
-    }
+        // add a new SNP-Vector to the array
+        Snipper & operator<<(SingleSNP const &s)
+        {
+            _snpstack.push_back(s);
+            return *this;
+        }
 
-    // 1000x Shuffle...
-    double computeF_all(int shuffles);
 
-    //
-    void computeMacaroni();
+    // ### SnipperAlgorithm ###
 
-    //
-    void computeFDR();
+        // shuffle x1000, returns p-value
+        double computeF_all(int shuffles);
 
-    //
-    Classifics& getClassifics();
+        // ??
+        void computeMacaroni();
 
-    // count snips
-    int getSNPcount();
+        // ??
+        void computeFDR();
 
-    // for Testing (count Genotypes over all SNP's)
-    int getGenCount(Genotype gen);
+
+    // ### SnipperMain ###
+
+        // get classifications
+        Classifics& getClassifics();
+
+        // count snips
+        int getSNPcount(); 
+
+        // for Testing (count Genotypes over all SNP's)
+        int getGenCount(Genotype gen);
+
+        // Get SNP'S per [] - operator
+        SingleSNP operator [](int idx) const;
+
 
 private:
 
