@@ -6,6 +6,7 @@
 #define SNIPPER_CLASSIFICS_H
 
 #include <vector>
+#include <string>
 #include "States.h"
 
 /**  (Column Y)
@@ -26,15 +27,8 @@ public:
 
     using Y_Vector = std::vector<Classification>;
 
+    // Default Constructor
     Classifics();
-
-    Classification operator [](int idx) const;
-
-    double probability(Classification chosen);
-
-    int countOf(Classification chosen);
-
-    int count();
 
     // add a new classification aka row
     Classifics & operator << (Classification const &s)
@@ -42,6 +36,26 @@ public:
         _classifications.push_back(s);
         return *this;
     }
+
+    //
+    Classification operator [](int idx) const;
+
+    //
+    void shuffle();
+
+    //
+    std::string to2String();
+
+    //
+    double probability(Classification chosen);
+
+    //
+    int countOf(Classification chosen);
+
+    //
+    int count();
+
+
 
 private:
 

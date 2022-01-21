@@ -4,13 +4,23 @@
 
 #include "Snipper.h"
 
-void Snipper::computeF_all() {
+double Snipper::computeF_all(int shuffles) {
+
+    int matches = 0;
 
     for (SingleSNP snp : _snpstack) {
 
-        snp.computeF();
+        double reference_F = snp.computeF();
+        for (int sh = 0 ; sh < shuffles ; sh ++) {
+            _class.shuffle();
+            double new_F = snp.computeF();
+            if (new_F > reference_F) {matches++;}
+
+        }
 
     }
+
+    return (double)matches / (double)shuffles;
 
 }
 

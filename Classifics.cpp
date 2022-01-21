@@ -4,6 +4,10 @@
 
 #include <stdexcept>
 #include <iostream>
+#include <algorithm>
+#include <sstream>
+#include <string>
+#include <random>
 #include "Classifics.h"
 
 Classifics::Classifics() {
@@ -77,5 +81,21 @@ double Classifics::probability(Classification clss) {
 
     return -1;
 
+}
+
+void Classifics::shuffle() {
+    auto rd = std::random_device();
+    auto rng = std::default_random_engine(rd());
+    std::shuffle(std::begin(_classifications),std::end(_classifications),rng);
+}
+
+std::string Classifics::to2String() {
+std::stringstream res("");
+    res <<"Y(size:"<< _classifications.size() << ") { ";
+for (Classification c : _classifications) {
+    res << c;
+}
+res << " }";
+return res.str();
 }
 

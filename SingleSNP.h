@@ -28,40 +28,36 @@ public:
 
     using X_Vector = std::vector<Genotype>;
 
-    // Create SNP
+    // ## Constructors
+
     SingleSNP(Classifics &_clss);
-
-    // Get SNP'S
-    Genotype operator [](int idx) const;
-
-    // get SNP Size / count of patients
-    int getSize();
-
-    // get matched Classification at row Position
-    Classification getClassificationAt(int pos);
-
-    // add a new classification aka row
     SingleSNP & operator << (Genotype const &g)
     {
         _snp.push_back(g);
         return *this;
     }
 
+    // ## Formulas
 
-    void computeF();
+    double probability(Genotype chosen);
+    double probability(Classification _Y, Genotype _X);
+    double computeF();
 
-    double fracFormula();
+    static double I_XY_Formula(double pY0, double pY1, double pXi0,double pXi1, double pXi2, double pY0_Xi0, double pY0_Xi1, double pY0_Xi2, double pY1_Xi0, double pY1_Xi1, double pY1_Xi2 );
+    static double H_X_Formula(double pXi0,double pXi1, double pXi2);
 
+    // ## Getter
+
+    Classification getClassificationAt(int pos);
+    Genotype operator [](int idx) const;
+    int getSize();
 
 private:
 
     // List
-    X_Vector _snp;            // The SNP
-    Classifics *_class{};         // The classifications of the SNP-Vector
+    X_Vector _snp;             // The SNP
+    Classifics *_class{};      // The classifications of the SNP-Vector
     std::vector<double> _frac; // ??
-
-
-
 
 };
 

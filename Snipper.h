@@ -29,8 +29,8 @@ public:
         return *this;
     }
 
-    //
-    void computeF_all();
+    // 1000x Shuffle...
+    double computeF_all(int shuffles);
 
     //
     void computeMacaroni();
