@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 
     double time1 = t.getMilliSecs(); // timestamp after file in
 
-    S.computeFDR(); // algorithm
+    S.startAlgorithm(); // algorithm
 
     double time2 = t.getMilliSecs(); // timestamp after finish algorithm
 
