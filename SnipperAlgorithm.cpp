@@ -31,24 +31,14 @@ double Snipper::computeF_shuffling(int shuffles,int snp_idx, double reference_F)
 
 
 
-void Snipper::computeMacaroni(int snp_idx) { // Exercise d)
-
-    // p-value * count Tests
-    // reference Frac-Value
-    double reference_F = _snpstack[snp_idx].computeF();
-    double p_value = Snipper::computeF_shuffling(1000,snp_idx,reference_F);
-    double count = _class.count();
-    double _p_value = p_value * count;
-
-    // p'value <= 0.05
-    if (_p_value <= 0.05) {  }
-
-
+double Snipper::computeBonferroni(double p_value) { // Exercise d)
+    //p-value * Snp anzahl
+    return p_value*100.0;
 }
 
-void Snipper::computeFDR() { // Exercise d)
+double Snipper::computeFDR(double p_value) { // Exercise d)
 
-    
+    return 1.0;
 
 
 }
@@ -69,6 +59,15 @@ void Snipper::startAlgorithm() {
             _resultA_p_value.push_back(p);
             _resultA_ref_F.push_back(reference_F[snp_id]);
             _resultA_SNP_id.push_back(snp_id);
+        }
+
+        // Adjustierung
+        double p_ad = computeBonferroni(p);
+        double p_ad2 = computeFDR(p_ad);
+        if(p_ad2<=0.05){
+            _resultB_p_value.push_back(p_ad2);
+            _resultB_ref_F.push_back(reference_F[snp_id]);
+            _resultB_SNP_id.push_back(snp_id);
         }
     }
 

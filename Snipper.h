@@ -40,10 +40,10 @@ public:
     double computeF_shuffling(int shuffles, int snp_idx, double reference_F);
 
     //
-    void computeMacaroni(int snp_idx);
+    double computeBonferroni(double p_value);
 
     //
-    void computeFDR();
+    double computeFDR(double p_value);
 
     //
     Classifics& getClassifics();
