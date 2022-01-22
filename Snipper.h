@@ -16,6 +16,9 @@ public:
     // Create Snipper without file (for testing)
     Snipper();
 
+    // output
+    void outputSNP(std::string output_file);
+
     // Create Snipper with file
     Snipper(std::string filename);
 

@@ -8,8 +8,6 @@
 
 int main(int argc, char *argv[]) {
 
-    //Snipper S("../snp_small.txt");
-
     //std::cout << "\n" << S.getClassifics().to2String();
     //std::cout << "\n Xi[0].computeF => " << S[0].computeF();
     //std::cout << "\n Xi[1].computeF => " << S[1].computeF();
@@ -50,6 +48,8 @@ int main(int argc, char *argv[]) {
     double time1 = t.getMilliSecs(); // timestamp after file in
 
     S.startAlgorithm(); // algorithm
+
+    S.outputSNP(arg_Out);
 
     double time2 = t.getMilliSecs(); // timestamp after finish algorithm
 

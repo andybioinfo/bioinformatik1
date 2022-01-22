@@ -26,10 +26,13 @@ Answer:
 #include <sstream>
 #include <iostream>
 #include "Snipper.h"
+#include "console/Format.h"
 
 Snipper::Snipper() {
 
 }
+
+
 
 Snipper::Snipper(std::string filename) {
 
@@ -122,14 +125,39 @@ Snipper::Snipper(std::string filename) {
     }
 
 
-
-
-
-
-
 }
 
 
 
 
+void Snipper::outputSNP(std::string output_file) {
 
+    std::ofstream output(output_file);
+    output << "SNP Output: (SNP's <= 0.05)\n";
+    output << "\n";
+    output << "F = Fraction of Information \nP = P-Value\n";
+    output << "\n";
+    output << "Result significance :=   " << _resultA_SNP_id.size() << " / "<< _snpstack.size() << " SNP's \n";
+    output << "\n";
+    output << "______SNP_|___P-Value_|____Ref F_\n";
+    int idx = 0;
+    while (idx < _resultA_SNP_id.size()) {
+        output << Format::int2String(_resultA_SNP_id[idx])     << " | ";
+        output << Format::double2String(_resultA_p_value[idx]) << " | ";
+        output << Format::double2String(_resultA_ref_F[idx])   << "\n";
+        idx++;
+    }
+
+    output << "\n\n";
+    output << "Result Adjustment   :=  " << _resultB_SNP_id.size() << " / "<< _snpstack.size() << " SNP's \n";
+    output << "\n";
+    output << "______SNP_|___P-Value_|____Ref F_\n";
+    idx = 0;
+    while (idx < _resultB_SNP_id.size()) {
+        output << Format::int2String(_resultB_SNP_id[idx])     << " | ";
+        output << Format::double2String(_resultB_p_value[idx]) << " | ";
+        output << Format::double2String(_resultB_ref_F[idx])   << "\n";
+        idx++;
+    }
+output.close();
+};
