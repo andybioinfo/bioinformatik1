@@ -23,7 +23,7 @@ double Snipper::computeF_shuffling(int shuffles,int snp_idx, double reference_F)
     }
 
     // return the probability of the matches of shuffling
-    return (double)matches + 1.0 / (double)shuffles;
+    return (double)( matches + 1 ) / (double)shuffles;
 
 }
 
