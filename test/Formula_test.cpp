@@ -1,7 +1,7 @@
 //
 // Created by manjaro on 21.01.22.
 //
-
+#include <gtest/gtest.h>
 #include "../Snipper.h"
 
 
@@ -69,11 +69,26 @@ TEST(FSNP_BUILD, Create)
 
 Snipper S("../snp_small.txt"); // Exercise 4 SNPs
 
-doubleS[0].computeF()
-S[1].computeF()
-S[2].computeF()
+S[0].computeF();
+S[1].computeF();
+S[2].computeF();
 
 
 EXPECT_EQ(0.51, 0.0);
 
 }
+
+TEST(FSNP_BUILD, h(x))
+{
+
+Snipper S("../snp_small.txt"); // Exercise 4 SNPs
+
+S[0].computeF();
+S[1].computeF();
+S[2].computeF();
+
+
+EXPECT_EQ(0.51, 0.0);
+
+}
+
