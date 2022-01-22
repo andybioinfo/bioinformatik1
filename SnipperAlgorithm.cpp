@@ -66,7 +66,9 @@ void Snipper::startAlgorithm() {
         //get p-value 
         double p = computeF_shuffling(1000,snp_id,reference_F[snp_id]);
         if(p<=0.05){
-            // printout p and reference_F[snp_id]
+            _resultA_p_value.pushback(p);
+            _resultA_ref_F.pushback(reference_F[snp_id]);
+            _resultA_SNP_id.pushbacl(snp_id);
         }
     }
 
