@@ -59,7 +59,7 @@ void Snipper::startAlgorithm() {
     std::vector<double> reference_F;
     for (int snp_id = 0 ; snp_id < getSNPcount() ; snp_id++) {
         // reference Frac-Value
-        reference_F[snp_id] = _snpstack[snp_id].computeF();
+        reference_F.pushback( _snpstack[snp_id].computeF());
     }
     // Shuffle over all SNP's
     for (int snp_id = 0 ; snp_id < getSNPcount() ; snp_id++) {
