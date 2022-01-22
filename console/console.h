@@ -21,6 +21,8 @@ public:
 
  static std::string double2String(double x);
 
+
+
 };
 
 /**

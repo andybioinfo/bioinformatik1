@@ -62,9 +62,12 @@ void console::ShowInputs(std::string filein, std::string fileout, Snipper &begin
     std::cout << BG2 << C::BWHITE  <<            "\n  | count:   "<< C::BCYAN  << chkcnt << C::BWHITE  <<" |   count        : "<< C::BCYAN  <<snpcnt<<"                   " << R;
     std::cout << BG2 << C::BWHITE  <<            "\n  | Cancer:  "<< C::BCYAN  << ctlcnt << C::BWHITE  <<" |   Homoz-Major  : "<< C::BCYAN  <<homacnt<<" (over all SNP's)  " << R;
     std::cout << BG2 << C::BWHITE  <<            "\n  | Control: "<< C::BCYAN  << ccrcnt << C::BWHITE  <<" |   Heterozygous : "<< C::BCYAN  <<hetecnt<<" (over all SNP's)  " << R;
-    std::cout << BG2 << C::BWHITE  <<            "\n  |                   "<<                            " |   Homoz-Minor  : "<< C::BCYAN  <<homicnt<<" (over all SNP's)  " << R << "\n";
+    std::cout << BG2 << C::BWHITE  <<            "\n  |                   "<<                            " |   Homoz-Minor  : "<< C::BCYAN  <<homicnt<<" (over all SNP's)  " << R << "\n\n";
 
+    std::cout << C::BWHITE  <<  "       > " << C::BBLUE << "computing ... " << C::RESET << "\n" ;
 }
+
+
 
 
 /*
@@ -89,10 +92,18 @@ void console::Help(std::string message) {
  * send the result to std::cout
  * */
 void console::Result(std::string res,std::string timeA,std::string timeB,std::string timeC) {
-    std::cout << C::BWHITE  <<  "     Finished...   \n";
-    std::cout << C::BWHITE  <<  "     Run Time (m:s,ms) : " << timeA << C::BBLUE << " ( file: " << timeB << " computing: " << timeC << " )\n\n";
+
+    S::move(up,1);
+    S::move(left,28);
+    std::cout << C::BWHITE  <<  "\n       > " << C::BBLUE << "Finished. " << C::RESET ;
+    std::cout << C::BWHITE  <<  "\n         Run Time  (m:s,ms)  :" << C::BYELLOW << " total     -> " << C::BBLUE << timeA;
+    std::cout << C::BWHITE  <<  "\n                             :" << C::BYELLOW << " file      -> " << C::BBLUE << timeB;
+    std::cout << C::BWHITE  <<  "\n                             :" << C::BYELLOW << " computing -> " << C::BBLUE << timeC;
+    std::cout << C::BWHITE  <<  "\n\n" ;
+
     std::cout << C::RESET ;
 }
+
 
 
 Timer::Timer() {
