@@ -54,12 +54,12 @@ double SingleSNP::computeF() {
     double pY1_Xi1 =    probability(Cancer,Hetero);
     double pY1_Xi2 =    probability(Cancer,HomoMinor);
 
-    std::cout << "p(y0): " << pY0 << " p(y1): " << pY1 << " p(x0): " <<pXi0 << " p(x1): " <<pXi1 << " p(x2): " <<pXi2 << " p(y0x0): " <<pY0_Xi0 << " p(y0x1): " <<pY0_Xi1 << " p(y0x2): " <<pY0_Xi2 << " p(y1x0): " <<pY1_Xi0 << " p(y1x1): " <<pY1_Xi1 << " p(y1x2): " <<pY1_Xi2 << " || ";
+    //std::cout << "p(y0): " << pY0 << " p(y1): " << pY1 << " p(x0): " <<pXi0 << " p(x1): " <<pXi1 << " p(x2): " <<pXi2 << " p(y0x0): " <<pY0_Xi0 << " p(y0x1): " <<pY0_Xi1 << " p(y0x2): " <<pY0_Xi2 << " p(y1x0): " <<pY1_Xi0 << " p(y1x1): " <<pY1_Xi1 << " p(y1x2): " <<pY1_Xi2 << " || ";
 
     double _IXY =   I_XY_Formula(pY0,pY1,pXi0,pXi1,pXi2,pY0_Xi0,pY0_Xi1,pY0_Xi2,pY1_Xi0,pY1_Xi1,pY1_Xi2);
     double _HX =    H_X_Formula(pXi0,pXi1,pXi2);
 
-    std::cout << "\n                   I(X,Y) = " << _IXY << " / H(X) = " << _HX << " = ";
+    //std::cout << "\n                   I(X,Y) = " << _IXY << " / H(X) = " << _HX << " = ";
 
     return _IXY / _HX;
 
