@@ -34,7 +34,7 @@ public:
     void startAlgorithm();
 
     // 1000x Shuffle...
-    double computeF_shuffling(int shuffles, int snp_idx);
+    double computeF_shuffling(int shuffles, int snp_idx, double reference_F);
 
     //
     void computeMacaroni(int snp_idx);

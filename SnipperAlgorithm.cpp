@@ -4,13 +4,10 @@
 
 #include "Snipper.h"
 
-double Snipper::computeF_shuffling(int shuffles,int snp_idx) {
+double Snipper::computeF_shuffling(int shuffles,int snp_idx, double reference_F) {
 
     // count the matches
     int matches = 0;
-
-    // reference Frac-Value
-    double reference_F = _snpstack[snp_idx].computeF();
 
     // shuffling the Y-Vector
     for (int sh = 0 ; sh < shuffles ; sh ++) {
@@ -26,7 +23,7 @@ double Snipper::computeF_shuffling(int shuffles,int snp_idx) {
     }
 
     // return the probability of the matches of shuffling
-    return (double)matches / (double)shuffles;
+    return (double)matches + 1.0 / (double)shuffles;
 
 }
 
@@ -37,7 +34,9 @@ double Snipper::computeF_shuffling(int shuffles,int snp_idx) {
 void Snipper::computeMacaroni(int snp_idx) { // Exercise d)
 
     // p-value * count Tests
-    double p_value = Snipper::computeF_shuffling(1000,snp_idx);
+    // reference Frac-Value
+    double reference_F = _snpstack[snp_idx].computeF();
+    double p_value = Snipper::computeF_shuffling(1000,snp_idx,reference_F);
     double count = _class.count();
     double _p_value = p_value * count;
 
@@ -56,10 +55,19 @@ void Snipper::computeFDR() { // Exercise d)
 
 void Snipper::startAlgorithm() {
 
-
+    // get the fraction values
+    std::vector<double> reference_F;
+    for (int snp_id = 0 ; snp_id < getSNPcount() ; snp_id++) {
+        // reference Frac-Value
+        reference_F[snp_id] = _snpstack[snp_id].computeF();
+    }
     // Shuffle over all SNP's
     for (int snp_id = 0 ; snp_id < getSNPcount() ; snp_id++) {
-        computeF_shuffling(1000,snp_id);
+        //get p-value 
+        double p = computeF_shuffling(1000,snp_id,reference_F[snp_id]);
+        if(p<=0.05){
+            // printout p and reference_F[snp_id]
+        }
     }
 
     // compute
