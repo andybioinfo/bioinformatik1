@@ -58,8 +58,10 @@ private:
     
     std::vector<double> _resultA_p_value; // Exercise c)
     std::vector<double> _resultA_ref_F;
+    std::vector<int>    _resultA_SNP_id;
     std::vector<double> _resultB_p_value; // Exercise d)
-    std::vector<double> _resultB_ref_F;  
+    std::vector<double> _resultB_ref_F; 
+    std::vector<int>    _resultB_SNP_id;
     
 
 };
