@@ -53,3 +53,20 @@ void Snipper::computeFDR() { // Exercise d)
 
 
 }
+
+void Snipper::startAlgorithm() {
+
+
+    // Shuffle over all SNP's
+    for (int snp_id = 0 ; snp_id < getSNPcount() ; snp_id++) {
+        computeF_shuffling(1000,snp_id);
+    }
+
+    // compute
+
+
+    // compite FDR
+
+
+
+}

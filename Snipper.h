@@ -29,6 +29,10 @@ public:
         return *this;
     }
 
+    // SNP Start
+
+    void startAlgorithm();
+
     // 1000x Shuffle...
     double computeF_shuffling(int shuffles, int snp_idx);
 
