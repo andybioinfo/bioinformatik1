@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iomanip>
 #include "console.h"
 #include "Color.h"
 #include "Style.h"
@@ -72,15 +73,7 @@ void console::ShowInputs(std::string filein, std::string fileout, Snipper &begin
 * */
 void console::Help(std::string message) {
     console::ShowHeader();
-    std::cout << C::BWHITE  <<  "" ;/*
-    std::cout << C::BWHITE  <<  "    .______.    S N P  A L G O R I T M \n" ;
-    std::cout << C::BWHITE  <<  "   /\\       \\      \n" ;
-    std::cout << C::BWHITE  <<  "  /()\\   ()  \\ " << C::BLUE << "   This algorithm calculates for a sequence\n" ;
-    std::cout << C::BWHITE  <<  " /    \\.______\\" << C::BLUE << "    of Coin-Flips " << C::BMAGENTA << "{ 0 = Tail , 1 = Head } \n" ;
-    std::cout << C::BWHITE  <<  " \\    /()     /" << C::BLUE << "   with 2 different coins " << C::BCYAN << "{ Fair , Unfair }\n" ;
-    std::cout << C::BWHITE  <<  "  \\()/   ()  / " << C::BLUE << "  with the parameters the resulting \n" ;
-    std::cout << C::BWHITE  <<  "   \\/_____()/  " << C::BLUE << " sequence of " << C::BLUE << "fair/unfair Coin-Flips\n" ;
-    std::cout << C::BWHITE  <<  "               " << C::BLUE << "to uncover coin-flip-cheaters.\n" ;*/
+    std::cout << C::BWHITE  <<  "" ;
     std::cout << C::BWHITE  <<  "";
     std::cout << C::BWHITE  <<  "  Help:    " << C::BYELLOW << " $ ./snipper [input] [output] \n" ;
     std::cout << C::BWHITE  <<  "  Example: " << C::BGREEN  << " $ ./snipper ../snp.txt ../out.snp            \n" ;
@@ -95,11 +88,44 @@ void console::Help(std::string message) {
  *
  * send the result to std::cout
  * */
-void console::Result(std::string res) {
-    std::cout << C::BWHITE  <<  "     RESULT   \n";
-    std::cout << C::BYELLOW <<  "      > Result-Sequence : " << C::GREEN << "(GREEN = fair throw) " << C::RED << "(RED = unfair throw) \n\n";
-    std::cout << C::BWHITE  <<  "   :=  " << res << "\n\n";
+void console::Result(std::string res,std::string timeA,std::string timeB,std::string timeC) {
+    std::cout << C::BWHITE  <<  "     Finished...   \n";
+    std::cout << C::BWHITE  <<  "     Run Time (m:s,ms) : " << timeA << C::BBLUE << " ( file: " << timeB << " computing: " << timeC << " )\n\n";
     std::cout << C::RESET ;
 }
 
 
+Timer::Timer() {
+    timestamp = clock();
+}
+
+double Timer::getMilliSecs() {
+    double tstart = timestamp;
+    double time1 = clock() - tstart;
+    double time = time1 / 1000.0;
+    return time;
+}
+
+std::string Timer::getFormatted(double ms) {
+    int min  = ms / 60000;
+    int sec  = (ms - (min * 60000)) / 1000;
+    int msec = ms - (min * 60000) - (sec * 1000);
+
+    std::stringstream ms1("");
+    std::stringstream ms2("");
+    ms1 << msec;
+    if (ms1.str().size() == 1) {ms2 << "00" << msec;} else
+    if (ms1.str().size() == 2) {ms2 << "0" << msec;} else
+    if (ms1.str().size() >= 3) {ms2 << msec;}
+
+    std::stringstream s1("");
+    std::stringstream s2("");
+    s1 << sec;
+    if (s1.str().size() == 1) {s2 << "0" << sec;} else {s2 << sec;}
+    std::stringstream s("");
+    s << min << ":" << s2.str() << "," << ms2.str() ;
+    std::stringstream res("");
+    res << std::setfill(' ') << std::setw(10) << s.str();
+
+    return res.str();
+}

@@ -49,9 +49,9 @@ public:
 
 private:
 
-    // List
-    std::vector<SingleSNP> _snpstack; //
-    Classifics _class;               //
+    std::vector<SingleSNP> _snpstack; // SNP-Stack
+    Classifics _class;               // classifications
+
 };
 
 
