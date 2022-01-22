@@ -44,7 +44,7 @@ public:
     double computeF();
 
     static double I_XY_Formula(double pY0, double pY1, double pXi0,double pXi1, double pXi2, double pY0_Xi0, double pY0_Xi1, double pY0_Xi2, double pY1_Xi0, double pY1_Xi1, double pY1_Xi2 );
-    static double H_X_Formula(double pXi0,double pXi1, double pXi2);
+    static double H_X_Formula(double pY0, double pY1);
 
     // ## Getter
 
