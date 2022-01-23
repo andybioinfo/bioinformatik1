@@ -4,6 +4,14 @@
 
 #include "Snipper.h"
 
+
+/** Compute the F-Value of this SNP with shuffling
+ *
+ * @shuffles     how many shuffles of this SNP
+ * @snp_idx      the index of this SNP
+ * @reference_F  the reference F-Value
+ * @return       F-Value
+ * */
 double Snipper::computeF_shuffling(int shuffles,int snp_idx, double reference_F) {
 
     // count the matches
@@ -30,12 +38,18 @@ double Snipper::computeF_shuffling(int shuffles,int snp_idx, double reference_F)
 
 
 
-
+/** compute Bonferroni
+ *
+ * */
 double Snipper::computeBonferroni(double p_value) { // Exercise d)
     //p-value * Snp anzahl
     return p_value*100.0;
 }
 
+
+/** compute FDR
+ *
+ * */
 double Snipper::computeFDR(double p_value) { // Exercise d)
 
     return 1.0;
@@ -43,6 +57,10 @@ double Snipper::computeFDR(double p_value) { // Exercise d)
 
 }
 
+/** Starts the algorithm for all computation-Steps
+ *  and write the results in the result-arrays in this class
+ *
+ * */
 void Snipper::startAlgorithm() {
 
     // get the fraction values

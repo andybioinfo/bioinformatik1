@@ -10,7 +10,7 @@
 #include <random>
 #include "Classifics.h"
 
-Classifics::Classifics() {
+Classifics::Classifics() { // default constructor
 
 }
 
@@ -83,19 +83,28 @@ double Classifics::probability(Classification clss) {
 
 }
 
+
+/** shuffle all position of this Y-Vector
+ *
+ * */
 void Classifics::shuffle() {
     auto rd = std::random_device();
     auto rng = std::default_random_engine(rd());
     std::shuffle(std::begin(_classifications),std::end(_classifications),rng);
 }
 
+
+/** Returns a string of the complete Y-Vector
+ *
+ * @return     count of this classification
+ * */
 std::string Classifics::to2String() {
-std::stringstream res("");
-    res <<"Y(size:"<< _classifications.size() << ") { ";
-for (Classification c : _classifications) {
-    res << c;
-}
-res << " }";
-return res.str();
+    std::stringstream res("");
+        res <<"Y(size:"<< _classifications.size() << ") { ";
+    for (Classification c : _classifications) {
+        res << c;
+    }
+    res << " }";
+    return res.str();
 }
 

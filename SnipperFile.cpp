@@ -28,12 +28,17 @@ Answer:
 #include "Snipper.h"
 #include "console/Format.h"
 
-Snipper::Snipper() {
+
+
+Snipper::Snipper() { // Default Constructor
 
 }
 
 
-
+/** read a file with a SNP matrix
+ *
+ * @filename     SNP-File
+ * */
 Snipper::Snipper(std::string filename) {
 
 
@@ -95,11 +100,6 @@ Snipper::Snipper(std::string filename) {
             }
         }
 
-        // check in Range?
-
-        //
-
-
         // if a valid char
         if (c == '0') {  _snpstack[col] << HomoMajor;
             col ++;
@@ -129,7 +129,10 @@ Snipper::Snipper(std::string filename) {
 
 
 
-
+/** write the results of the SNP-Algorithm in a file
+ *
+ * @output_file     File
+ * */
 void Snipper::outputSNP(std::string output_file) {
 
     std::ofstream output(output_file);

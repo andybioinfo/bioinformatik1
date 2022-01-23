@@ -105,11 +105,18 @@ void console::Result(std::string res,std::string timeA,std::string timeB,std::st
 }
 
 
-
+/*
+ * Create a Timer with timestamp
+ * 
+ * */
 Timer::Timer() {
     timestamp = clock();
 }
 
+/*
+ * Load the timedifference between now and the timestamp
+ * 
+ * */
 double Timer::getMilliSecs() {
     double tstart = timestamp;
     double time1 = clock() - tstart;
@@ -117,6 +124,10 @@ double Timer::getMilliSecs() {
     return time;
 }
 
+/*
+ * Convert Milliseconds in a string in format m:s.ms
+ * 
+ * */
 std::string Timer::getFormatted(double ms) {
     int min  = ms / 60000;
     int sec  = (ms - (min * 60000)) / 1000;
@@ -134,7 +145,7 @@ std::string Timer::getFormatted(double ms) {
     s1 << sec;
     if (s1.str().size() == 1) {s2 << "0" << sec;} else {s2 << sec;}
     std::stringstream s("");
-    s << min << ":" << s2.str() << "," << ms2.str() ;
+    s << min << ":" << s2.str() << "." << ms2.str() ;
     std::stringstream res("");
     res << std::setfill(' ') << std::setw(10) << s.str();
 

@@ -8,7 +8,11 @@
 #include "SingleSNP.h"
 
 
-
+/** Returns the probability of a chosen genotype in this SNP
+ *
+ * @chosen     the genotype to check
+ * @return     probability
+ * */
 double SingleSNP::probability(Genotype chosen) {
     if (_snp.empty())   {throw std::invalid_argument("your count of genotypes is zero!"); }
 
@@ -23,6 +27,14 @@ double SingleSNP::probability(Genotype chosen) {
     return (double)count  / (double)complete_count;
 }
 
+
+/** Returns the probability of a chosen genotype at a 
+ *  given classification in this SNP
+ *
+ * @_Y         the classification to check
+ * @_X         the genotype to check
+ * @return     probability
+ * */
 double SingleSNP::probability(Classification _Y, Genotype _X) {
     if (_snp.empty())   {throw std::invalid_argument("your count of genotypes is zero!"); }
 
@@ -39,7 +51,10 @@ double SingleSNP::probability(Classification _Y, Genotype _X) {
 }
 
 
-
+/** Compute the F-Value of this SNP with the Y-Vector
+ *
+ * @return     F-Value
+ * */
 double SingleSNP::computeF() {
 
     double pY0 =        _class->probability(Control);
@@ -68,9 +83,11 @@ double SingleSNP::computeF() {
 
 
 
-
-
-// I(X,Y)
+/** Compute I(X,Y)
+ * 
+ * @all     The probabilites of all Genotypes to Control and Cancer
+ * @return  I(X,Y)  
+ * */
 double SingleSNP::I_XY_Formula(double pY0, double pY1, double pXi0, double pXi1, double pXi2, double pY0_Xi0, double pY0_Xi1,
                         double pY0_Xi2, double pY1_Xi0, double pY1_Xi1, double pY1_Xi2) {
     double res = 0;
@@ -94,7 +111,13 @@ double SingleSNP::I_XY_Formula(double pY0, double pY1, double pXi0, double pXi1,
     return res;
 }
 
-// H(X)
+
+
+/** Compute H(X)
+ * 
+ * @all     The probabilites of  Control and Cancer
+ * @return  H(X)  
+ * */
 double SingleSNP::H_X_Formula(double pY0, double pY1) {
 
     double res = 0;
@@ -110,7 +133,9 @@ double SingleSNP::H_X_Formula(double pY0, double pY1) {
 
 
 
-// Getter ....
+/** Getter
+ * 
+ * */
 SingleSNP::SingleSNP(Classifics &_clss) { this->_class = &_clss; }
 Genotype SingleSNP::operator[](int idx) const { return _snp[idx]; }
 int SingleSNP::getSize() { return _snp.size(); }

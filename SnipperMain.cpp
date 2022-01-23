@@ -4,18 +4,35 @@
 
 #include "Snipper.h"
 
+
+/** returns a single SNP via []-Operator
+ *
+ * */
 SingleSNP Snipper::operator[](int idx) const {
     return _snpstack[idx];
 }
 
+
+/** returns the Y-Vector of this class
+ *
+ * */
 Classifics &Snipper::getClassifics() {
     return _class;
 }
 
+
+/** counts all SNP's in this class
+ *
+ * */
 int Snipper::getSNPcount() {
     return _snpstack.size();
 }
 
+
+/** for Testing (count Genotypes over all SNP's)
+ *
+ * @gen     genotype
+ * */
 int Snipper::getGenCount(Genotype gen) {
 
     int cnt = 0;
@@ -28,3 +45,4 @@ int Snipper::getGenCount(Genotype gen) {
 
     return cnt;
 }
+
