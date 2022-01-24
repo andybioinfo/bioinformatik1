@@ -50,9 +50,9 @@ TEST(SNP_FORMULA, I_XY_FormulaTest)
 
     double X3 = SingleSNP::I_XY_Formula(pY0,pY1,pXi0,pXi1,pXi2,pY0_Xi0,pY0_Xi1,pY0_Xi2,pY1_Xi0,pY1_Xi1,pY1_Xi2);
 
-    EXPECT_EQ(0.51, X1);
-    EXPECT_EQ(0.51, X2);
-    EXPECT_EQ(0.51, X3);
+    EXPECT_EQ(0.𝟐𝟕𝟔𝟒𝟑𝟒𝟓𝟗𝟎𝟗, X1);
+    EXPECT_EQ(0.𝟏𝟕𝟔𝟎𝟗𝟏𝟐𝟓𝟗𝟏, X2);
+    EXPECT_EQ(0, X3);
 
 }
 
