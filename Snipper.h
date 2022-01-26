@@ -12,52 +12,59 @@
 class Snipper {
 
 public:
+    
+    // ### SnipperFile ###
 
-    // Create Snipper without file (for testing)
-    Snipper();
+        // Create Snipper without file (for testing)
+        Snipper();
 
-    // output
-    void outputSNP(std::string output_file);
+        // output
+        void outputSNP(std::string output_file);
 
-    // Create Snipper with file
-    Snipper(std::string filename);
+        // Create Snipper with file
+        Snipper(std::string filename);
 
-    // Get SNP'S
-    SingleSNP operator [](int idx) const;
+    
+    // ### SnipperAlgorithm ###
 
-    // add a new SNP-Vector to the array
-    Snipper & operator<<(SingleSNP const &s)
-    {
-        _snpstack.push_back(s);
-        return *this;
-    }
+        // Start complete Algorithm
+        void startAlgorithm();
 
-    // SNP Start
+        // Shuffle a SNP x times and returns the p-value
+        double computeF_shuffling(int shuffles, int snp_idx, double reference_F);
 
-    void startAlgorithm();
+        // Bonferroni computation
+        double computeBonferroni(double p_value);
 
-    // 1000x Shuffle...
-    double computeF_shuffling(int shuffles, int snp_idx, double reference_F);
+        // FDR computation
+        double computeFDR(double p_value);
 
-    //
-    double computeBonferroni(double p_value);
+    
+    // ### SnipperMain ###
+    
+        // returns Y-Vector
+        Classifics& getClassifics();
 
-    //
-    double computeFDR(double p_value);
+        // count SNP's
+        int getSNPcount();
 
-    //
-    Classifics& getClassifics();
+        // for Testing (count Genotypes over all SNP's)
+        int getGenCount(Genotype gen);
 
-    // count snips
-    int getSNPcount();
+        // Get a single SNP from the SNP-Vector-Array
+        SingleSNP operator [](int idx) const;
 
-    // for Testing (count Genotypes over all SNP's)
-    int getGenCount(Genotype gen);
+        // add a new SNP-Vector to the array
+        Snipper & operator<<(SingleSNP const &s)
+        {
+            _snpstack.push_back(s);
+            return *this;
+        }
 
 private:
 
     std::vector<SingleSNP> _snpstack; // SNP-Stack
-    Classifics _class;               // classifications
+    Classifics _class;                // classifications
     
     std::vector<double> _resultA_p_value; // Exercise c)
     std::vector<double> _resultA_ref_F;
