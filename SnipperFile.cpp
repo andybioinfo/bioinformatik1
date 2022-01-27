@@ -4,13 +4,15 @@
 
 /*
 
-method readData from Exercise a) merged with Constructor.
 
-Exercise 3a): Explanation for chosen especially this data structure for this project?
+1. Explanation for this Data-Structure is in exercise-solution-pdf-file of this exercise-sheet.
 
-Answer:
 
- This cat (and many bugs) like this data-structure:
+2. The method readData from Exercise a) is merged with Constructor.
+   -> Snipper::Snipper(std::string filename)
+   
+
+3. This cat (and many bugs) like this data-structure:
 
                  (meow!)
          /\_/\   )/
