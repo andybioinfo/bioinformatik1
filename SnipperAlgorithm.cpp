@@ -51,26 +51,27 @@ double Snipper::computeBonferroni(double p_value) { // Exercise d)
 /** compute FDR
  *
  * */
-double Snipper::computeFDR(std::vector<double> p_values) { // Exercise d)
+int Snipper::computeFDR(std::vector<double> p_values) { // Exercise d)
     // sortieren
-    sort(p_values.begin(), p_values.end());
-    for (auto x : p_values){
-         std::cout << x << " " ;
-    }
+    rankSNPs(p_values);
+
     
     // (rang / p-value) * False Discovery Rate (0.05)
     std::vector<double> BH;
-    double rang = 0.0;
-    double biggest_p_rang = 0.0;
-    for (auto p : p_values){
-        BH.push_back((rang/p)*0.05);
+    
+    int biggest_p_rang = 0;
+
+    for (int rang = 0 ; rang < getSNPcount() ; rang++) {
+        
+        int index = getSNPIndexByRank(rang);
+        double p = _snpstack[index].getP_Value();
+        BH.push_back(((double)rang/p)*0.05);
         if(p>BH[(int)rang]){
             biggest_p_rang = rang;
         }
-        rang += 1.0;
     }
-    
-    return 1.0;
+           
+    return biggest_p_rang;
 
 
 }
@@ -103,15 +104,14 @@ void Snipper::startAlgorithm() {
         
     }
     // compute FDR
+    int biggest_p_rang = computeFDR(adj_p_values);
+    for (int i = 0; i <= biggest_p_rang ; i++){
+        int index = getSNPIndexByRank(i);
+        _resultB_p_value.push_back(_snpstack[index].getP_Value());
+        _resultB_ref_F.push_back(reference_F[index]);
+        _resultB_SNP_id.push_back(index);
+    }
 
-/*
-double p_ad2 = computeFDR(p_ad);
-        if(p_ad2<=0.05){
-            _resultB_p_value.push_back(p_ad2);
-            _resultB_ref_F.push_back(reference_F[snp_id]);
-            _resultB_SNP_id.push_back(snp_id);
-        }
-*/
 }
 
 

@@ -38,7 +38,7 @@ public:
         double computeBonferroni(double p_value);
 
         // FDR computation
-        double computeFDR(std::vector<double> p_values);
+        int computeFDR(std::vector<double> p_values);
 
     
     // ### SnipperMain ###
