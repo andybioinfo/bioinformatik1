@@ -133,6 +133,18 @@ double SingleSNP::H_X_Formula(double pY0, double pY1) {
 
 
 
+
+void SingleSNP::SetRank(int rank, double pval){
+this->rank = rank;
+this->p_value = pval;
+}
+
+
+
+
+int SingleSNP::getRank()    {return rank;}
+int SingleSNP::getP_Value() {return p_value;}
+
 /** Getter
  * 
  * */

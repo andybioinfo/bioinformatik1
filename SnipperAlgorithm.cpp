@@ -113,3 +113,46 @@ double p_ad2 = computeFDR(p_ad);
         }
 */
 }
+
+
+
+
+
+
+void Snipper::rankSNPs(std::vector<double> p_values) {
+
+    std::vector<std::tuple<double,int>> tp;
+
+    // add SNP id to p value
+    int idx = 0;
+    for (auto pval : p_values){
+        tp.push_back(std::make_tuple(pval,idx));
+        idx++;
+    }
+
+    // sort tuple list
+    sort(tp.begin(), tp.end());
+
+    // set Rank
+    int tuple_idx = 0;
+    for (auto tuple : tp){
+        int snpidx = std::get<1>(tuple);
+        int p      = std::get<0>(tuple);
+
+        _snpstack[snpidx].SetRank(tuple_idx,p);
+
+        tuple_idx++;
+    }
+
+}
+
+int Snipper::getSNPIndexByRank(int rank) {
+    for (auto x : _snpstack){
+     if (x.getRank() == rank) {return x.getRank();}
+    }
+    return 0;
+}
+
+
+
+

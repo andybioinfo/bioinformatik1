@@ -42,7 +42,13 @@ public:
 
     
     // ### SnipperMain ###
-    
+
+        // rank SNP's
+        void rankSNPs(std::vector<double> p_values);
+
+        // Get ranked SNP
+        int getSNPIndexByRank(int rank);
+
         // returns Y-Vector
         Classifics& getClassifics();
 

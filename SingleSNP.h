@@ -36,6 +36,8 @@ public:
         _snp.push_back(g);
         return *this;
     }
+    // Add Pval and Rank
+    void SetRank(int rank, double pval);
 
     // ## Formulas
 
@@ -51,6 +53,8 @@ public:
     Classification getClassificationAt(int pos);
     Genotype operator [](int idx) const;
     int getSize();
+    int getRank();
+    int getP_Value();
 
 private:
 
@@ -58,6 +62,8 @@ private:
     X_Vector _snp;             // The SNP
     Classifics *_class{};      // The classifications of the SNP-Vector
     std::vector<double> _frac; // ??
+    double p_value;
+    int rank;
 
 };
 
