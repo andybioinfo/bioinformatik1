@@ -147,8 +147,10 @@ void Snipper::rankSNPs(std::vector<double> p_values) {
 }
 
 int Snipper::getSNPIndexByRank(int rank) {
+    int id = 0;
     for (auto x : _snpstack){
-     if (x.getRank() == rank) {return x.getRank();}
+     if (x.getRank() == rank) {return id;}
+        id++;
     }
     return 0;
 }
