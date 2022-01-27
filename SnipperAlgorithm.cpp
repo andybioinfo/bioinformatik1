@@ -61,10 +61,15 @@ double Snipper::computeFDR(std::vector<double> p_values) { // Exercise d)
     // (rang / p-value) * False Discovery Rate (0.05)
     std::vector<double> BH;
     double rang = 0.0;
+    double biggest_p_rang = 0.0;
     for (auto p : p_values){
         BH.push_back((rang/p)*0.05);
+        if(p>BH[(int)rang]){
+            biggest_p_rang = rang;
+        }
         rang += 1.0;
     }
+    
     return 1.0;
 
 
