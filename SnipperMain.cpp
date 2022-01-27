@@ -46,3 +46,16 @@ int Snipper::getGenCount(Genotype gen) {
     return cnt;
 }
 
+
+/** Compare two doubles up to 2 digits
+ *  
+ * @a first value
+ * @b second value
+ * */
+    bool Snipper::doubleCompare(double a, double b) {
+    
+    double cmp = abs(a - b);
+        if (cmp < 0.001) {return true;} 
+        return false;    
+    
+    }
