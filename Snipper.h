@@ -55,7 +55,7 @@ public:
         SingleSNP operator [](int idx) const;
     
         // compare two doubles
-        bool Snipper::doubleCompare(double a, double b);
+        bool doubleCompare(double a, double b);
 
         // add a new SNP-Vector to the array
         Snipper & operator<<(SingleSNP const &s)

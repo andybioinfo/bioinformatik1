@@ -36,13 +36,13 @@ double x1a = S[1].probability(Hetero);
 double x1b = S[1].probability(HomoMajor);
 double x2  = S[2].probability(Hetero);
 
-EXPECT_EQ( 0  , x0a  );
-EXPECT_EQ( 0  , x0b  );
-EXPECT_EQ( 0  , x0c  );
-EXPECT_EQ( 0  , x0d  );
-EXPECT_EQ( 0  , x1a  );
-EXPECT_EQ( 0  , x1b  );
-EXPECT_EQ( 0  , x2   );
+EXPECT_TRUE(S.doubleCompare(0.33333  , x0a  ));
+EXPECT_TRUE(S.doubleCompare(0.33333  , x0b  ));
+EXPECT_TRUE(S.doubleCompare(0.33333  , x0c  ));
+EXPECT_TRUE(S.doubleCompare(0.33333  , x0d  ));
+EXPECT_TRUE(S.doubleCompare(0.33333  , x1a  ));
+EXPECT_TRUE(S.doubleCompare(0.5      , x1b  ));
+EXPECT_TRUE(S.doubleCompare(0.5      , x2   ));
 
 }
 
@@ -89,11 +89,7 @@ TEST(SingleSNP, PushBackOperatorTest)
 
     EXPECT_EQ( 2  , S[0].getSize() );
 
-    S[0] << Hetero << HomoMajor;;
-
-    EXPECT_EQ( 4  , S[0].getSize() );
-
-    auto a = S[0][2];
+    auto a = S[0][0];
     auto b = S[0][3];
 
     EXPECT_EQ( Hetero     , a );

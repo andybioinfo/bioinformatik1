@@ -51,9 +51,11 @@ TEST(SNP_FORMULA, I_XY_FormulaTest)
 
     double X3 = SingleSNP::I_XY_Formula(pY0,pY1,pXi0,pXi1,pXi2,pY0_Xi0,pY0_Xi1,pY0_Xi2,pY1_Xi0,pY1_Xi1,pY1_Xi2);
 
-    EXPECT_EQ(0.2764345909, X1); // Exercise 4
-    EXPECT_EQ(0.1760912591, X2); // Exercise 4
-    EXPECT_EQ(0           , X3); // Exercise 4
+    Snipper S;
+   
+    EXPECT_TRUE(S.doubleCompare(0.2764345909, X1)); // Exercise 4
+    EXPECT_TRUE(S.doubleCompare(0.1760912591, X2)); // Exercise 4
+    EXPECT_TRUE(S.doubleCompare(0           , X3)); // Exercise 4
 
 }
 
@@ -78,9 +80,10 @@ TEST(SNP_FORMULA, H_X_FormulaTest)
 
     double H3 = SingleSNP::H_X_Formula(pY0,pY1); // Zero Test p(Y0)=0
 
-    EXPECT_EQ(0.2764345909 , H1);
-    EXPECT_EQ(0            , H2);
-    EXPECT_EQ(0            , H3);
+    Snipper S;
+    EXPECT_TRUE(S.doubleCompare(0.2764345909 , H1));
+    EXPECT_TRUE(S.doubleCompare(0            , H2));
+    EXPECT_TRUE(S.doubleCompare(0            , H3));
 
 }
 
@@ -96,9 +99,10 @@ Snipper S = getExercise4SNPs(); // Exercise 4
     double X2 = S[1].computeF();
     double X3 = S[2].computeF();
 
-    EXPECT_EQ(1        , X1);
-    EXPECT_EQ(0.637009 , X2);
-    EXPECT_EQ(0        , X3);
+   
+    EXPECT_TRUE(S.doubleCompare(1        , X1));
+    EXPECT_TRUE(S.doubleCompare(0.637009 , X2));
+    EXPECT_TRUE(S.doubleCompare(0        , X3));
 
 }
 
