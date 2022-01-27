@@ -99,9 +99,7 @@ TEST(Snipper, BonferroniTest)
     {
 
         Snipper S = getExercise4SNPs(); 
-
-        EXPECT_EQ( 0  , 99 );
-
+        EXPECT_EQ( 2 , S.computeBonferroni(0.02));
     }
 
 
