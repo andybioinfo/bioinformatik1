@@ -66,7 +66,7 @@ int Snipper::computeFDR(std::vector<double> p_values) { // Exercise d)
         int index = getSNPIndexByRank(rang);
         double p = _snpstack[index].getP_Value();
         BH.push_back(((double)rang/p)*0.05);
-        if(p>BH[(int)rang]){
+        if(p < BH[(int)rang]){
             biggest_p_rang = rang;
         }
     }

@@ -81,8 +81,8 @@ void console::Help(std::string message) {
     std::cout << C::BWHITE  <<  "  Help:    " << C::BYELLOW << " $ ./snipper [input] [output] \n" ;
     std::cout << C::BWHITE  <<  "  Example: " << C::BGREEN  << " $ ./snipper ../snp.txt ../out.snp            \n" ;
     std::cout << C::BWHITE  <<  "\n" ;
-    std::cout << C::BGREEN  <<  " [FILE]  input    " << C::BWHITE << "| " << C::BYELLOW << " a SNP matrix file\n" ;
-    std::cout << C::BGREEN  <<  " [FILE]  output   " << C::BWHITE << "| " << C::BYELLOW << " ? surprise ?\n" ;
+    std::cout << C::BGREEN  <<  " [FILE]  input    " << C::BWHITE << "| " << C::BYELLOW << " A SNP matrix file\n" ;
+    std::cout << C::BGREEN  <<  " [FILE]  output   " << C::BWHITE << "| " << C::BYELLOW << " File for the output-values\n" ;
     std::cout << C::BWHITE  <<  "\n" ;
     std::cout << C::BWHITE  <<  "      " << S::setStyle(Red,Bold,Yellow," ERROR := ") << C::BRED << " : " << S::getStyle(Black,Blink,Red) << C::BRED << message << C::RESET << "\n\n" ;
 }
