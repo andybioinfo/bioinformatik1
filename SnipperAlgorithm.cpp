@@ -52,6 +52,39 @@ double Snipper::computeBonferroni(double p_value) { // Exercise d)
  *
  * */
 double Snipper::computeFDR(std::vector<double> p_values) { // Exercise d)
+    
+    // rank all SNP's
+    rankSNPs(p_values);
+    
+    // init
+    std::vector<double> BH;
+    int rank = 0;
+    int biggest_p_rank = 0;
+    
+    // calc BH's
+    for (auto snp : _snpstack){
+        rank = snp.getRank();
+        double p = snp.getP_Value();
+        BH.push_back(( rank / p ) * 0.05);
+        if(p > BH[rank]){ biggest_p_rank = rank; }
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // -----------------------------------
+    
+    
+    
     // sortieren
     sort(p_values.begin(), p_values.end());
     for (auto x : p_values){
