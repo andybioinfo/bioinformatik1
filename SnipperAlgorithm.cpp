@@ -44,7 +44,7 @@ double Snipper::computeF_shuffling(int shuffles,int snp_idx, double reference_F)
  * */
 double Snipper::computeBonferroni(double p_value) { // Exercise d)
     //p-value * Snp anzahl
-    return p_value*100.0;
+    return p_value*(double)getSNPcount();
 }
 
 
