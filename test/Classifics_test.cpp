@@ -39,13 +39,19 @@ TEST(Classifics, ShuffleTest)
         Snipper S; 
 
         S.getClassifics() << Control << Cancer << Control << Control << Control << Cancer ;
-
+ 
         bool shuffled = false;
-
-        for (int i = 0 ; i < 500000000 ; i++) { 
+ 
+        while(true) {
+       
             S.getClassifics().shuffle();
-            if ( S.getClassifics()[1] == Control ) { shuffled = true; }
-        }
+            if ( S.getClassifics()[1] == Control ) { 
+                                                      // if Cancer changed to Control then shuffled
+                                                      shuffled = true;
+                                                      break; 
+                                                   }
+       
+         }
 
         EXPECT_EQ( shuffled , true );
 
