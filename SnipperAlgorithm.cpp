@@ -62,6 +62,7 @@ double Snipper::computeFDR(std::vector<double> p_values) { // Exercise d)
     double rang = 0.0;
     for (auto p : p_values){
         (rang/p)*0.05;
+        rang += 1.0;
     }
     return 1.0;
 
