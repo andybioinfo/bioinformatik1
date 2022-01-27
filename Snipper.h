@@ -7,6 +7,7 @@
 
 
 #include <string>
+#include <vector>
 #include "SingleSNP.h"
 
 class Snipper {
@@ -37,7 +38,7 @@ public:
         double computeBonferroni(double p_value);
 
         // FDR computation
-        double computeFDR(double p_value);
+        double computeFDR(std::vector<double> p_values);
 
     
     // ### SnipperMain ###

@@ -110,7 +110,9 @@ TEST(Snipper, FDRTest)
     {
 
         Snipper S = getExercise4SNPs(); 
-
+        std::vector<double> adj_p_values;
+        adj_p_values.push_back(1.0);adj_p_values.push_back(0.1);adj_p_values.push_back(2.0);
+        S.computeFDR(adj_p_values);
         EXPECT_EQ( 0  , 99 );
 
     }

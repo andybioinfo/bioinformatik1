@@ -3,6 +3,7 @@
 //
 
 #include "Snipper.h"
+#include <bits/stdc++.h>
 
 
 /** Compute the F-Value of this SNP with shuffling
@@ -50,8 +51,18 @@ double Snipper::computeBonferroni(double p_value) { // Exercise d)
 /** compute FDR
  *
  * */
-double Snipper::computeFDR(double p_value) { // Exercise d)
-
+double Snipper::computeFDR(std::vector<double> p_values) { // Exercise d)
+    // sortieren
+    sort(p_values.begin(), p_values.end());
+    for (auto x : p_values){
+         std::cout << x << " " ;
+    }
+    
+    // (rang / p-value) * False Discovery Rate (0.05)
+    double rang = 0.0;
+    for (auto p : p_values){
+        (rang/p)*0.05;
+    }
     return 1.0;
 
 
@@ -65,6 +76,7 @@ void Snipper::startAlgorithm() {
 
     // get the fraction values
     std::vector<double> reference_F;
+    std::vector<double> adj_p_values;
     for (int snp_id = 0 ; snp_id < getSNPcount() ; snp_id++) {
         // reference Frac-Value
         reference_F.push_back( _snpstack[snp_id].computeF());
@@ -79,21 +91,18 @@ void Snipper::startAlgorithm() {
             _resultA_SNP_id.push_back(snp_id);
         }
 
-        // Adjustierung
-        double p_ad = computeBonferroni(p);
-        double p_ad2 = computeFDR(p_ad);
+        // Adjustierung Bonferroni
+        adj_p_values.push_back(computeBonferroni(p));
+        
+    }
+    // compute FDR
+
+/*
+double p_ad2 = computeFDR(p_ad);
         if(p_ad2<=0.05){
             _resultB_p_value.push_back(p_ad2);
             _resultB_ref_F.push_back(reference_F[snp_id]);
             _resultB_SNP_id.push_back(snp_id);
         }
-    }
-
-    // compute
-
-
-    // compite FDR
-
-
-
+*/
 }
