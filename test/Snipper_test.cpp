@@ -82,17 +82,6 @@ TEST(Snipper, CustomSnipperTest)
 
 
 
-// Tests shuffling a SNP
-TEST(Snipper, ShuffleTest)
-    {
-
-        Snipper S = getExercise4SNPs(); 
-
-        EXPECT_EQ( 0  , 99 );
-
-    }
-
-
 
 // Tests compute Bonferroni
 TEST(Snipper, BonferroniTest)
@@ -100,29 +89,4 @@ TEST(Snipper, BonferroniTest)
 
         Snipper S = getExercise4SNPs(); 
         EXPECT_EQ(0.06 , S.computeBonferroni(0.02));
-    }
-
-
-// Tests compute FDR
-TEST(Snipper, FDRTest)
-    {
-
-        Snipper S = getExercise4SNPs(); 
-        std::vector<double> adj_p_values;
-        adj_p_values.push_back(1.0);adj_p_values.push_back(0.1);adj_p_values.push_back(2.0);
-        S.computeFDR(adj_p_values);
-        EXPECT_EQ( 0  , 99 );
-
-    }
-
-
-
-// Test Complete
-TEST(Snipper, CompleteAlgorithmTest)
-    {
-
-        Snipper S = getExercise4SNPs();  
-
-        EXPECT_EQ( 0  , 99 );
-
     }

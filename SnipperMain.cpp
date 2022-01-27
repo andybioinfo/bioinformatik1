@@ -59,3 +59,11 @@ int Snipper::getGenCount(Genotype gen) {
         return false;    
     
     }
+
+// Getter
+    std::vector<double> Snipper::getResultA_p_value(){ return _resultA_p_value;}
+    std::vector<double> Snipper::getResultA_p_ref_F(){return _resultA_ref_F;}
+    std::vector<int> Snipper::getResultA_p_SNP_id(){return _resultA_SNP_id;}
+    std::vector<double> Snipper::getResultB_p_value(){ return _resultB_p_value;}
+    std::vector<double> Snipper::getResultB_p_ref_F(){ return _resultB_ref_F;}
+    std::vector<int> Snipper::getResultB_p_SNP_id(){ return _resultB_SNP_id;}

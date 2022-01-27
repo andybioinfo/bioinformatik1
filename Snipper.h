@@ -71,6 +71,14 @@ public:
             return *this;
         }
 
+    //Getter for testing
+    std::vector<double> getResultA_p_value();
+    std::vector<double> getResultA_p_ref_F();
+    std::vector<int> getResultA_p_SNP_id();
+    std::vector<double> getResultB_p_value();
+    std::vector<double> getResultB_p_ref_F();
+    std::vector<int> getResultB_p_SNP_id();
+
 private:
 
     std::vector<SingleSNP> _snpstack; // SNP-Stack
