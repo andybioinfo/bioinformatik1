@@ -146,7 +146,7 @@ void Snipper::outputSNP(std::string output_file) {
     output << "\n";
     output << "______SNP_|___P-Value_|____Ref F_\n";
     int idx = 0;
-    while (idx < _resultA_SNP_id.size()) {
+    while (idx < (int)_resultA_SNP_id.size()) {
         output << Format::int2String(_resultA_SNP_id[idx])     << " | ";
         output << Format::double2String(_resultA_p_value[idx]) << " | ";
         output << Format::double2String(_resultA_ref_F[idx])   << "\n";
@@ -158,11 +158,11 @@ void Snipper::outputSNP(std::string output_file) {
     output << "\n";
     output << "______SNP_|___P-Value_|____Ref F_\n";
     idx = 0;
-    while (idx < _resultB_SNP_id.size()) {
+    while (idx < (int)_resultB_SNP_id.size()) {
         output << Format::int2String(_resultB_SNP_id[idx])     << " | ";
         output << Format::double2String(_resultB_p_value[idx]) << " | ";
         output << Format::double2String(_resultB_ref_F[idx])   << "\n";
         idx++;
     }
 output.close();
-};
+}

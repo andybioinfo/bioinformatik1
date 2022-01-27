@@ -78,9 +78,9 @@ TEST(SNP_FORMULA, H_X_FormulaTest)
 
     double H3 = SingleSNP::H_X_Formula(pY0,pY1); // Zero Test p(Y0)=0
 
-    EXPECT_EQ(0.2764345909 , X1);
-    EXPECT_EQ(0            , X2);
-    EXPECT_EQ(0            , X3);
+    EXPECT_EQ(0.2764345909 , H1);
+    EXPECT_EQ(0            , H2);
+    EXPECT_EQ(0            , H3);
 
 }
 
@@ -96,7 +96,7 @@ Snipper S = getExercise4SNPs(); // Exercise 4
     double X2 = S[1].computeF();
     double X3 = S[2].computeF();
 
-    EXPECT_EQ(0        , X1);
+    EXPECT_EQ(1        , X1);
     EXPECT_EQ(0.637009 , X2);
     EXPECT_EQ(0        , X3);
 
