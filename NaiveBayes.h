@@ -38,7 +38,12 @@ public:
     std::vector<Block> getK_Blocks();
 
 private:
-
+    
+// Tables:
+Matrix M_Control;
+Matrix M_Cancer;
+    
+// The SNPs
 Snipper X;
 Statistics stats;
 std::vector<Block> k_Blocks;
