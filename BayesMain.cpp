@@ -27,7 +27,10 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
 
 
 int NaiveBayes::get_k_SIZE() const      {return k_SIZE;}
+
 int NaiveBayes::get_k_COUNT() const     {return k_COUNT;}
+
 Snipper NaiveBayes::getSNPs()     {return X;}
+
 Statistics& NaiveBayes::getStats() {return stats;}
 

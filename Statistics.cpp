@@ -4,18 +4,11 @@
 
 
 
-
 #include <valarray>
 #include <sstream>
 #include "Statistics.h"
 
-std::vector<double> Statistics::get_stats_Accuracy()            {return stats_Accuracy;             }
-std::vector<double> Statistics::get_stats_Sensitivity()         {return stats_Sensitivity;          }
-std::vector<double> Statistics::get_stats_Specificity()         {return stats_Specificity;          }
-std::vector<double> Statistics::get_stats_Precision()           {return stats_Precision;            }
-std::vector<double> Statistics::get_stats_F1Score()             {return stats_F1Score;              }
-std::vector<double> Statistics::get_stats_Average()             {return stats_Average;              }
-std::vector<double> Statistics::get_stats_Standard_deviation()  {return stats_Standard_deviation;   }
+
 
 
 
@@ -38,48 +31,53 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
 
 /** Compute Accuracy
  *
- * @all     :::
- * @return  H(X)
+ * @all     True/False Positive/Negative values (in Range 0.0 - 1.0)
+ * @return  accuracy in percent
  * */
  double Statistics::Accuracy(double TP, double TN, double FP, double FN) {
-    return (TP + TN) / (TP + TN + FP + FN);
+    double res = (TP + TN) / (TP + TN + FP + FN);
+    return res * 100.0;
 }
 
 
 /** Compute Specificity
  *
- * @all     :::
- * @return  H(X)
+ * @all     True/False Positive/Negative values (in Range 0.0 - 1.0)
+ * @return  specificity (in percent)
  * */
  double Statistics::Specificity(double TN, double FP) {
-    return (TN) / (TN + FP);
+    double res = (TN) / (TN + FP);
+    return res * 100.0;
 };
 
 
 /** Compute Sensitivity
  *
- * @all     :::
- * @return  H(X)
+ * @all     True/False Positive/Negative values (in Range 0.0 - 1.0)
+ * @return  sensitivity (in percent)
  * */
  double Statistics::Sensitivity(double TP, double FN) {
-    return (TP) / (TP + FN);
+    double res = (TP) / (TP + FN);
+    return res * 100.0;
 };
 
 
 /** Compute Precision
  *
- * @all     :::
- * @return  H(X)
+ * @all     True/False Positive/Negative values (in Range 0.0 - 1.0)
+ * @return  specificity (in percent)
  * */
  double Statistics::Precision(double TP, double FP) {
-    return (TP) / (TP + FP);
+    double res = (TP) / (TP + FP);
+    return res * 100.0;
 };
 
 
 /** Compute F1Score
  *
- * @all     :::
- * @return  H(X)
+ * @precision  precision-value (in percent)
+ * @sensivity  sensitivity-value (in percent)
+ * @return     F1Score (in percent)
  * */
  double Statistics::F1Score(double precision, double sensivity) {
     return 2 * ( (precision * sensivity) / (precision + sensivity) );
@@ -88,8 +86,8 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
 
 /** Compute Average
  *
- * @all     :::
- * @return  H(X)
+ * @list       List of Values (in percent)
+ * @return     average-Value (in percent)
  * */
  double Statistics::Average(std::vector<double> list) {
     double res = 0.0;
@@ -100,8 +98,9 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
 
 /** Compute Standard_deviation
  *
- * @all     :::
- * @return  H(X)
+ * @Xi         List of Xi Values  (in Range 0.0 - 1.0)
+ * @pXi        List of pXi Values (in Range 0.0 - 1.0)
+ * @return     average-Value (in percent)
  * */
  double Statistics::Standard_deviation(std::vector<double> Xi,std::vector<double> pXi) {
     int count = Xi.size();
@@ -120,14 +119,15 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
     // Calculation sigma
     double devi = sqrt(Var_Xi);
 
-    return devi;
+    return devi * 100.0;
 
 }
 
 
 /** Returns the average, min or max from a vector
- *
- *
+ * 
+ * @max_mix_avr   MAX , MIN or AVERAGE
+ * @return        The expected value from the vector
  * */
 double Statistics::getfromList(stat max_min_avr,std::vector<double> values) {
     if (values.size() == 0) {return 0;}
@@ -144,6 +144,22 @@ double Statistics::getfromList(stat max_min_avr,std::vector<double> values) {
     }
     return res;
 }
+
+
+
+
+
+
+// Getter
+std::vector<double> Statistics::get_stats_Accuracy()            {return stats_Accuracy;             }
+std::vector<double> Statistics::get_stats_Sensitivity()         {return stats_Sensitivity;          }
+std::vector<double> Statistics::get_stats_Specificity()         {return stats_Specificity;          }
+std::vector<double> Statistics::get_stats_Precision()           {return stats_Precision;            }
+std::vector<double> Statistics::get_stats_F1Score()             {return stats_F1Score;              }
+std::vector<double> Statistics::get_stats_Average()             {return stats_Average;              }
+std::vector<double> Statistics::get_stats_Standard_deviation()  {return stats_Standard_deviation;   }
+
+
 
 
 

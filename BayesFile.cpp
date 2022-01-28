@@ -8,7 +8,8 @@
 #include "console/Format.h"
 
 
-/** write the results as a Table in a file
+
+/** write the statistics as a table in a file
  *
  * @output_file     File
  * */

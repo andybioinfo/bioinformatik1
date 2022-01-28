@@ -20,6 +20,8 @@ void NaiveBayes::BayesTrainingsstunde() {
 
    // X[][]
 
+   // Provisorisch zum Testen des Output
+
     stats.addStatsSet(0,20,80,40,20,10,60);
     stats.addStatsSet(2,20,80,40,20,10,60);
     stats.addStatsSet(2,20,80,40,20,10,60);
@@ -32,11 +34,17 @@ void NaiveBayes::BayesTrainingsstunde() {
     stats.addStatsSet(0,20,80,40,20,10,60);
     stats.addStatsSet(0,20,80,40,20,10,60);
 
+
+
+
+
+    
+
     for (int repeat = 0 ; repeat < k_COUNT ; repeat ++ ) { // k train
 
 
 
-
+    
 
 
     // Move k_test forward
