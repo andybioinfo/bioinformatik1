@@ -8,6 +8,7 @@
 #include <vector>
 #include "Statistics.h"
 #include "snipper/Snipper.h"
+#include "Block.h"
 
 
 /** Bayes
@@ -34,11 +35,13 @@ public:
 
     Snipper getSNPs();
     Statistics& getStats();
+    std::vector<Block> getK_Blocks();
 
 private:
 
 Snipper X;
 Statistics stats;
+std::vector<Block> k_Blocks;
 
 int k_SIZE;
 int k_TEST;

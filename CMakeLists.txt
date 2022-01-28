@@ -54,7 +54,7 @@ add_library(snp SHARED
         console/Color.cpp
         console/Color.h
 
-		snipper/SnipperAlgorithm.cpp)
+		snipper/SnipperAlgorithm.cpp Block.cpp Block.h)
 
 # Erstelle das Programm "snipper".
 add_executable(snipper main.cpp Statistics.cpp)
