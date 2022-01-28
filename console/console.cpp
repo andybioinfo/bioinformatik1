@@ -81,8 +81,8 @@ void console::Help(std::string message) {
     std::cout << C::BWHITE  <<  "  Help:    " << C::BYELLOW << " $ ./snipper [input] [output] \n" ;
     std::cout << C::BWHITE  <<  "  Example: " << C::BGREEN  << " $ ./snipper ../snp.txt ../out.snp            \n" ;
     std::cout << C::BWHITE  <<  "\n" ;
-    std::cout << C::BGREEN  <<  " [FILE]  input    " << C::BWHITE << "| " << C::BYELLOW << " A SNP matrix file\n" ;
-    std::cout << C::BGREEN  <<  " [FILE]  output   " << C::BWHITE << "| " << C::BYELLOW << " File for the output-values\n" ;
+    std::cout << C::BGREEN  <<  " [FILE]  input    " << C::BWHITE << "| " << C::BYELLOW << " a SNP matrix file\n" ;
+    std::cout << C::BGREEN  <<  " [FILE]  output   " << C::BWHITE << "| " << C::BYELLOW << " ? surprise ?\n" ;
     std::cout << C::BWHITE  <<  "\n" ;
     std::cout << C::BWHITE  <<  "      " << S::setStyle(Red,Bold,Yellow," ERROR := ") << C::BRED << " : " << S::getStyle(Black,Blink,Red) << C::BRED << message << C::RESET << "\n\n" ;
 }
@@ -91,7 +91,7 @@ void console::Help(std::string message) {
  *
  * send the result to std::cout
  * */
-void console::Result(std::string res,std::string timeA,std::string timeB,std::string timeC) {
+void console::Result(NaiveBayes NB, std::string res,std::string timeA,std::string timeB,std::string timeC) {
 
     S::move(up,1);
     S::move(left,28);
@@ -102,6 +102,70 @@ void console::Result(std::string res,std::string timeA,std::string timeB,std::st
     std::cout << C::BWHITE  <<  "\n\n" ;
 
     std::cout << C::RESET ;
+
+    Statistics ST = NB.getStats();
+
+    NB.getSNPs()
+
+
+/*
+
+SNP's 123456789 , Patients 123456789 => k's: |01|02|03|04|05|06|07|08|09|10|
+
+      __ __ __ __ __ __ __          ____________________ (min%|avr%|max%) of all k's
+100%  ██ ██ ██ ██ ██ ██ ██         / Sp = Specificity  (10.0|20.1|30.3)
+ 90%  ██ ██ ██ ██ ██ ██ ██        / Se = Sensitivity  (10.0|20.1|30.3)
+ 80%  ██ ██ ██ ██ ██ ██ ██       / Pr = Precision    (10.0|20.1|30.3)
+ 70%  ██ ██ ██ ██ ██ ██ ██      / Ac = Accuracy     (10.0|20.1|30.3)
+ 60%  ██ ██ ██ ██ ██ ██ ██     / F1 = F1Score      (10.0|20.1|30.3)
+ 50%  ██ ██ ██ ██ ██ ██ ██    / Av = Average      (10.0|20.1|30.3)
+ 40%  ██ ██ ██ ██ ██ ██ ██   / Dv = Deviation    (10.0|20.1|30.3)
+ 30%  ██ ██ ██ ██ ██ ██ ██
+ 20%  ██ ██ ██ ██ ██ ██ ██
+ 10%  ██ ██ ██ ██ ██ ██ ██
+  5%  ██ ██ ██ ██ ██ ██ ██
+  0%  Sp Se Pr Ac F1 Av Dv
+
+  > Complete Table of all values saved in your file "out.txt"
+  
+*/
+
+//std::vector<std::string> barGraph( max_value,std::vector<double> values, Color color)
+
+std::vector<std::string> a1 = barGraph( 0,ST.get_stats_Specificity(), Green);
+std::vector<std::string> a2 = barGraph( 0,ST.get_stats_Sensitivity(), Yellow);
+std::vector<std::string> a3 = barGraph( 0,ST.get_stats_Precision(), Red);
+std::vector<std::string> a4 = barGraph( 0,ST.get_stats_Accuracy(), Cyan);
+std::vector<std::string> a5 = barGraph( 0,ST.get_stats_F1Score(), Blue);
+std::vector<std::string> a6 = barGraph( 0,ST.get_stats_Average(), Magenta);
+std::vector<std::string> a7 = barGraph( 0,ST.get_stats_Standard_deviation(), Red);
+
+
+
+"      "  __ __ __ __ __ __" "__"          ____________________ (min%|avr%|max%) of all k's
+"100%  "  "<<a1[10]<<" "<<a2[10]<<" "<<a3[10]<<" "<<a4[10]<<" "<<a5[10]<<" "<<a6[10]<<" "<<a7[10]<<"         / Sp = Specificity  (10.0|20.1|30.3)
+" 90%  "  "<<a1[ 9]<<" "<<a2[ 9]<<" "<<a3[ 9]<<" "<<a4[ 9]<<" "<<a5[ 9]<<" "<<a6[ 9]<<" "<<a7[ 9]<<"        / Se = Sensitivity  (10.0|20.1|30.3)
+" 80%  "  "<<a1[ 8]<<" "<<a2[ 8]<<" "<<a3[ 8]<<" "<<a4[ 8]<<" "<<a5[ 8]<<" "<<a6[ 8]<<" "<<a7[ 8]<<"       / Pr = Precision    (10.0|20.1|30.3)
+" 70%  "  "<<a1[ 7]<<" "<<a2[ 7]<<" "<<a3[ 7]<<" "<<a4[ 7]<<" "<<a5[ 7]<<" "<<a6[ 7]<<" "<<a7[ 7]<<"      / Ac = Accuracy     (10.0|20.1|30.3)
+" 60%  "  "<<a1[ 6]<<" "<<a2[ 6]<<" "<<a3[ 6]<<" "<<a4[ 6]<<" "<<a5[ 6]<<" "<<a6[ 6]<<" "<<a7[ 6]<<"     / F1 = F1Score      (10.0|20.1|30.3)
+" 50%  "  "<<a1[ 5]<<" "<<a2[ 5]<<" "<<a3[ 5]<<" "<<a4[ 5]<<" "<<a5[ 5]<<" "<<a6[ 5]<<" "<<a7[ 5]<<"    / Av = Average      (10.0|20.1|30.3)
+" 40%  "  "<<a1[ 4]<<" "<<a2[ 4]<<" "<<a3[ 4]<<" "<<a4[ 4]<<" "<<a5[ 4]<<" "<<a6[ 4]<<" "<<a7[ 4]<<"   / Dv = Deviation    (10.0|20.1|30.3)
+" 30%  "  "<<a1[ 3]<<" "<<a2[ 3]<<" "<<a3[ 3]<<" "<<a4[ 3]<<" "<<a5[ 3]<<" "<<a6[ 3]<<" "<<a7[ 3]<<"
+" 20%  "  "<<a1[ 2]<<" "<<a2[ 2]<<" "<<a3[ 2]<<" "<<a4[ 2]<<" "<<a5[ 2]<<" "<<a6[ 2]<<" "<<a7[ 2]<<"
+" 10%  "  "<<a1[ 1]<<" "<<a2[ 1]<<" "<<a3[ 1]<<" "<<a4[ 1]<<" "<<a5[ 1]<<" "<<a6[ 1]<<" "<<a7[ 1]<<"
+"  5%  "  "<<a1[ 0]<<" "<<a2[ 0]<<" "<<a3[ 0]<<" "<<a4[ 0]<<" "<<a5[ 0]<<" "<<a6[ 0]<<" "<<a7[ 0]<<"
+"  0%  "  Sp Se Pr Ac F1 Av Dv"
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
