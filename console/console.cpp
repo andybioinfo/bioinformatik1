@@ -3,7 +3,7 @@
 #include "console.h"
 #include "Color.h"
 #include "Style.h"
-#include "../Snipper.h"
+#include "../snipper/Snipper.h"
 #include "Format.h"
 
 
@@ -12,12 +12,12 @@
 * */
 void console::ShowHeader() {
     std::cout << "\n";
-    std::cout << C::BYELLOW <<  "\n    )\\.--.   )\\  )\\ " << C::BRED << " .'(  " << C::BYELLOW << "   /`-.  " << C::BRED << "   /`-.   )\\.---.     /`-.  ";
-    std::cout << C::BYELLOW <<  "\n   (   ._.' (  \\, / " << C::BRED << " \\  ) " << C::BYELLOW << " ,' _  \\ " << C::BRED << " ,' _  \\ (   ,-._(  ,' _  \\ ";
-    std::cout << C::BYELLOW <<  "\n    `-.`.    ) \\ (  " << C::BRED << " ) (  " << C::BYELLOW << "(  '-' ( " << C::BRED << "(  '-' (  \\  '-,   (  '-' ( ";
-    std::cout << C::BYELLOW <<  "\n   ,_ (  \\  ( ( \\ \\ " << C::BRED << " \\  ) " << C::BYELLOW << " ) ,._.' " << C::BRED << " ) ,._.'   ) ,-`    ) ,_ .' ";
-    std::cout << C::BYELLOW <<  "\n  (  '.)  )  `.)/  )" << C::BRED << "  ) \\ " << C::BYELLOW << "(  '     " << C::BRED << "(  '      (  ``-.  (  ' ) \\ ";
-    std::cout << C::BYELLOW <<  "\n   '._,_.'      '.( " << C::BRED << "   )/ " << C::BYELLOW << " )/      " << C::BRED << " )/        )..-.(   )/   )/ ";
+    std::cout << C::BYELLOW <<  "\n    )\\.--.   )\\  )\\ " << C::BRED << " .'(  " << C::BYELLOW << "   /`-.  " << C::BRED << "   /`-.   )\\.---.     /`-.  "  << C::BWHITE <<"N ";
+    std::cout << C::BYELLOW <<  "\n   (   ._.' (  \\, / " << C::BRED << " \\  ) " << C::BYELLOW << " ,' _  \\ " << C::BRED << " ,' _  \\ (   ,-._(  ,' _  \\ " << C::BWHITE <<"A B";
+    std::cout << C::BYELLOW <<  "\n    `-.`.    ) \\ (  " << C::BRED << " ) (  " << C::BYELLOW << "(  '-' ( " << C::BRED << "(  '-' (  \\  '-,   (  '-' ( "    << C::BWHITE <<"I A";
+    std::cout << C::BYELLOW <<  "\n   ,_ (  \\  ( ( \\ \\ " << C::BRED << " \\  ) " << C::BYELLOW << " ) ,._.' " << C::BRED << " ) ,._.'   ) ,-`    ) ,_ .' "  << C::BWHITE <<"V Y";
+    std::cout << C::BYELLOW <<  "\n  (  '.)  )  `.)/  )" << C::BRED << "  ) \\ " << C::BYELLOW << "(  '     " << C::BRED << "(  '      (  ``-.  (  ' ) \\ "    << C::BWHITE <<"E E";
+    std::cout << C::BYELLOW <<  "\n   '._,_.'      '.( " << C::BRED << "   )/ " << C::BYELLOW << " )/      " << C::BRED << " )/        )..-.(   )/   )/ "      << C::BWHITE <<"  S";
     std::cout << "\n";
     std::cout << "\n " << C::BYELLOW << " SN" << C::BRED << "I" << C::BYELLOW << "P" << C::BRED << "PER  ---- " << C::BYELLOW << "  \n";
     std::cout << C::RESET;
@@ -91,21 +91,22 @@ void console::Help(std::string message) {
  *
  * send the result to std::cout
  * */
-void console::Result(NaiveBayes NB, std::string res,std::string timeA,std::string timeB,std::string timeC) {
+void console::Result(NaiveBayes& NB, std::string res,std::string timeA,std::string timeB,std::string timeC) {
 
     S::move(up,1);
-    S::move(left,28);
+    S::move(left,28);/*
     std::cout << C::BWHITE  <<  "\n       > " << C::BBLUE << "Finished. " << C::RESET ;
     std::cout << C::BWHITE  <<  "\n         Run Time  (m:s,ms)  :" << C::BYELLOW << " total     -> " << C::BBLUE << timeA;
     std::cout << C::BWHITE  <<  "\n                             :" << C::BYELLOW << " file      -> " << C::BBLUE << timeB;
     std::cout << C::BWHITE  <<  "\n                             :" << C::BYELLOW << " computing -> " << C::BBLUE << timeC;
     std::cout << C::BWHITE  <<  "\n\n" ;
 
-    std::cout << C::RESET ;
+    std::cout << C::RESET ;*/
 
     Statistics ST = NB.getStats();
+    int snps = NB.getSNPs().getSNPcount();
+    int pats = NB.getSNPs()[0].getSize();
 
-    NB.getSNPs()
 
 
 /*
@@ -132,38 +133,54 @@ SNP's 123456789 , Patients 123456789 => k's: |01|02|03|04|05|06|07|08|09|10|
 
 //std::vector<std::string> barGraph( max_value,std::vector<double> values, Color color)
 
-std::vector<std::string> a1 = barGraph( 0,ST.get_stats_Specificity(), Green);
-std::vector<std::string> a2 = barGraph( 0,ST.get_stats_Sensitivity(), Yellow);
-std::vector<std::string> a3 = barGraph( 0,ST.get_stats_Precision(), Red);
-std::vector<std::string> a4 = barGraph( 0,ST.get_stats_Accuracy(), Cyan);
-std::vector<std::string> a5 = barGraph( 0,ST.get_stats_F1Score(), Blue);
-std::vector<std::string> a6 = barGraph( 0,ST.get_stats_Average(), Magenta);
-std::vector<std::string> a7 = barGraph( 0,ST.get_stats_Standard_deviation(), Red);
+std::vector<std::string> a1 = Statistics::barGraph( 0.0,ST.get_stats_Specificity(), Green);
+std::vector<std::string> a2 = Statistics::barGraph( 0.0,ST.get_stats_Sensitivity(), Yellow);
+std::vector<std::string> a3 = Statistics::barGraph( 0.0,ST.get_stats_Precision(), Red);
+std::vector<std::string> a4 = Statistics::barGraph( 0.0,ST.get_stats_Accuracy(), Cyan);
+std::vector<std::string> a5 = Statistics::barGraph( 0.0,ST.get_stats_F1Score(), Blue);
+std::vector<std::string> a6 = Statistics::barGraph( 0.0,ST.get_stats_Average(), Magenta);
+std::vector<std::string> a7 = Statistics::barGraph( 0.0,ST.get_stats_Standard_deviation(), Red);
 
 
+    double mi4 =  Statistics::getfromList( MIN , ST.get_stats_Accuracy() );
+    double mi2 =  Statistics::getfromList( MIN , ST.get_stats_Sensitivity() );
+    double mi1 =  Statistics::getfromList( MIN , ST.get_stats_Specificity() );
+    double mi3 =  Statistics::getfromList( MIN , ST.get_stats_Precision() );
+    double mi5 =  Statistics::getfromList( MIN , ST.get_stats_F1Score() );
+    double mi6 =  Statistics::getfromList( MIN , ST.get_stats_Average() );
+    double mi7 =  Statistics::getfromList( MIN , ST.get_stats_Standard_deviation() );
 
-"      "  __ __ __ __ __ __" "__"          ____________________ (min%|avr%|max%) of all k's
-"100%  "  "<<a1[10]<<" "<<a2[10]<<" "<<a3[10]<<" "<<a4[10]<<" "<<a5[10]<<" "<<a6[10]<<" "<<a7[10]<<"         / Sp = Specificity  (10.0|20.1|30.3)
-" 90%  "  "<<a1[ 9]<<" "<<a2[ 9]<<" "<<a3[ 9]<<" "<<a4[ 9]<<" "<<a5[ 9]<<" "<<a6[ 9]<<" "<<a7[ 9]<<"        / Se = Sensitivity  (10.0|20.1|30.3)
-" 80%  "  "<<a1[ 8]<<" "<<a2[ 8]<<" "<<a3[ 8]<<" "<<a4[ 8]<<" "<<a5[ 8]<<" "<<a6[ 8]<<" "<<a7[ 8]<<"       / Pr = Precision    (10.0|20.1|30.3)
-" 70%  "  "<<a1[ 7]<<" "<<a2[ 7]<<" "<<a3[ 7]<<" "<<a4[ 7]<<" "<<a5[ 7]<<" "<<a6[ 7]<<" "<<a7[ 7]<<"      / Ac = Accuracy     (10.0|20.1|30.3)
-" 60%  "  "<<a1[ 6]<<" "<<a2[ 6]<<" "<<a3[ 6]<<" "<<a4[ 6]<<" "<<a5[ 6]<<" "<<a6[ 6]<<" "<<a7[ 6]<<"     / F1 = F1Score      (10.0|20.1|30.3)
-" 50%  "  "<<a1[ 5]<<" "<<a2[ 5]<<" "<<a3[ 5]<<" "<<a4[ 5]<<" "<<a5[ 5]<<" "<<a6[ 5]<<" "<<a7[ 5]<<"    / Av = Average      (10.0|20.1|30.3)
-" 40%  "  "<<a1[ 4]<<" "<<a2[ 4]<<" "<<a3[ 4]<<" "<<a4[ 4]<<" "<<a5[ 4]<<" "<<a6[ 4]<<" "<<a7[ 4]<<"   / Dv = Deviation    (10.0|20.1|30.3)
-" 30%  "  "<<a1[ 3]<<" "<<a2[ 3]<<" "<<a3[ 3]<<" "<<a4[ 3]<<" "<<a5[ 3]<<" "<<a6[ 3]<<" "<<a7[ 3]<<"
-" 20%  "  "<<a1[ 2]<<" "<<a2[ 2]<<" "<<a3[ 2]<<" "<<a4[ 2]<<" "<<a5[ 2]<<" "<<a6[ 2]<<" "<<a7[ 2]<<"
-" 10%  "  "<<a1[ 1]<<" "<<a2[ 1]<<" "<<a3[ 1]<<" "<<a4[ 1]<<" "<<a5[ 1]<<" "<<a6[ 1]<<" "<<a7[ 1]<<"
-"  5%  "  "<<a1[ 0]<<" "<<a2[ 0]<<" "<<a3[ 0]<<" "<<a4[ 0]<<" "<<a5[ 0]<<" "<<a6[ 0]<<" "<<a7[ 0]<<"
-"  0%  "  Sp Se Pr Ac F1 Av Dv"
+    double av4 =  Statistics::getfromList( AVERAGE , ST.get_stats_Accuracy() );
+    double av2 =  Statistics::getfromList( AVERAGE , ST.get_stats_Sensitivity() );
+    double av1 =  Statistics::getfromList( AVERAGE , ST.get_stats_Specificity());
+    double av3 =  Statistics::getfromList( AVERAGE , ST.get_stats_Precision());
+    double av5 =  Statistics::getfromList( AVERAGE , ST.get_stats_F1Score());
+    double av6 =  Statistics::getfromList( AVERAGE , ST.get_stats_Average());
+    double av7 =  Statistics::getfromList( AVERAGE , ST.get_stats_Standard_deviation());
 
+    double ma4 = Statistics::getfromList( MAX , ST.get_stats_Accuracy() );
+    double ma2 = Statistics::getfromList( MAX , ST.get_stats_Sensitivity() );
+    double ma1 = Statistics::getfromList( MAX , ST.get_stats_Specificity());
+    double ma3 = Statistics::getfromList( MAX , ST.get_stats_Precision());
+    double ma5 = Statistics::getfromList( MAX , ST.get_stats_F1Score() );
+    double ma6 = Statistics::getfromList( MAX , ST.get_stats_Average() );
+    double ma7 = Statistics::getfromList( MAX , ST.get_stats_Standard_deviation());
 
+    std::cout << C::BWHITE  << "\n ::: N A I V E  B A Y E S ::: SNP's : " <<  snps << " Patients: " << pats <<"\n";
 
-
-
-
-
-
-
+std::cout << C::BWHITE  <<  "\n  max    __ __ __ __ __ __ __          / (min%|avr%|max%) of all k's";
+std::cout << C::BWHITE  <<  "\n 100%    "<<a1[10]<<" "<<a2[10]<<" "<<a3[10]<<" "<<a4[10]<<" "<<a5[10]<<" "<<a6[10]<<" "<<a7[10]<<"   | Sp = Specificity  ( " << mi1 << " | " << av1 << " | " << ma1 << " )";
+std::cout << C::BWHITE  <<  "\n  90%    "<<a1[ 9]<<" "<<a2[ 9]<<" "<<a3[ 9]<<" "<<a4[ 9]<<" "<<a5[ 9]<<" "<<a6[ 9]<<" "<<a7[ 9]<<"   | Se = Sensitivity  ( " << mi2 << " | " << av2 << " | " << ma2 << " )";
+std::cout << C::BWHITE  <<  "\n  80%    "<<a1[ 8]<<" "<<a2[ 8]<<" "<<a3[ 8]<<" "<<a4[ 8]<<" "<<a5[ 8]<<" "<<a6[ 8]<<" "<<a7[ 8]<<"   | Pr = Precision    ( " << mi3 << " | " << av3 << " | " << ma3 << " )";
+std::cout << C::BWHITE  <<  "\n  70%    "<<a1[ 7]<<" "<<a2[ 7]<<" "<<a3[ 7]<<" "<<a4[ 7]<<" "<<a5[ 7]<<" "<<a6[ 7]<<" "<<a7[ 7]<<"   | Ac = Accuracy     ( " << mi4 << " | " << av4 << " | " << ma4 << " )";
+std::cout << C::BWHITE  <<  "\n  60%    "<<a1[ 6]<<" "<<a2[ 6]<<" "<<a3[ 6]<<" "<<a4[ 6]<<" "<<a5[ 6]<<" "<<a6[ 6]<<" "<<a7[ 6]<<"   | F1 = F1Score      ( " << mi5 << " | " << av5 << " | " << ma5 << " )";
+std::cout << C::BWHITE  <<  "\n  50%    "<<a1[ 5]<<" "<<a2[ 5]<<" "<<a3[ 5]<<" "<<a4[ 5]<<" "<<a5[ 5]<<" "<<a6[ 5]<<" "<<a7[ 5]<<"   | Av = Average      ( " << mi6 << " | " << av6 << " | " << ma6 << " )";
+std::cout << C::BWHITE  <<  "\n  40%    "<<a1[ 4]<<" "<<a2[ 4]<<" "<<a3[ 4]<<" "<<a4[ 4]<<" "<<a5[ 4]<<" "<<a6[ 4]<<" "<<a7[ 4]<<"   | Dv = Deviation    ( " << mi7 << " | " << av7 << " | " << ma7 << " )";
+std::cout << C::BWHITE  <<  "\n  30%    "<<a1[ 3]<<" "<<a2[ 3]<<" "<<a3[ 3]<<" "<<a4[ 3]<<" "<<a5[ 3]<<" "<<a6[ 3]<<" "<<a7[ 3]<<"";
+std::cout << C::BWHITE  <<  "\n  20%    "<<a1[ 2]<<" "<<a2[ 2]<<" "<<a3[ 2]<<" "<<a4[ 2]<<" "<<a5[ 2]<<" "<<a6[ 2]<<" "<<a7[ 2]<<"";
+std::cout << C::BWHITE  <<  "\n  10%    "<<a1[ 1]<<" "<<a2[ 1]<<" "<<a3[ 1]<<" "<<a4[ 1]<<" "<<a5[ 1]<<" "<<a6[ 1]<<" "<<a7[ 1]<<"";
+std::cout << C::BWHITE  <<  "\n   5%    "<<a1[ 0]<<" "<<a2[ 0]<<" "<<a3[ 0]<<" "<<a4[ 0]<<" "<<a5[ 0]<<" "<<a6[ 0]<<" "<<a7[ 0]<<"";
+std::cout << C::BWHITE  <<  "\n   0%    Sp Se Pr Ac F1 Av Dv \n";
 
 
 }

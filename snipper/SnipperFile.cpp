@@ -28,7 +28,7 @@
 #include <sstream>
 #include <iostream>
 #include "Snipper.h"
-#include "console/Format.h"
+#include "../console/Format.h"
 
 
 

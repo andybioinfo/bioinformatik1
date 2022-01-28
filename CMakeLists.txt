@@ -18,7 +18,7 @@ if(USE_CIPS)
 	set(GTEST_SRC_DIR /usr/src/googletest/googletest/)
 endif()
 
-project(snipper)
+project(bayes)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -33,14 +33,18 @@ add_definitions(${CXX_FLAGS})
 # erzeugen wollen.
 add_library(snp SHARED
         main.cpp
-        States.h
-        SingleSNP.cpp
-        SingleSNP.h
-        Classifics.cpp
-        Classifics.h
-        SnipperMain.cpp
-        Snipper.h
-        SnipperFile.cpp
+		BayesMain.cpp
+		BayesAlgorithm.cpp
+		BayesFile.cpp
+		NaiveBayes.h
+		snipper/States.h
+		snipper/SingleSNP.cpp
+		snipper/SingleSNP.h
+		snipper/Classifics.cpp
+		snipper/Classifics.h
+		snipper/SnipperMain.cpp
+		snipper/Snipper.h
+		snipper/SnipperFile.cpp
         console/Style.cpp
         console/Style.h
         console/console.h
@@ -50,18 +54,14 @@ add_library(snp SHARED
         console/Color.cpp
         console/Color.h
 
-        SnipperAlgorithm.cpp)
+		snipper/SnipperAlgorithm.cpp)
 
 # Erstelle das Programm "snipper".
-add_executable(snipper main.cpp )
+add_executable(snipper main.cpp Statistics.cpp)
 
 # Damit convert Ihren Code verwenden kann muss
 # die sequence Bibliothek zum Programm "gelinkt" werden.
 target_link_libraries(snipper snp ${CIP_STD_LIBS})
 
-# Aktiviere die Unittestfunktionalität von CMake.
-enable_testing()
 
-add_subdirectory(${GTEST_SRC_DIR} "gtest")
-add_subdirectory(test)
 

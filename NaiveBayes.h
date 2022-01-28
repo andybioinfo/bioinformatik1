@@ -6,9 +6,8 @@
 #define BAYES_H
 
 #include <vector>
-#include "States.h"
-#include "Classifics.h"
-
+#include "Statistics.h"
+#include "snipper/Snipper.h"
 
 
 /** Bayes
@@ -19,20 +18,17 @@ class NaiveBayes {
 
 public:
 
-    NaiveBayes();
-
-    void train(const Snipper& X, const Classifics& Y);
-
-    Classifics predict(const Snipper& X) const;
+    NaiveBayes(Snipper XY, int k_divisions);
 
     void BayesTrainingsstunde();
 
     void outputFile(std::string output_file);
 
-    int get_k_SIZE();
-    int get_k_COUNT();
+    [[nodiscard]] int get_k_SIZE() const;
+    [[nodiscard]] int get_k_COUNT() const;
+
     Snipper getSNPs();
-    Statistics getStats();
+    Statistics& getStats();
 
 private:
 
@@ -43,11 +39,11 @@ int k_SIZE;
 int k_TEST;
 int k_COUNT;
 
-}
+};
 
 
 
-
+#endif
 
 
 
