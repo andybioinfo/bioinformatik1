@@ -64,6 +64,23 @@ void NaiveBayes::BayesTrainingsstunde() {
             }
             // ##
             k_id++;
+            
+            // calculation of statistics of this k
+            
+            double TP = 0.3;
+            double FP = 0.3;
+            double TN = 0.3;
+            double FN = 0.3;/*
+            
+            double ac = Accuracy( TP,  TN,  FP,  FN);
+            double se = Sensitivity( TN,  FP);
+            double sp = Specificity( TP,  FN);
+            double pr = Precision( TP,  FP);
+            double f1 = F1Score( pr,  se);
+            double av = Average(std::vector<double> list);
+            double dv = Standard_deviation(std::vector<double> Xi,std::vector<double> pXi);
+            
+            stats.addStatsSet(ac,se,sp,pr,f1,av,dv);*/
 
         }
 
