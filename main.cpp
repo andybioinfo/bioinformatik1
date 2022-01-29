@@ -2,30 +2,68 @@
 #include <fstream>
 #include <valarray>
 
+
+
 #include "console/console.h"
 #include "snipper/Snipper.h"
+#include "snipper/SingleSNP.h"
+#include "snipper/TestSNP.h"
+
+
+bool test1() {
+/*
+    stats.addStatsSet(0,20,80,40,20,10,60);
+    stats.addStatsSet(2,20,80,40,20,10,60);
+    stats.addStatsSet(2,20,80,40,20,10,60);
+    stats.addStatsSet(0,20,80,40,20,10,60);
+    stats.addStatsSet(1,20,80,40,20,10,60);
+
+    stats.addStatsSet(0,20,80,40,20,10,60);
+    stats.addStatsSet(0,20,80,40,20,10,60);
+    stats.addStatsSet(0,20,80,40,20,10,60);
+    stats.addStatsSet(0,20,80,40,20,10,60);
+    stats.addStatsSet(0,20,80,40,20,10,60);
+
+int sum = 0;
+    for (Block k : NB.getK_Blocks()) {
+        for (int id : k.getBlockPatients()) {
+            sum += id;
+        }
+    }
+    std::cout << "sum of all ids "<< sum << "\n";
+
+        for (Block k : NB.getK_Blocks()) {
+        k.print();
+    }
+
+*/
+return false;
+}
+
+
+
+
 
 
 int main(int argc, char *argv[]) {
 
 
     // Provisorium
-    std::string arg_In  = "../snp.txt";
-    std::string arg_Out = "../bayes.t";
+    console::ShowHeader();
+    
+    Snipper S = createSNPs();
 
+    NaiveBayes NB(S, 10);    // Build NaiveBayes
 
+    console::InputLine(NB.getSNPs().getSNPcount(),NB.getSNPs().getClassifics().count(),NB.get_k_COUNT(),NB.get_k_SIZE());
 
+    NB.BayesTrainingsstunde();
 
+    console::Result(NB,"../bayes.txt","1","1","1");
 
+    NB.outputFile("../bayes.txt");
 
-
-
-
-
-
-
-
-
+/*
 
 
 
@@ -67,7 +105,7 @@ int main(int argc, char *argv[]) {
 
     double time2 = t.getMilliSecs();       // timestamp after finish algorithm
 
-    console::Result(NB,"",Timer::getFormatted(time2),Timer::getFormatted(time1),Timer::getFormatted(time2-time1)); // finish message to console
-
+    console::Result(NB,arg_Out,Timer::getFormatted(time2),Timer::getFormatted(time1),Timer::getFormatted(time2-time1)); // finish message to console
+*/
     return 0;
 }

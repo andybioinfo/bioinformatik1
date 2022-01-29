@@ -2,9 +2,9 @@
 // Created by manjaro on 27.01.22.
 //
 
-#include <stdexcept>
+
 #include "NaiveBayes.h"
-#include "snipper/Snipper.h"
+
 
 
 NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
@@ -17,6 +17,7 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
     int rows = XY[0].getSize();
     if (k_divisions > rows) { k_COUNT = rows; } else { k_COUNT = k_divisions; }
 
+
     // ## Create Fields
     this->X  = XY;
     k_COUNT = k_divisions;
@@ -24,12 +25,12 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
     k_TEST = k_SIZE-1;
     this->stats = Statistics();
 
-    // ## Create Empty k-Blocks
-    for (int i = 0 ; i < k_COUNT ; i++) {
-        Block K;
-        k_Blocks.push_back(K);
-    }
+    // ## Create K-Fold
+    this->k_Blocks = Block::Splitter(XY,k_divisions);
 
+    // ## Create Tables
+    this->M_Cancer  = Matrix(3,XY.getSNPcount()); // y = rows (Genotypes) ; x = Xi's
+    this->M_Control = Matrix(3,XY.getSNPcount()); // y = rows (Genotypes) ; x = Xi's
 
 
 }
@@ -44,5 +45,21 @@ Snipper NaiveBayes::getSNPs()     {return X;}
 
 Statistics& NaiveBayes::getStats() {return stats;}
 
-std::vector<Block> NaiveBayes::getK_Blocks() { return k_Blocks; }
+std::vector<Block>& NaiveBayes::getK_Blocks() { return k_Blocks; }
+
+Matrix NaiveBayes::getMatrixM_Ctl()   { return M_Control; }
+
+Matrix NaiveBayes::getMatrixM_Ccr()   { return M_Cancer; }
+
+Matrix NaiveBayes::getMatrixM_pCtl()  { return M_p_Control; }
+
+Matrix NaiveBayes::getMatrixM_pCcr()  { return M_p_Cancer; }
+
+std::vector<int> NaiveBayes::intList(int start, int end) {
+
+    std::vector<int> n;
+    for (int i = start; i < end ; i++) {n.push_back(i);}
+    return n;
+}
+
 

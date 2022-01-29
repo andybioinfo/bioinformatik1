@@ -1,4 +1,6 @@
+#include <iostream>
 #include "Matrix.h"
+
 
 /*
  * Max value x matrix-object

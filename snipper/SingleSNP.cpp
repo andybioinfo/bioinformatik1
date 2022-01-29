@@ -153,3 +153,10 @@ Genotype SingleSNP::operator[](int idx) const { return _snp[idx]; }
 int SingleSNP::getSize() { return _snp.size(); }
 Classification SingleSNP::getClassificationAt(int pos) { return (*_class)[pos]; }
 
+Genotype SingleSNP::int2gen(int g) {
+    if (g == 0) {return HomoMajor; }  // Int = 0
+    if (g == 1) {return Hetero;    }  // Int = 1
+                 return HomoMinor;    // Int = 2
+
+}
+

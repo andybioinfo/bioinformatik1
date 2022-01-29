@@ -13,7 +13,7 @@
 enum stat { MIN, MAX, AVERAGE };
 
 
-/** The X-Vector ( SNP )
+/**
  *
  *
  * */

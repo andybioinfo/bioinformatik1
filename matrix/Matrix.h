@@ -21,9 +21,7 @@
 
 #include <vector>
 #include <sstream>
-#include "console.h"
-#include "Color.h"
-
+#include "../console/Color.h"
 
 using namespace std;
 

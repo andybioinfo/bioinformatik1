@@ -19,7 +19,8 @@ enum Genotype {
 */
 enum Classification {
     Control,    // Int = 0
-    Cancer      // Int = 1
+    Cancer,     // Int = 1
+    Unknown     // For debug
 };
 
 #endif //SNIPPER_STATES_H

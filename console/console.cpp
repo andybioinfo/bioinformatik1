@@ -12,14 +12,22 @@
 * */
 void console::ShowHeader() {
     std::cout << "\n";
-    std::cout << C::BYELLOW <<  "\n    )\\.--.   )\\  )\\ " << C::BRED << " .'(  " << C::BYELLOW << "   /`-.  " << C::BRED << "   /`-.   )\\.---.     /`-.  "  << C::BWHITE <<"N ";
-    std::cout << C::BYELLOW <<  "\n   (   ._.' (  \\, / " << C::BRED << " \\  ) " << C::BYELLOW << " ,' _  \\ " << C::BRED << " ,' _  \\ (   ,-._(  ,' _  \\ " << C::BWHITE <<"A B";
-    std::cout << C::BYELLOW <<  "\n    `-.`.    ) \\ (  " << C::BRED << " ) (  " << C::BYELLOW << "(  '-' ( " << C::BRED << "(  '-' (  \\  '-,   (  '-' ( "    << C::BWHITE <<"I A";
-    std::cout << C::BYELLOW <<  "\n   ,_ (  \\  ( ( \\ \\ " << C::BRED << " \\  ) " << C::BYELLOW << " ) ,._.' " << C::BRED << " ) ,._.'   ) ,-`    ) ,_ .' "  << C::BWHITE <<"V Y";
-    std::cout << C::BYELLOW <<  "\n  (  '.)  )  `.)/  )" << C::BRED << "  ) \\ " << C::BYELLOW << "(  '     " << C::BRED << "(  '      (  ``-.  (  ' ) \\ "    << C::BWHITE <<"E E";
-    std::cout << C::BYELLOW <<  "\n   '._,_.'      '.( " << C::BRED << "   )/ " << C::BYELLOW << " )/      " << C::BRED << " )/        )..-.(   )/   )/ "      << C::BWHITE <<"  S";
-    std::cout << "\n";
-    std::cout << "\n " << C::BYELLOW << " SN" << C::BRED << "I" << C::BYELLOW << "P" << C::BRED << "PER  ---- " << C::BYELLOW << "  \n";
+    std::string r  = C::RED;
+    std::string R  = C::BRED;
+    std::string Y  = C::BYELLOW;
+    std::string G  = C::BGREEN;
+
+    std::cout << r << "\n      )                                                                 ";
+    std::cout << R << "\n   ( /(  " << r << "   (                             (                             ";
+    std::cout << R << "\n   )\\())    )\\      (      )       (    ( )\\      )   (        (        ";
+    std::cout << R << "\n  ((_)\\  ((((_)(    )\\    /((     ))\\   )((_)  ( /(   )\\ )    ))\\   (   ";
+    std::cout << Y << "\n   _((_) " << R << " )\\ _ )\\  ((_)  (_))\\   /((_) " << Y << "  ((_)_ " << R << "  )(_)) (()/(   /((_)  )\\  ";
+    std::cout << G << "\n  | \\| | " << Y << " (_)_\\(_)  (_)  _)((_) (_))  " << G << "  | _ )" << Y << " ((_)_   )(_)) (_))   ((_) ";
+    std::cout << G << "\n  | .` |   / _ \\    | |  \\ V /  / -_)   | _ \\ / _` | | || | / -_)  (_-< ";
+    std::cout << G << "\n  |_|\\_|  /_/ \\_\\   |_|   \\_/   \\___|   |___/ \\__,_|  \\_, | \\___|  /__/ ";
+    std::cout << G << "\n                                                      |__/              ";
+
+
     std::cout << C::RESET;
 }
 
@@ -58,6 +66,9 @@ void console::ShowInputs(std::string filein, std::string fileout, Snipper &begin
     std::string T3  =    S::setStyle(Blue,doubleUnderlined,White,"Checked persons");
     std::string T4  =    S::setStyle(Blue,doubleUnderlined,White,"SNP's");
 
+
+
+
     std::cout << BG2 << C::BWHITE <<    "\n  | "<< T3 << BG2 << ":  "<< C::BWHITE  <<" |   " << T4 << BG2 <<":         "<< C::BCYAN  <<"                            " << R;
     std::cout << BG2 << C::BWHITE  <<            "\n  | count:   "<< C::BCYAN  << chkcnt << C::BWHITE  <<" |   count        : "<< C::BCYAN  <<snpcnt<<"                   " << R;
     std::cout << BG2 << C::BWHITE  <<            "\n  | Cancer:  "<< C::BCYAN  << ctlcnt << C::BWHITE  <<" |   Homoz-Major  : "<< C::BCYAN  <<homacnt<<" (over all SNP's)  " << R;
@@ -70,6 +81,15 @@ void console::ShowInputs(std::string filein, std::string fileout, Snipper &begin
 
 
 
+
+
+
+
+
+
+
+
+
 /*
  *
 * send the help-message to std::cout
@@ -78,8 +98,8 @@ void console::Help(std::string message) {
     console::ShowHeader();
     std::cout << C::BWHITE  <<  "" ;
     std::cout << C::BWHITE  <<  "";
-    std::cout << C::BWHITE  <<  "  Help:    " << C::BYELLOW << " $ ./snipper [input] [output] \n" ;
-    std::cout << C::BWHITE  <<  "  Example: " << C::BGREEN  << " $ ./snipper ../snp.txt ../out.snp            \n" ;
+    std::cout << C::BWHITE  <<  "  Help:    " << C::BYELLOW << " $ ./bayes [input] [output] \n" ;
+    std::cout << C::BWHITE  <<  "  Example: " << C::BGREEN  << " $ ./bayes ../snp.txt ../out.txt            \n" ;
     std::cout << C::BWHITE  <<  "\n" ;
     std::cout << C::BGREEN  <<  " [FILE]  input    " << C::BWHITE << "| " << C::BYELLOW << " a SNP matrix file\n" ;
     std::cout << C::BGREEN  <<  " [FILE]  output   " << C::BWHITE << "| " << C::BYELLOW << " ? surprise ?\n" ;
@@ -93,8 +113,9 @@ void console::Help(std::string message) {
  * */
 void console::Result(NaiveBayes& NB, std::string res,std::string timeA,std::string timeB,std::string timeC) {
 
-    S::move(up,1);
-    S::move(left,28);/*
+/*
+ *     S::move(Up,1);
+    S::move(Left,28);
     std::cout << C::BWHITE  <<  "\n       > " << C::BBLUE << "Finished. " << C::RESET ;
     std::cout << C::BWHITE  <<  "\n         Run Time  (m:s,ms)  :" << C::BYELLOW << " total     -> " << C::BBLUE << timeA;
     std::cout << C::BWHITE  <<  "\n                             :" << C::BYELLOW << " file      -> " << C::BBLUE << timeB;
@@ -106,32 +127,6 @@ void console::Result(NaiveBayes& NB, std::string res,std::string timeA,std::stri
     Statistics ST = NB.getStats();
     int snps = NB.getSNPs().getSNPcount();
     int pats = NB.getSNPs()[0].getSize();
-
-
-
-/*
-
-SNP's 123456789 , Patients 123456789 => k's: |01|02|03|04|05|06|07|08|09|10|
-
-      __ __ __ __ __ __ __          ____________________ (min%|avr%|max%) of all k's
-100%  ██ ██ ██ ██ ██ ██ ██         / Sp = Specificity  (10.0|20.1|30.3)
- 90%  ██ ██ ██ ██ ██ ██ ██        / Se = Sensitivity  (10.0|20.1|30.3)
- 80%  ██ ██ ██ ██ ██ ██ ██       / Pr = Precision    (10.0|20.1|30.3)
- 70%  ██ ██ ██ ██ ██ ██ ██      / Ac = Accuracy     (10.0|20.1|30.3)
- 60%  ██ ██ ██ ██ ██ ██ ██     / F1 = F1Score      (10.0|20.1|30.3)
- 50%  ██ ██ ██ ██ ██ ██ ██    / Av = Average      (10.0|20.1|30.3)
- 40%  ██ ██ ██ ██ ██ ██ ██   / Dv = Deviation    (10.0|20.1|30.3)
- 30%  ██ ██ ██ ██ ██ ██ ██
- 20%  ██ ██ ██ ██ ██ ██ ██
- 10%  ██ ██ ██ ██ ██ ██ ██
-  5%  ██ ██ ██ ██ ██ ██ ██
-  0%  Sp Se Pr Ac F1 Av Dv
-
-  > Complete Table of all values saved in your file "out.txt"
-  
-*/
-
-//std::vector<std::string> barGraph( max_value,std::vector<double> values, Color color)
 
 std::vector<std::string> a1 = Statistics::barGraph( 0.0,ST.get_stats_Specificity(), Green);
 std::vector<std::string> a2 = Statistics::barGraph( 0.0,ST.get_stats_Sensitivity(), Yellow);
@@ -166,9 +161,8 @@ std::vector<std::string> a7 = Statistics::barGraph( 0.0,ST.get_stats_Standard_de
     double ma6 = Statistics::getfromList( MAX , ST.get_stats_Average() );
     double ma7 = Statistics::getfromList( MAX , ST.get_stats_Standard_deviation());
 
-    std::cout << C::BWHITE  << "\n ::: N A I V E  B A Y E S ::: SNP's : " <<  snps << " Patients: " << pats <<"\n";
 
-std::cout << C::BWHITE  <<  "\n  max    __ __ __ __ __ __ __          / (min%|avr%|max%) of all k's";
+std::cout << C::BWHITE  <<  "\n  max    __ __ __ __ __ __ __    / (min%|avr%|max%) of all k's";
 std::cout << C::BWHITE  <<  "\n 100%    "<<a1[10]<<" "<<a2[10]<<" "<<a3[10]<<" "<<a4[10]<<" "<<a5[10]<<" "<<a6[10]<<" "<<a7[10]<<"   | Sp = Specificity  ( " << mi1 << " | " << av1 << " | " << ma1 << " )";
 std::cout << C::BWHITE  <<  "\n  90%    "<<a1[ 9]<<" "<<a2[ 9]<<" "<<a3[ 9]<<" "<<a4[ 9]<<" "<<a5[ 9]<<" "<<a6[ 9]<<" "<<a7[ 9]<<"   | Se = Sensitivity  ( " << mi2 << " | " << av2 << " | " << ma2 << " )";
 std::cout << C::BWHITE  <<  "\n  80%    "<<a1[ 8]<<" "<<a2[ 8]<<" "<<a3[ 8]<<" "<<a4[ 8]<<" "<<a5[ 8]<<" "<<a6[ 8]<<" "<<a7[ 8]<<"   | Pr = Precision    ( " << mi3 << " | " << av3 << " | " << ma3 << " )";
@@ -180,9 +174,37 @@ std::cout << C::BWHITE  <<  "\n  30%    "<<a1[ 3]<<" "<<a2[ 3]<<" "<<a3[ 3]<<" "
 std::cout << C::BWHITE  <<  "\n  20%    "<<a1[ 2]<<" "<<a2[ 2]<<" "<<a3[ 2]<<" "<<a4[ 2]<<" "<<a5[ 2]<<" "<<a6[ 2]<<" "<<a7[ 2]<<"";
 std::cout << C::BWHITE  <<  "\n  10%    "<<a1[ 1]<<" "<<a2[ 1]<<" "<<a3[ 1]<<" "<<a4[ 1]<<" "<<a5[ 1]<<" "<<a6[ 1]<<" "<<a7[ 1]<<"";
 std::cout << C::BWHITE  <<  "\n   5%    "<<a1[ 0]<<" "<<a2[ 0]<<" "<<a3[ 0]<<" "<<a4[ 0]<<" "<<a5[ 0]<<" "<<a6[ 0]<<" "<<a7[ 0]<<"";
-std::cout << C::BWHITE  <<  "\n   0%    Sp Se Pr Ac F1 Av Dv \n";
+std::cout << C::BWHITE  <<  "\n   0%    Sp Se Pr Ac F1 Av Dv \n\n";
 
+    std::cout << C::BLUE  << " > complete statistic table is written in file: " << C::BBLUE  << res << "\n\n";
+}
 
+void console::InputLine(int snp, int pat, int k, int ksize) {
+
+    std::cout << "\n" << C::RESET;
+
+    stringstream snp_buf("");
+    stringstream pat_buf("");
+    stringstream kfold_buf("");
+
+    snp_buf << "| " << snp << " |";
+    pat_buf << "| " << pat << " |";
+    kfold_buf << "| " << k << " * " << ksize << " |";
+
+    std::string T1  =    S::setStyle(Black,Bold,White,"                      ::   :: Naive Bayes ::   ::                     ");
+    std::string T2  =    S::setStyle(None,doubleUnderlined,Blue,"Patients:");
+    std::string T3  =    S::setStyle(None,doubleUnderlined,Cyan,"SNPs:");
+    std::string T4  =    S::setStyle(None,doubleUnderlined,Red,"k-Fold:");
+    std::string T5  =    S::setStyle(None,Italic,Red," ! All inputs Okay ! ");
+
+    std::string V1  =    S::setStyle(None,Bold,Magenta,snp_buf.str());
+    std::string V2  =    S::setStyle(None,Bold,Magenta,pat_buf.str());
+    std::string V3  =    S::setStyle(None,Bold,Yellow,kfold_buf.str());
+
+    std::cout << "  " << T1 <<
+              "\n"  <<"  " << T2 << "  " << V1 << "  " << T3 << "  " << V2<< "  " << T4 << "  " << V3 << "  " << T5 << " " << S::RESET;
+
+    std::cout << "\n" << C::RESET;
 }
 
 

@@ -5,10 +5,12 @@
 #ifndef BAYES_H
 #define BAYES_H
 
+#include <stdexcept>
 #include <vector>
-#include "Statistics.h"
-#include "snipper/Snipper.h"
+#include <iostream>
 #include "Block.h"
+#include "Statistics.h"
+#include "matrix/Matrix.h"
 
 
 /** Bayes
@@ -19,34 +21,56 @@ class NaiveBayes {
 
 public:
 
+    // #### BayesAlgorithm ####
 
-    NaiveBayes(Snipper XY, int k_divisions);
+        // Algorithm Complete
+        void BayesTrainingsstunde();
 
+        // prediction
+        //Classification predict(const Snipper &X, int pat_id) const ;
 
-    void BayesTrainingsstunde();
-
-
-    void outputFile(std::string output_file);
-
-
-    [[nodiscard]] int get_k_SIZE() const;
-    [[nodiscard]] int get_k_COUNT() const;
+        // train
+        //void NaiveBayes::train(const Snipper &X, const Classifics &Y);
 
 
-    Snipper getSNPs();
-    Statistics& getStats();
-    std::vector<Block> getK_Blocks();
+    // #### BayesFile ####
+
+        // Statistic-Output
+        void outputFile(std::string output_file);
+
+
+    // #### BayesMain ####
+
+        // Constructor
+        using K_Fold = std::vector<Block>;
+        NaiveBayes(Snipper XY, int k_divisions);
+
+        // Helper
+        static std::vector<int> intList(int start,int end);
+
+        // Getter
+        [[nodiscard]] int get_k_SIZE() const;
+        [[nodiscard]] int get_k_COUNT() const;
+        Snipper getSNPs();
+        Statistics &getStats();
+        std::vector<Block> &getK_Blocks();
+        Matrix getMatrixM_Ctl();
+        Matrix getMatrixM_Ccr();
+        Matrix getMatrixM_pCtl();
+        Matrix getMatrixM_pCcr();
 
 private:
     
 // Tables:
-Matrix M_Control;
-Matrix M_Cancer;
+Matrix M_Control    = Matrix(1,1); // y = rows (Genotypes ; x = Xi's
+Matrix M_Cancer     = Matrix(1,1); // y = rows (Genotypes ; x = Xi's
+Matrix M_p_Control  = Matrix(1,1);
+Matrix M_p_Cancer   = Matrix(1,1);
     
 // The SNPs
 Snipper X;
 Statistics stats;
-std::vector<Block> k_Blocks;
+K_Fold k_Blocks;
 
 int k_SIZE;
 int k_TEST;
@@ -56,7 +80,7 @@ int k_COUNT;
 
 
 
-#endif
+#endif //BAYES_H
 
 
 

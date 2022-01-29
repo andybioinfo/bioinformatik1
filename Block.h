@@ -37,9 +37,16 @@ ________________________________________________________________________________
 
 */
 
-
-
 #include <vector>
+#include <random>
+#include <algorithm>
+#include <sstream>
+#include <iostream>
+#include "snipper/Snipper.h"
+#include "console/Color.h"
+
+
+class NaiveBayes;
 
 class Block {
 
@@ -47,36 +54,36 @@ public:
 
     using K_Fold = std::vector<Block>;
 
+    // Constructor
+
+    explicit Block(Snipper& S,int id);
+
     // Methods
 
     static K_Fold Splitter(Snipper& S, int count);
-    void trainBlock ();
-    void testing ();
+    void trainBlock (NaiveBayes NB);
+    void testing (NaiveBayes &NB, const std::vector<int>& trainings_block_ids );
+
+    // Setter
+
+    void addPatient(int id) {patient.push_back(id);predictions.push_back(Unknown);}
 
     // Getter
-    std::vector<double> getBlockPredictions() {return predictions;}
+
+    std::vector<Classification> getBlockPredictions() {return predictions;}
     std::vector<int>    getBlockPatients()    {return patient;}
-    int size() const {return (int)interval.size();} // count of patients in this list
+    [[nodiscard]] int size() const {return (int)patient.size();} // count of patients in this list
+    void print();
+    int getID() {return kid;}
 
 private:
 
-std::vector<double> predictions; // List of predictions  ( Ypredict's )
-std::vector<int> patient;        // List of patients     ( Yi's )
-
-bool trained = false; 
-bool tested  = false; 
+std::vector<Classification> predictions; // List of predictions  ( Ypredict's )
+std::vector<int> patient;                // List of patients     ( Yi's )
 Snipper S;
+int kid = -1;
 
 };
-
-
-
-
-
-
-
-
-
 
 
 #endif //BAYES_BLOCK_H

@@ -6,6 +6,7 @@
 
 #include <valarray>
 #include <sstream>
+#include <iostream>
 #include "Statistics.h"
 
 
@@ -31,44 +32,48 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
 
 /** Compute Accuracy
  *
- * @all     True/False Positive/Negative values (in Range 0.0 - 1.0)
+ * @all     True/False Positive/Negative values
  * @return  accuracy in percent
  * */
  double Statistics::Accuracy(double TP, double TN, double FP, double FN) {
     double res = (TP + TN) / (TP + TN + FP + FN);
+    if (res != res) {return 0;}
     return res * 100.0;
 }
 
 
 /** Compute Specificity
  *
- * @all     True/False Positive/Negative values (in Range 0.0 - 1.0)
+ * @all     True/False Positive/Negative values
  * @return  specificity (in percent)
  * */
  double Statistics::Specificity(double TN, double FP) {
     double res = (TN) / (TN + FP);
+    if (res != res) {return 0;}
     return res * 100.0;
 };
 
 
 /** Compute Sensitivity
  *
- * @all     True/False Positive/Negative values (in Range 0.0 - 1.0)
+ * @all     True/False Positive/Negative values
  * @return  sensitivity (in percent)
  * */
  double Statistics::Sensitivity(double TP, double FN) {
     double res = (TP) / (TP + FN);
+    if (res != res) {return 0;}
     return res * 100.0;
 };
 
 
 /** Compute Precision
  *
- * @all     True/False Positive/Negative values (in Range 0.0 - 1.0)
+ * @all     True/False Positive/Negative values
  * @return  specificity (in percent)
  * */
  double Statistics::Precision(double TP, double FP) {
     double res = (TP) / (TP + FP);
+    if (res != res) {return 0;}
     return res * 100.0;
 };
 
@@ -80,7 +85,9 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
  * @return     F1Score (in percent)
  * */
  double Statistics::F1Score(double precision, double sensivity) {
-    return 2 * ( (precision * sensivity) / (precision + sensivity) );
+    double res = 2 * ( (precision * sensivity) / (precision + sensivity) );
+    if (res != res) {return 0;}
+    return res;
 };
 
 
@@ -150,14 +157,7 @@ double Statistics::getfromList(stat max_min_avr,std::vector<double> values) {
 
 
 
-// Getter
-std::vector<double> Statistics::get_stats_Accuracy()            {return stats_Accuracy;             }
-std::vector<double> Statistics::get_stats_Sensitivity()         {return stats_Sensitivity;          }
-std::vector<double> Statistics::get_stats_Specificity()         {return stats_Specificity;          }
-std::vector<double> Statistics::get_stats_Precision()           {return stats_Precision;            }
-std::vector<double> Statistics::get_stats_F1Score()             {return stats_F1Score;              }
-std::vector<double> Statistics::get_stats_Average()             {return stats_Average;              }
-std::vector<double> Statistics::get_stats_Standard_deviation()  {return stats_Standard_deviation;   }
+
 
 
 
@@ -203,3 +203,11 @@ std::vector<std::string> Statistics::barGraph(double max_value,std::vector<doubl
 }
 
 
+// Getter
+std::vector<double> Statistics::get_stats_Accuracy()            {return stats_Accuracy;             }
+std::vector<double> Statistics::get_stats_Sensitivity()         {return stats_Sensitivity;          }
+std::vector<double> Statistics::get_stats_Specificity()         {return stats_Specificity;          }
+std::vector<double> Statistics::get_stats_Precision()           {return stats_Precision;            }
+std::vector<double> Statistics::get_stats_F1Score()             {return stats_F1Score;              }
+std::vector<double> Statistics::get_stats_Average()             {return stats_Average;              }
+std::vector<double> Statistics::get_stats_Standard_deviation()  {return stats_Standard_deviation;   }
