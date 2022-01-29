@@ -5,17 +5,78 @@
 #ifndef BAYES_BLOCK_H
 #define BAYES_BLOCK_H
 
+/*
+
+This Class is a Single k-Block:
+
+Yi	Ypredict  *Ytruestates	*X1	*X2	*X3
+____|________|______________|___|___|___
+Y14	|	?	 |	Cancer		| 1 | 0	| 2
+Y19	|	?	 |	Control		| 1 | 0	| 2
+Y6	|	?	 |	Cancer		| 1 | 0	| 2
+Y1	|	?	 |	Cancer		| 0 | 1	| 2
+Y11	|	?	 |	Cancer		| 1 | 0	| 2
+
+ # Yi            : is the row_id or Patient_id from the Input-SNP-File
+
+ # Ypredict      : the calculated prediction
+
+ # Ytruestates   : is the Y-Vector of the Input-SNP-File   (pointered)
+
+ # Xi            : are the X-Vectors of the Input-SNP-File (pointered)
+
+___________________________________________________________________________________
+
+ ### Methods:
+
+ static K_Fold Splitter(Snipper& S, int count)  => Create a Vector of k-Blocks with size 'count'
+
+ void trainBlock ()                             => trains all patients in this block
+
+ void testing ()                                => compare between Ypredict and Ytruestate
+
+*/
+
+
+
 #include <vector>
 
 class Block {
 
 public:
 
-    std::vector<int> interval; // List of Patient-IDs
-    bool trained = false;      // is this block already trained ?
-    bool tested  = false;      // is this block already tested  ?
+    using K_Fold = std::vector<Block>;
+
+    // Methods
+
+    static K_Fold Splitter(Snipper& S, int count);
+    void trainBlock ();
+    void testing ();
+
+    // Getter
+    std::vector<double> getBlockPredictions() {return predictions;}
+    std::vector<int>    getBlockPatients()    {return patient;}
     int size() const {return (int)interval.size();} // count of patients in this list
 
+private:
+
+std::vector<double> predictions; // List of predictions  ( Ypredict's )
+std::vector<int> patient;        // List of patients     ( Yi's )
+
+bool trained = false; 
+bool tested  = false; 
+Snipper S;
+
 };
+
+
+
+
+
+
+
+
+
+
 
 #endif //BAYES_BLOCK_H
