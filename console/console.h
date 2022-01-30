@@ -3,8 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include "../snipper/Snipper.h"
-#include "../NaiveBayes.h"
+#include "../Snipper.h"
 
 /**
  * Contains Output strings for Console
@@ -18,9 +17,7 @@ public:
 
  static void ShowInputs(std::string filein, std::string fileout, Snipper &begin) ;
 
- static void InputLine(int snp, int pat, int k, int ksize);
-
- static void Result(NaiveBayes& NB, std::string res,std::string timeA,std::string timeB,std::string timeC);
+ static void Result(std::string res,std::string timeA,std::string timeB,std::string timeC);
 
  static std::string double2String(double x);
 

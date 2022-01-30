@@ -19,7 +19,7 @@ enum Font {
 };
 
 enum dir {
-    Up, Down, Left, Right
+    up, down, left, right
 };
 
 class S {

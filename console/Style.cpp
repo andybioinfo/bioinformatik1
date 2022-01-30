@@ -65,10 +65,10 @@ std::string S::setStyle(Color background, Font style, Color text, std::string te
 // move the Cursor in console s characters in the given direction. ( for overwrite console text )
 void S::move(dir direction,int s) {
 
-    if (direction == Left)  { for (int i = 0 ; i <= s ; i++) { std::cout << "\033[1D"; } return; }
-    if (direction == Right) { for (int i = 0 ; i <= s ; i++) { std::cout << "\033[1C"; } return; }
-    if (direction == Up)    { for (int i = 0 ; i <= s ; i++) { std::cout << "\033[1A"; } return; }
-    if (direction == Down)  { for (int i = 0 ; i <= s ; i++) { std::cout << "\033[1B"; } return; }
+    if (direction == left)  { for (int i = 0 ; i <= s ; i++) { std::cout << "\033[1D"; } return; }
+    if (direction == right) { for (int i = 0 ; i <= s ; i++) { std::cout << "\033[1C"; } return; }
+    if (direction == up)    { for (int i = 0 ; i <= s ; i++) { std::cout << "\033[1A"; } return; }
+    if (direction == down)  { for (int i = 0 ; i <= s ; i++) { std::cout << "\033[1B"; } return; }
     return;
 
 }
