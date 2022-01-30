@@ -8,10 +8,7 @@
 #include <sstream>
 #include <iostream>
 #include "Statistics.h"
-
-
-
-
+#include "console/Color.h"
 
 
 /** Add a Set of Stats
@@ -173,31 +170,36 @@ std::vector<std::string> Statistics::barGraph(double max_value,std::vector<doubl
 
     double min = getfromList(MIN,values);
     double max = getfromList(MAX,values);
-    //double avr = getfromList(AVERAGE,values);
+    double avr_percent = getfromList(AVERAGE,values);
 
     std::stringstream min_bar("");
+    //std::cout << "\n test bar: avr%: "<<avr_percent  <<" {";
 
-    for (int i = 1 ; i <= 11 ; i ++ ) { // first value in vector is 5%
+    // 5%
+    std::stringstream br("");
+    if (max > 0.5 && max <= 0.5+10 ) {br << C::BRED << "__"; } else { br << "  ";}
+    if (avr_percent >= 5.0  )   {  res.push_back(S::setStyle(color,Bold,White,br.str()));
+    } else {  res.push_back(S::setStyle(Black,Bold,White,br.str())); }
+
+    // 10%+
+
+    for (int i = 0 ; i <= 11 ; i ++ ) { // first value in vector is 5%
+        double percent = i * 10;
+        //std::cout << " %:" <<(percent) << "->" << (avr_percent >= percent) << " ";
 
         std::stringstream bar("");
-        double buf = 0.0;
-        double percent = i * 5;
 
-        // is min
-        if (min > percent - 5.0 && min < percent ) {
-            buf = min - (i-1) * 5;
-            if (buf <  2.00) {min_bar << "__";}
-            if (buf >= 2.00) {min_bar << "--";}
-        } //else {min_bar << "  ";}
+        // max
+        if (max > percent && max <= percent+10 ) {bar << C::BRED << "__"; } else { bar << "  ";}
 
-        // is max
-        if (max >= percent - 5.0 )   {  bar << S::setStyle(color,Bold,White,"  ");
-        } else {  bar << S::setStyle(Black,Bold,White,"  ");
+        // average
+        if (avr_percent > percent   )   {  res.push_back(S::setStyle(color,Bold,White,bar.str()));
+        } else {  res.push_back(S::setStyle(Black,Bold,White,bar.str()));
         }
 
-        res.push_back(bar.str());
-
+   
     }
+//    std::cout << "} ";
     return res;
 
 }

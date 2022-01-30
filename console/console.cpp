@@ -162,7 +162,7 @@ std::vector<std::string> a7 = Statistics::barGraph( 0.0,ST.get_stats_Standard_de
     double ma7 = Statistics::getfromList( MAX , ST.get_stats_Standard_deviation());
 
 
-std::cout << C::BWHITE  <<  "\n  max    __ __ __ __ __ __ __    / (min%|avr%|max%) of all k's";
+std::cout << C::BWHITE  <<  "\n  AVR%   __ __ __ __ __ __ __    / ( min% | avr% | max% ) of all k-folds's";
 std::cout << C::BWHITE  <<  "\n 100%    "<<a1[10]<<" "<<a2[10]<<" "<<a3[10]<<" "<<a4[10]<<" "<<a5[10]<<" "<<a6[10]<<" "<<a7[10]<<"   | Sp = Specificity  ( " << mi1 << " | " << av1 << " | " << ma1 << " )";
 std::cout << C::BWHITE  <<  "\n  90%    "<<a1[ 9]<<" "<<a2[ 9]<<" "<<a3[ 9]<<" "<<a4[ 9]<<" "<<a5[ 9]<<" "<<a6[ 9]<<" "<<a7[ 9]<<"   | Se = Sensitivity  ( " << mi2 << " | " << av2 << " | " << ma2 << " )";
 std::cout << C::BWHITE  <<  "\n  80%    "<<a1[ 8]<<" "<<a2[ 8]<<" "<<a3[ 8]<<" "<<a4[ 8]<<" "<<a5[ 8]<<" "<<a6[ 8]<<" "<<a7[ 8]<<"   | Pr = Precision    ( " << mi3 << " | " << av3 << " | " << ma3 << " )";
