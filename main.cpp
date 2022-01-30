@@ -51,9 +51,11 @@ int main(int argc, char *argv[]) {
     // Provisorium
     console::ShowHeader();
     Timer t;
-    std::string arg_In  = "testfile";
+    std::string arg_In  = "../snp.txt";
 
-    Snipper S = createSNPs();              // read file and create Snipper SNP-Database
+    //Snipper S = createSNPs();              // read file and create Snipper SNP-Database
+
+    Snipper S(arg_In );              // read file and create Snipper SNP-Database
 
     double time1 = t.getMilliSecs();       // timestamp after file in
 

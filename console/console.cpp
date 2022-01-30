@@ -27,7 +27,7 @@ void console::ShowHeader() {
     std::cout << G << "\n  |_|\\_|  /_/ \\_\\   |_|   \\_/   \\___|   |___/ \\__,_|  \\_, | \\___|  /__/ ";
     std::cout << G << "\n                                                      |__/              ";
 
-    std::cout << "  " << S::setStyle(Black,Bold,White,"                      ::   :: Naive Bayes ::   ::                     ") << "\n\n";
+    std::cout << "\n  " << S::setStyle(Black,Bold,White,"                      ::   :: Naive Bayes ::   ::                     ") << "\n\n";
 
     std::cout << C::BWHITE  <<  "             > " << C::BBLUE << "computing ... " << C::RESET << "\n" ;
 
@@ -195,14 +195,14 @@ void console::InputLine(int snps, int pats, int folds, int ksize,std::string fil
     std::string TInpName = S::setStyle(Red,Bold,Yellow,filename);
     std::string Runt = S::setStyle(None,Bold,White,"  Run Time     ");
     std::string Runf = S::setStyle(None,Bold,Red,"(m:s,ms)");
-    std::string TTt = S::setStyle(None,Underlined,Blue,"total     -> ");
-    std::string TTf = S::setStyle(None,Underlined,Blue,"file      -> ");
-    std::string TTc = S::setStyle(None,Underlined,Blue,"computing -> ");
+    std::string TTt = S::setStyle(None,Bold,Blue,"total     -> ");
+    std::string TTf = S::setStyle(None,Bold,Blue,"file      -> ");
+    std::string TTc = S::setStyle(None,Bold,Blue,"computing -> ");
 
     // times
-    std::string TVt = S::setStyle(None,Underlined,Blue,totaltime);
-    std::string TVf = S::setStyle(None,Underlined,Blue,filetime);
-    std::string TVc = S::setStyle(None,Underlined,Blue,computetime);
+    std::string TVt = S::setStyle(None,Bold,Blue,totaltime);
+    std::string TVf = S::setStyle(None,Bold,Blue,filetime);
+    std::string TVc = S::setStyle(None,Bold,Blue,computetime);
 
     // delete lines
     S::move(Up,1);
@@ -216,7 +216,7 @@ void console::InputLine(int snps, int pats, int folds, int ksize,std::string fil
     std::cout << "     " << C3    << "  " << Col << " " << V3 << "    " << L << "  "  << Runf << "     " << TTf << TVf    << "\n";
     std::cout << "     " << C4  << "    " << Col << " " << V4 << "    " << L << "               " << TTc << TVc << "\n";
 
-    std::cout << "\n" << C::RESET;
+    std::cout << "" << C::RESET;
 }
 
 

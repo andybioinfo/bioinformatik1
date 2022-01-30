@@ -150,8 +150,8 @@ void Block::testing(NaiveBayes& NB,  const std::vector<int>& trainings_block_ids
 
     //
 
-    double av = 30;//Average(std::vector<double> list);
-    double dv = 20;//Standard_deviation(std::vector<double> Xi,std::vector<double> pXi);
+    double av = 80;//Average(std::vector<double> list);
+    double dv = 15;//Standard_deviation(std::vector<double> Xi,std::vector<double> pXi);
 
     // Store Statistics of this Testing
 
