@@ -7,7 +7,7 @@
 
 
 
-NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
+NaiveBayes::NaiveBayes(Snipper XY, int k_divisions,console c) {
 
     // ## get and check arguments
     int cols    = XY.getSNPcount();
@@ -20,6 +20,7 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
 
     // ## Create Fields
     this->X  = XY;
+    this->C = c;
     k_COUNT = k_divisions;
     k_SIZE  = X[0].getSize() / k_COUNT;
     k_TEST = k_SIZE-1;
@@ -37,24 +38,23 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
 
 
 
+
+
+
+
+
+
+
+
 int NaiveBayes::get_k_SIZE() const      {return k_SIZE;}
-
 int NaiveBayes::get_k_COUNT() const     {return k_COUNT;}
-
 Snipper NaiveBayes::getSNPs()     {return X;}
-
 Statistics& NaiveBayes::getStats() {return stats;}
-
 std::vector<Block>& NaiveBayes::getK_Blocks() { return k_Blocks; }
-
 Matrix NaiveBayes::getMatrixM_Ctl()   { return M_Control; }
-
 Matrix NaiveBayes::getMatrixM_Ccr()   { return M_Cancer; }
-
 Matrix NaiveBayes::getMatrixM_pCtl()  { return M_p_Control; }
-
 Matrix NaiveBayes::getMatrixM_pCcr()  { return M_p_Cancer; }
-
 std::vector<int> NaiveBayes::intList(int start, int end) {
 
     std::vector<int> n;

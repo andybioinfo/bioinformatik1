@@ -11,6 +11,7 @@
 #include "Block.h"
 #include "Statistics.h"
 #include "matrix/Matrix.h"
+#include "console/console.h"
 
 
 /** Bayes
@@ -27,11 +28,15 @@ public:
         void BayesTrainingsstunde();
 
         // prediction
-        //Classification predict(const Snipper &X, int pat_id) const ;
+        Classification predict(int patient_id); 
 
         // train
-        //void NaiveBayes::train(const Snipper &X, const Classifics &Y);
+        void train(int patient_id); 
 
+        // train
+        double BayesFormula(Classification posterior); 
+
+        double ProductSNPFormula(Genotype gen, Classification cls);
 
     // #### BayesFile ####
 
@@ -43,7 +48,7 @@ public:
 
         // Constructor
         using K_Fold = std::vector<Block>;
-        NaiveBayes(Snipper XY, int k_divisions);
+        NaiveBayes(Snipper XY, int k_divisions,console c);
 
         // Helper
         static std::vector<int> intList(int start,int end);
@@ -75,6 +80,8 @@ K_Fold k_Blocks;
 int k_SIZE;
 int k_TEST;
 int k_COUNT;
+int k_test_actual;
+console C;
 
 };
 

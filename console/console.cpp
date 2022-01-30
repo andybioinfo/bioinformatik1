@@ -220,6 +220,35 @@ void console::InputLine(int snps, int pats, int folds, int ksize,std::string fil
 }
 
 
+std::string Format::int2String(int x) {
+    std::ostringstream out; out.width(5); out.precision(4); out << x;
+
+
+    return out.str();
+}
+
+
+console::console(int remainsteps) {
+//step 12345 / 12345 (18 chars)
+this->stringlength = 18;
+this->remainsteps  = remainsteps;
+this->totalsteps   = remainsteps;
+}
+
+void  console::stepcounter() {
+this->remainsteps--;
+std::ostringstream outa; outa.width(5); outa.precision(4); outa << this->remainsteps;
+std::ostringstream outb; outb.width(5); outb.precision(4); outb << this->totalsteps;
+S::move(Left, this->stringlength);
+std::cout << "step " << outa.str() << " / " << outb.str();
+}
+
+void console::startcounter() {
+std::cout << C::BCYAN << "step " << this->remainsteps << " / " << this->totalsteps;
+}
+
+
+
 /*
  * Create a Timer with timestamp
  * 

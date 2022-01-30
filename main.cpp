@@ -59,7 +59,10 @@ int main(int argc, char *argv[]) {
 
     double time1 = t.getMilliSecs();       // timestamp after file in
 
-    NaiveBayes NB(S, 10);                  // Build NaiveBayes
+    console c(110);
+    c.startcounter();
+
+    NaiveBayes NB(S, 10,c);                  // Build NaiveBayes
 
     NB.BayesTrainingsstunde();             // compute Naive Bayes
 

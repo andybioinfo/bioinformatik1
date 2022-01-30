@@ -12,6 +12,8 @@
 class console {
 public:
 
+ console(int remainsteps);
+
  static void ShowHeader();
 
  static void Help(std::string message);
@@ -24,7 +26,13 @@ public:
 
  static std::string double2String(double x);
 
+ void stepcounter();
+ void startcounter();
 
+private:
+int remainsteps;
+int totalsteps;
+int stringlength;
 
 };
 
