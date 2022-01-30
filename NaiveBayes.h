@@ -11,7 +11,7 @@
 #include "Block.h"
 #include "Statistics.h"
 #include "matrix/Matrix.h"
-#include "console/console.h"
+
 
 
 /** Bayes
@@ -48,7 +48,7 @@ public:
 
         // Constructor
         using K_Fold = std::vector<Block>;
-        NaiveBayes(Snipper XY, int k_divisions,console c);
+        NaiveBayes(Snipper XY, int k_divisions);
 
         // Helper
         static std::vector<int> intList(int start,int end);
@@ -81,7 +81,6 @@ int k_SIZE;
 int k_TEST;
 int k_COUNT;
 int k_test_actual;
-console C;
 
 };
 

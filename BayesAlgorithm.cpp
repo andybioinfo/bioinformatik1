@@ -4,13 +4,12 @@
 
 
 #include "NaiveBayes.h"
+#include "console/console.h"
 
 
 double NaiveBayes::BayesFormula(Classification posterior) {
 
-
-
-
+return 0;
 }
 
 
@@ -20,71 +19,81 @@ double NaiveBayes::BayesFormula(Classification posterior) {
  * */
 double NaiveBayes::ProductSNPFormula(Genotype gen, Classification cls) {
 
-double res = 0.0;
-int snpcnt = X.getSNPcount();
+        double res = 0.0;
+        int snpcnt = X.getSNPcount();
 
-// Extract patient ids of all current training-blocks
-int kid = 0;
-std::vector<int> pids;
-
-for (Block k : k_Blocks) {
-
-    if (k.getID != k_test_actual) {
-        for (int id : k.getBlockPatients) {
-            pids.push_back(id);
+    // Extract patient ids of all current training-blocks
+        int kid = 0;
+        std::vector<int> pids;
+        for (Block k : k_Blocks) {
+            if (k.getID() != k_test_actual) {
+                for (int id : k.getBlockPatients()) {
+                    pids.push_back(id);
+                }
+            }
+            kid++;
         }
-    }
-    kid++;
-}
+
+    // Product over all SNPs
+        int countpat = pids.size();
+        int countXiC = 0;
+        double probability = 1;
+        for (int Xi = 0 ; Xi < snpcnt ; Xi++) { // SNP Xi
+
+            int countXiC = 0;
+
+            for (int Yi : pids ) { // all patients in TrainData
+
+                if (X.getClassifics()[Yi] == cls && X[Xi][Yi] == gen) {countXiC++;}
+
+                }
+
+            probability *= ((double)countXiC / (double)countpat);
+        }
+
+        return probability;
+     }
 
 
 
-// Product
-
-for (int i = 0 ; i < snpcnt ; i++) {
 
 
-
-
-
-    
-}
-return res;
-}
-
-
-/** write Tables
+/** write both Tables
  *
  * */
 void NaiveBayes::train(int patient_id) {
 
 double val = 0.0;
+int pid = patient_id;
+if (patient_id >= X.getClassifics().count()) {pid = 0;}
 
   // Table Xi Cancer
 
        /* Hz Major | C */
+       val = ProductSNPFormula(HomoMajor, Cancer);
+       //M_Cancer.setValue(0,pid,val);
 
-
-M_Cancer.setValue(0,patient_id,val);
        /* Hetero   | C */
+       val = ProductSNPFormula(Hetero,Cancer);
+       //M_Cancer.setValue(1,pid,val);
 
-M_Cancer.setValue(1,patient_id,val);
        /* Hz Minor | C */
-  
-M_Cancer.setValue(2,patient_id,val);
+       val = ProductSNPFormula(HomoMinor, Cancer);
+       //M_Cancer.setValue(2,pid,val);
 
   // Table Xi Control
 
        /* Hz Major | N */
+       val = ProductSNPFormula(HomoMajor, Control);
+       //M_Control.setValue(0,pid,val);
 
-M_Control.setValue(0,patient_id,val);
        /* Hetero   | N */
+       val = ProductSNPFormula(Hetero, Control);
+       //M_Control.setValue(1,pid,val);
 
-M_Control.setValue(1,patient_id,val);
        /* Hz Minor | N */
-
-M_Control.setValue(2,patient_id,val);
-
+       val = ProductSNPFormula(HomoMinor, Control);
+       //M_Control.setValue(2,pid,val);
 
 }
 
@@ -125,7 +134,8 @@ Classification NaiveBayes::predict(int patient_id) {
 
 void NaiveBayes::BayesTrainingsstunde() {
 
-
+    console C(k_COUNT*10);
+    C.startcounter();
     // ### Swap Test-Block k times
     for (int testblock = k_COUNT-1 ; testblock >= 0 ; testblock--) { // Swap Loop
 

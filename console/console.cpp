@@ -29,7 +29,7 @@ void console::ShowHeader() {
 
     std::cout << "\n  " << S::setStyle(Black,Bold,White,"                      ::   :: Naive Bayes ::   ::                     ") << "\n\n";
 
-    std::cout << C::BWHITE  <<  "             > " << C::BBLUE << "computing ... " << C::RESET << "\n" ;
+    std::cout << C::BWHITE  <<  "             > " << C::BBLUE << "computing ... " << C::RESET << "" ;
 
 }
 
@@ -118,8 +118,8 @@ void console::Result(NaiveBayes& NB, std::string res,std::string timeA,std::stri
 
 
     Statistics ST = NB.getStats();
-    int snps = NB.getSNPs().getSNPcount();
-    int pats = NB.getSNPs()[0].getSize();
+    //int snps = NB.getSNPs().getSNPcount();
+    //int pats = NB.getSNPs()[0].getSize();
 
 std::vector<std::string> a1 = Statistics::barGraph( 0.0,ST.get_stats_Specificity(), Green);
 std::vector<std::string> a2 = Statistics::barGraph( 0.0,ST.get_stats_Sensitivity(), Yellow);
@@ -209,7 +209,7 @@ void console::InputLine(int snps, int pats, int folds, int ksize,std::string fil
     S::move(Left,28);
     
     // build input table
-    std::cout << C::BWHITE  <<  "\n             > " << C::BBLUE << "Finished. " << C::RESET << "\n" ;
+    std::cout << C::BWHITE  <<  "\n                                              \n             > " << C::BBLUE << "Finished.                                          " << C::RESET << "\n" ;
 
     std::cout << "     " << C1 << "     " << Col << " " << V1 << "    " << L << TInp  << TInpName << "\n";
     std::cout << "     " << C2    << "  " << Col << " " << V2 << "    " << L << Runt  << TTt  <<  TVt << "\n";
@@ -219,13 +219,6 @@ void console::InputLine(int snps, int pats, int folds, int ksize,std::string fil
     std::cout << "" << C::RESET;
 }
 
-
-std::string Format::int2String(int x) {
-    std::ostringstream out; out.width(5); out.precision(4); out << x;
-
-
-    return out.str();
-}
 
 
 console::console(int remainsteps) {
@@ -237,14 +230,14 @@ this->totalsteps   = remainsteps;
 
 void  console::stepcounter() {
 this->remainsteps--;
-std::ostringstream outa; outa.width(5); outa.precision(4); outa << this->remainsteps;
-std::ostringstream outb; outb.width(5); outb.precision(4); outb << this->totalsteps;
-S::move(Left, this->stringlength);
-std::cout << "step " << outa.str() << " / " << outb.str();
+
+S::move(Left, 6000);
+std::cout << C::BWHITE  <<  "             > " << C::BBLUE << "computing ... ";
+std::cout << C::BCYAN << "remaining steps " << remainsteps << " / " << totalsteps << "            ";
 }
 
 void console::startcounter() {
-std::cout << C::BCYAN << "step " << this->remainsteps << " / " << this->totalsteps;
+std::cout << C::BCYAN << "remaining steps " << this->remainsteps << " / " << this->totalsteps;
 }
 
 

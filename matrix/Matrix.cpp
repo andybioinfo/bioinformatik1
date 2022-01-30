@@ -37,7 +37,10 @@ Matrix::Matrix(int y, int x) {
  * @return value at (X,Y)
  * */
 double Matrix::getValue(int y, int x) {
-    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "m out of bounds" );}
+    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){
+        std::stringstream s("");
+        s << "Wow your wanted Matrix-position is over all thinkable borders :D . \nMax(y,x) is := (" << Y_MAX() << " , "<< X_MAX() << ") \n Your input(y,x) := " << y << " ; " << x;
+        throw std::invalid_argument( s.str() );}
     return values_.at(y).at(x);
 }
 
@@ -48,7 +51,10 @@ double Matrix::getValue(int y, int x) {
  * @x the position at the columns
 * */
 void Matrix::setValue(int y, int x, double value) {
-    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){throw std::invalid_argument( "m out of bounds" );}
+    if ( x<0 || x > X_MAX() || y<0 || y > Y_MAX()){
+        std::stringstream s("");
+        s << "Wow your Matrix-position to set your value is over all thinkable borders :D . \nMax(y,x) is := (" << Y_MAX() << " , "<< X_MAX() << ") \n Your input(y,x) = " << y << " ; " << x;
+        throw std::invalid_argument( s.str() );}
     values_.at(y).at(x) = value;
 }
 

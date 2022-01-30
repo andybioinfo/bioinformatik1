@@ -72,9 +72,13 @@ void Block::trainBlock(NaiveBayes NB) {
 
     int predict_idx  = 0;
 
-    for (int pat_id : patient) {
+    for (int pat_id : this->getBlockPatients()) {
 
         Classification prediction = Unknown;
+
+        // provisorisch : Tabellen erstellen
+        //std::cout << "  patient id " << pat_id;
+        NB.train(pat_id);
 
         // Ab hier sollte die Berechnung rein, welche den
         // "prediction" bestimmen sollen.

@@ -7,7 +7,7 @@
 
 
 
-NaiveBayes::NaiveBayes(Snipper XY, int k_divisions,console c) {
+NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
 
     // ## get and check arguments
     int cols    = XY.getSNPcount();
@@ -20,7 +20,6 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions,console c) {
 
     // ## Create Fields
     this->X  = XY;
-    this->C = c;
     k_COUNT = k_divisions;
     k_SIZE  = X[0].getSize() / k_COUNT;
     k_TEST = k_SIZE-1;
