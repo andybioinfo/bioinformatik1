@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 #include "Block.h"
+#include "Model.h"
 #include "Statistics.h"
 #include "matrix/Matrix.h"
 
@@ -27,22 +28,13 @@ public:
         // Algorithm Complete
         void BayesTrainingsstunde();
 
-        // prediction
-        Classification predict(int patient_id); 
-
-        // train
-        void train(int patient_id); 
-
-        // train
-        double BayesFormula(Classification posterior); 
-
-        double ProductSNPFormula(Genotype gen, Classification cls);
+        // Log Odd Ratio Formula
+        static Classification LOR_Formula(double pXiC, double pXiN, double pC, double pN);
 
     // #### BayesFile ####
 
         // Statistic-Output
         void outputFile(std::string output_file);
-
 
     // #### BayesMain ####
 
@@ -67,10 +59,7 @@ public:
 private:
     
 // Tables:
-Matrix M_Control    = Matrix(1,1); // y = rows (Genotypes ; x = Xi's
-Matrix M_Cancer     = Matrix(1,1); // y = rows (Genotypes ; x = Xi's
-Matrix M_p_Control  = Matrix(1,1);
-Matrix M_p_Cancer   = Matrix(1,1);
+Model M;
     
 // The SNPs
 Snipper X;

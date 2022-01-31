@@ -61,58 +61,12 @@ Block::K_Fold Block::Splitter(Snipper &S, int count) {
 
 
 
-
-/** Trains this Patient-Data in this Block and store this in this Block under predictions
+/** Calculate the statistics with compare True and Predict
  *
- * @result        Classifics-Results will stored in prediction-Vector of this Data-Block
- * */
-void Block::trainBlock(NaiveBayes NB) {
-
-    // Training over all patients in this block:
-
-    int predict_idx  = 0;
-
-    for (int pat_id : this->getBlockPatients()) {
-
-        Classification prediction = Unknown;
-
-        // provisorisch : Tabellen erstellen
-        //std::cout << "  patient id " << pat_id;
-        NB.train(pat_id);
-
-        // Ab hier sollte die Berechnung rein, welche den
-        // "prediction" bestimmen sollen.
-        // Folgendes ist nur zum Testen damit die übrigen Methoden was zum rechnen haben
-        // und ist nicht der richtige Algorithmus
-        std::vector<int> test;
-        for (int i = 0 ; i < 3 ; i++ ) { test.push_back(i); }
-        auto rd = std::random_device();
-        auto rng = std::default_random_engine(rd());
-        std::shuffle(std::begin(test),std::end(test),rng);
-        test[1] == 1 ? prediction = Cancer : prediction = Control;
-        NB.getK_Blocks()[9].predictions[0] = Cancer;
-        NB.getK_Blocks()[9].predictions[1] = Control;
-        NB.getK_Blocks()[9].predictions[2] = Cancer;
-
-        // add this prediction
-        predictions[predict_idx] = prediction;
-        predict_idx++;
-
-    }
-
-}
-
-
-
-
-
-/** Tests this Patient-Data in this Block and returns the Statistics
- *
- * @NB
- * @
+ * @NB            Naiva Bayes Object with the Database
  * @result        Statistics of this Testing
  * */
-void Block::testing(NaiveBayes& NB,  const std::vector<int>& trainings_block_ids ) {
+void Block::calcStatistics(NaiveBayes& NB) {
 
 
     // Count True and Predict Classifications

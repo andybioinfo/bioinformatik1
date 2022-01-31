@@ -29,8 +29,7 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
     this->k_Blocks = Block::Splitter(XY,k_divisions);
 
     // ## Create Tables
-    this->M_Cancer  = Matrix(3,XY.getSNPcount()); // y = rows (Genotypes) ; x = Xi's
-    this->M_Control = Matrix(3,XY.getSNPcount()); // y = rows (Genotypes) ; x = Xi's
+    this->M = Model(XY.getSNPcount);
 
 
 }

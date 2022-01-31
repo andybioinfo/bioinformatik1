@@ -31,7 +31,7 @@ ________________________________________________________________________________
 
  static K_Fold Splitter(Snipper& S, int count)  => Create a Vector of k-Blocks with size 'count'
 
- void trainBlock ()                             => trains all patients in this block
+ void predict ()                                => trains all patients in this block
 
  void testing ()                                => compare between Ypredict and Ytruestate
 
@@ -44,7 +44,7 @@ ________________________________________________________________________________
 #include <iostream>
 #include "snipper/Snipper.h"
 #include "console/Color.h"
-
+#include "Model.h"
 
 class NaiveBayes;
 
@@ -61,8 +61,8 @@ public:
     // Methods
 
     static K_Fold Splitter(Snipper& S, int count);
-    void trainBlock (NaiveBayes NB);
-    void testing (NaiveBayes &NB, const std::vector<int>& trainings_block_ids );
+    void predict (Model& M, Snipper& S);
+    void calcStatistics(NaiveBayes& NB);
 
     // Setter
 
@@ -84,6 +84,51 @@ Snipper S;
 int kid = -1;
 
 };
+
+
+/** returns for patient X (patient_id) the log odd ratio of Cancer / Control
+ *
+ * @patient_id     Patient to predict the classification
+ * @return         Type of Classification
+ * */
+void Block::predict(Model& M, Snipper& S) {
+
+    double pC = M.getPCancer();
+    double pN = M.getPControl();
+    int pred_pos = 0;
+
+    // Run over all patients in this block
+    for (int id : this->getBlockPatients()) {
+        // start prob's
+        double pXiC = 1;
+        double pXiN = 1;
+   
+        // run over all SNP's
+        for (int Xi = 0 ; Xi < S->getSNPcount() ; Xi++ ) {
+            Genotype gen = S[Xi][id];
+            pXiC *= M.getGenProbAtXi(Cancer,gen,Xi);
+            pXiN *= M.getGenProbAtXi(Control,gen,Xi);
+        }
+
+        // compute the prediction and add this to this block
+        this->predictions[pred_pos] = LOR_Formula( pXiC,  pXiN,  pC,  pN);
+        pred_pos++;
+        // 
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #endif //BAYES_BLOCK_H
