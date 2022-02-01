@@ -16,6 +16,9 @@
  * */
 void Statistics::addStatsSet(double accuracy,double sensitivity,double specificity,double precision,double f1Score,double average,double standard_deviation) {
 
+    //std::cout << "\n +Stats: ac: " << accuracy << " se: " << sensitivity << " sp: " << specificity << " pr: "
+    //<< precision << " f1: "<< f1Score << " av: "<< average << " dv: "<< standard_deviation;
+
     stats_Accuracy.push_back(accuracy);
     stats_Sensitivity.push_back(sensitivity);
     stats_Specificity.push_back(specificity);
@@ -173,7 +176,6 @@ std::vector<std::string> Statistics::barGraph(double max_value,std::vector<doubl
     double avr_percent = getfromList(AVERAGE,values);
 
     std::stringstream min_bar("");
-    //std::cout << "\n test bar: avr%: "<<avr_percent  <<" {";
 
     // 5%
     std::stringstream br("");
@@ -185,7 +187,6 @@ std::vector<std::string> Statistics::barGraph(double max_value,std::vector<doubl
 
     for (int i = 0 ; i <= 11 ; i ++ ) { // first value in vector is 5%
         double percent = i * 10;
-        //std::cout << " %:" <<(percent) << "->" << (avr_percent >= percent) << " ";
 
         std::stringstream bar("");
 
@@ -199,17 +200,9 @@ std::vector<std::string> Statistics::barGraph(double max_value,std::vector<doubl
 
    
     }
-//    std::cout << "} ";
+
     return res;
 
 }
 
 
-// Getter
-std::vector<double> Statistics::get_stats_Accuracy()            {return stats_Accuracy;             }
-std::vector<double> Statistics::get_stats_Sensitivity()         {return stats_Sensitivity;          }
-std::vector<double> Statistics::get_stats_Specificity()         {return stats_Specificity;          }
-std::vector<double> Statistics::get_stats_Precision()           {return stats_Precision;            }
-std::vector<double> Statistics::get_stats_F1Score()             {return stats_F1Score;              }
-std::vector<double> Statistics::get_stats_Average()             {return stats_Average;              }
-std::vector<double> Statistics::get_stats_Standard_deviation()  {return stats_Standard_deviation;   }

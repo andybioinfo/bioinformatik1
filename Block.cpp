@@ -101,7 +101,7 @@ void Block::calcStatistics(NaiveBayes& NB) {
     double TN = TrueNegatives;
     double FN = FalseNegatives;
 
-    cout << "\n { TP: " << TP << " FP: "<< FP << " TN: " << TN << " FN: " << FN << " }";
+    //cout << "\n { TP: " << TP << " FP: "<< FP << " TN: " << TN << " FN: " << FN << " }";
 
     // compute St
 

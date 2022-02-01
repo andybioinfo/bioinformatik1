@@ -42,15 +42,15 @@ public:
 
       static std::vector<std::string> barGraph(double max_value,std::vector<double> values, Color color);
 
-    // ## Getter
+// Getter
 
-      std::vector<double> get_stats_Accuracy();
-      std::vector<double> get_stats_Sensitivity();
-      std::vector<double> get_stats_Specificity();
-      std::vector<double> get_stats_Precision();
-      std::vector<double> get_stats_F1Score();
-      std::vector<double> get_stats_Average();
-      std::vector<double> get_stats_Standard_deviation();
+    std::vector<double> get_stats_Accuracy()            {return stats_Accuracy;             }
+    std::vector<double> get_stats_Sensitivity()         {return stats_Sensitivity;          }
+    std::vector<double> get_stats_Specificity()         {return stats_Specificity;          }
+    std::vector<double> get_stats_Precision()           {return stats_Precision;            }
+    std::vector<double> get_stats_F1Score()             {return stats_F1Score;              }
+    std::vector<double> get_stats_Average()             {return stats_Average;              }
+    std::vector<double> get_stats_Standard_deviation()  {return stats_Standard_deviation;   }
 
 private:
 

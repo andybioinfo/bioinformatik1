@@ -11,9 +11,9 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
 
     // ## get and check arguments
     int cols    = XY.getSNPcount();
-    if (k_divisions < 1 )     { throw std::invalid_argument("your count of divisions is too small! Expected >= 1 but was: '"); }
-    if (cols < 1 )            { throw std::invalid_argument("your count of SNP's is zero! Expected >= 1 but was: '"); }
-    if (XY[0].getSize() < 1 )  { throw std::invalid_argument("your count of patients is zero! Expected >= 1 but was: '"); }
+    if (k_divisions < 1 )       { throw std::invalid_argument("your count of divisions is too small! Expected >= 1"); }
+    if (cols < 1 )              { throw std::invalid_argument("You need at least one SNP in your database. Please ask your patients for a medical Sample"); }
+    if (XY[0].getSize() < 10 )  { throw std::invalid_argument("You cannot do a 10-Fold on less than 10 Patients, or cut your patients in pieces to reach 10 :D "); }
     int rows = XY[0].getSize();
     if (k_divisions > rows) { k_COUNT = rows; } else { k_COUNT = k_divisions; }
 

@@ -14,7 +14,7 @@
 
 int main(int argc, char *argv[]) {
 
-
+/*
     Snipper S = createSNPs();
 
     NaiveBayes NB(S, 10);
@@ -46,14 +46,16 @@ int main(int argc, char *argv[]) {
     NB.getK_Blocks()[5].calcStatistics(NB);
     NB.getK_Blocks()[6].calcStatistics(NB);
 
-/*
+    console::Result(NB,"../bayes.txt","1","1","1");
+*/
+
     // correct arg-count?
-    //if (argc < 3) { console::Help("  Not enough arguments!  ");return 0; }
-    //if (argc > 3) { console::Help("  Too many arguments!  ");return 0; }
+    if (argc < 3) { console::Help("  Not enough arguments!  ");return 0; }
+    if (argc > 3) { console::Help("  Too many arguments!  ");return 0; }
 
     // ## Argument Variables
-    std::string arg_In  = "../snp.txt" ;//argv[1];
-    std::string arg_Out = "../out.txt" ;//argv[2];
+    std::string arg_In  = argv[1];
+    std::string arg_Out = argv[2];
     std::ifstream input(arg_In);
     std::ofstream output(arg_Out);
 
@@ -75,7 +77,7 @@ int main(int argc, char *argv[]) {
 
     NB.BayesTrainingsstunde();                      // compute Naive Bayes
 
-    NB.outputFile("../bayes.txt");         // write results in file
+    NB.outputFile(arg_Out);         // write results in file
 
     double time2 = t.getMilliSecs();       // timestamp after finish algorithm
 
@@ -92,9 +94,9 @@ int main(int argc, char *argv[]) {
 
        
 
-    console::Result(NB,"../bayes.txt","1","1","1");
+    console::Result(NB,arg_Out,"","","");
 
-*/
+
 
     return 0;
 }
