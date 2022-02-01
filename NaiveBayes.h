@@ -10,7 +10,8 @@
 #include <iostream>
 #include "Block.h"
 #include "Statistics.h"
-#include "Model.h"
+#include "matrix/Matrix.h"
+
 
 
 /** Bayes
@@ -26,8 +27,16 @@ public:
         // Algorithm Complete
         void BayesTrainingsstunde();
 
-        // Log Odd Ratio Formula
-        static Classification LOR_Formula(double pXiC, double pXiN, double pC, double pN);
+        // prediction
+        Classification predict(int patient_id); 
+
+        // train
+        void train(int patient_id); 
+
+        // train
+        double BayesFormula(Classification posterior); 
+
+        double ProductSNPFormula(Genotype gen, Classification cls);
 
     // #### BayesFile ####
 
@@ -50,13 +59,18 @@ public:
         Snipper getSNPs();
         Statistics &getStats();
         std::vector<Block> &getK_Blocks();
-        //Matrix getMatrixM_Ctl();
-
+        Matrix getMatrixM_Ctl();
+        Matrix getMatrixM_Ccr();
+        Matrix getMatrixM_pCtl();
+        Matrix getMatrixM_pCcr();
 
 private:
-
+    
 // Tables:
-    Model M;
+Matrix M_Control    = Matrix(1,1); // y = rows (Genotypes ; x = Xi's
+Matrix M_Cancer     = Matrix(1,1); // y = rows (Genotypes ; x = Xi's
+Matrix M_p_Control  = Matrix(1,1);
+Matrix M_p_Cancer   = Matrix(1,1);
     
 // The SNPs
 Snipper X;
