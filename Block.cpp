@@ -62,49 +62,6 @@ Block::K_Fold Block::Splitter(Snipper &S, int count) {
 
 
 
-/** Trains this Patient-Data in this Block and store this in this Block under predictions
- *
- * @result        Classifics-Results will stored in prediction-Vector of this Data-Block
- * */
-void Block::trainBlock(NaiveBayes NB) {
-
-    // Training over all patients in this block:
-
-    int predict_idx  = 0;
-
-    for (int pat_id : this->getBlockPatients()) {
-
-        Classification prediction = Unknown;
-
-        // provisorisch : Tabellen erstellen
-        //std::cout << "  patient id " << pat_id;
-        NB.train(pat_id);
-
-        // Ab hier sollte die Berechnung rein, welche den
-        // "prediction" bestimmen sollen.
-        // Folgendes ist nur zum Testen damit die übrigen Methoden was zum rechnen haben
-        // und ist nicht der richtige Algorithmus
-        std::vector<int> test;
-        for (int i = 0 ; i < 3 ; i++ ) { test.push_back(i); }
-        auto rd = std::random_device();
-        auto rng = std::default_random_engine(rd());
-        std::shuffle(std::begin(test),std::end(test),rng);
-        test[1] == 1 ? prediction = Cancer : prediction = Control;
-        NB.getK_Blocks()[9].predictions[0] = Cancer;
-        NB.getK_Blocks()[9].predictions[1] = Control;
-        NB.getK_Blocks()[9].predictions[2] = Cancer;
-
-        // add this prediction
-        predictions[predict_idx] = prediction;
-        predict_idx++;
-
-    }
-
-}
-
-
-
-
 
 /** Tests this Patient-Data in this Block and returns the Statistics
  *
@@ -112,7 +69,7 @@ void Block::trainBlock(NaiveBayes NB) {
  * @
  * @result        Statistics of this Testing
  * */
-void Block::testing(NaiveBayes& NB,  const std::vector<int>& trainings_block_ids ) {
+void Block::calcStatistics(NaiveBayes& NB) {
 
 
     // Count True and Predict Classifications
@@ -144,6 +101,8 @@ void Block::testing(NaiveBayes& NB,  const std::vector<int>& trainings_block_ids
     double TN = TrueNegatives;
     double FN = FalseNegatives;
 
+    cout << "\n { TP: " << TP << " FP: "<< FP << " TN: " << TN << " FN: " << FN << " }";
+
     // compute St
 
     double ac = Statistics::Accuracy( TP,  TN,  FP,  FN);
@@ -164,17 +123,22 @@ void Block::testing(NaiveBayes& NB,  const std::vector<int>& trainings_block_ids
 }
 
 
-
 /** Print this Data-Block to console
  *
  * */
 void Block::print() {
 std::stringstream s("");
+
     s << C::BWHITE <<"\n K-Block id:"<<kid<<" size: "<< C::BBLUE << patient.size()  << C::BRED << " [ *SNPs: " << S.getSNPcount() << " Pat: " << S.getClassifics().count() << " ]";
-    s << C::BWHITE << " Pat(pred): { ";
+    s << C::BWHITE << " Pat(true->pred): { ";
     int idx = 0;
     for (int pat : patient ) {
-        s << C::BBLUE << pat << C::BCYAN << " (" << predictions[idx] << ") ";
+        std::stringstream pre("");
+        Classification trueS = S.getClassifics()[pat];
+        Classification preS  = predictions[idx];
+        pre << "t " << trueS << " -> " << preS;
+
+        s << C::BBLUE << pat << C::BCYAN << " (" << pre.str() << ") ";
         if (idx != (int)patient.size() - 1) {s << "; ";}
         idx++; }
     s << C::BWHITE << "} ";
@@ -190,4 +154,36 @@ std::stringstream s("");
 Block::Block(Snipper &S, int id) {
 this->S = S;
 this->kid = id;
+}
+
+/** returns for patient X (patient_id) the log odd ratio of Cancer / Control
+ *
+ * @patient_id     Patient to predict the classification
+ * @return         Type of Classification
+ * */
+void Block::predict(Model& M, Snipper& S) {
+
+    double pC = M.getPCancer();
+    double pN = M.getPControl();
+    int pred_pos = 0;
+
+    // Run over all patients in this block
+    for (int id : this->getBlockPatients()) {
+        // start prob's
+        double pXiC = 1;
+        double pXiN = 1;
+
+        // run over all SNP's
+        for (int Xi = 0 ; Xi < S.getSNPcount() ; Xi++ ) {
+            Genotype gen = S[Xi][id];
+            pXiC *= M.getGenProbAtXi(Cancer,gen,Xi);
+            pXiN *= M.getGenProbAtXi(Control,gen,Xi);
+        }
+
+        // compute the prediction and add this to this block
+        this->predictions[pred_pos] = NaiveBayes::LOR_Formula( pXiC,  pXiN,  pC,  pN);
+        pred_pos++;
+        //
+    }
+
 }

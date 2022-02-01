@@ -7,128 +7,92 @@
 #include "console/console.h"
 
 
-double NaiveBayes::BayesFormula(Classification posterior) {
 
-return 0;
+/** returns the result with "log odd ratio" to calc Cancer or Control
+ *
+ * @all     The probabilitys for the bayes-formula
+ * @return  return Cancer if the result of LOR < 0 otherwise Control
+ * */
+Classification NaiveBayes::LOR_Formula(double pXiC, double pXiN, double pC, double pN) {
+    double res = 0;
+
+    double s1 = log10(pXiC);
+    double s2 = log10(pC);
+    double s3 = log10(pXiN);
+    double s4 = log10(pN);
+
+    s1 == s1 ? res+= s1 : res;
+    s2 == s2 ? res+= s2 : res;
+    s3 == s3 ? res-= s3 : res;
+    s4 == s4 ? res-= s4 : res;
+
+    if (res < 0) {return Cancer;}
+    return Control;
+
 }
 
 
 
-/** P(X|C) = product98 ( P(Xi|C) )
+
+
+/** trains the model with the given trainingblocks/data
  *
+ * @S               Your complete SNP-Database
+ * @trainingblocks  The patient-ids from the training-blocks
+ * @result          Filled matrices with prob. values
  * */
-double NaiveBayes::ProductSNPFormula(Genotype gen, Classification cls) {
+void NaiveBayes::train(Snipper& S,std::vector<Block*> trainingblocks ) {
 
-        double res = 0.0;
-        int snpcnt = X.getSNPcount();
+    // Extract patient id's of all blocks
+    std::vector<int> patient_ids;
+    for (Block* k :trainingblocks) {
+        for (int id : k->getBlockPatients()) {
+            patient_ids.push_back(id);
+        }
+    }
 
-    // Extract patient ids of all current training-blocks
-        int kid = 0;
-        std::vector<int> pids;
-        for (Block k : k_Blocks) {
-            if (k.getID() != k_test_actual) {
-                for (int id : k.getBlockPatients()) {
-                    pids.push_back(id);
-                }
-            }
-            kid++;
+    // Classification count for p(C) and p(N) - Matrices
+    int snps = patient_ids.size();
+    int cancer =  0;
+    int control = 0;
+
+    for (int id : patient_ids) { S.getClassifics()[id] == Cancer ? cancer++ : control++; }
+    this->M.setPCancer (  (double)cancer  / (double)snps );
+    this->M.setPControl(  (double)control / (double)snps );
+
+    // Run over all Xi's for  p(Xi|C) and p(Xi|N) - Matrices
+    for (int Xi = 0; Xi < this->X.getSNPcount(); Xi++) {
+        // Xi-Variables
+        int cancer_homoMJ  = 0;  // Homo Mayor | Cancer
+        int cancer_hetero  = 0;  // Hetero     | Cancer
+        int cancer_homoMN  = 0;  // Homo Minor | Cancer
+        int control_homoMJ = 0;  // Homo Mayor | Control
+        int control_hetero = 0;  // Hetero     | Control
+        int control_homoMN = 0;  // Homo Minor | Control
+
+        // count all combinations of this Xi over all ids of the trainingblocks
+        for (int id : patient_ids) {
+            Classification cls = S.getClassifics()[id];
+            Genotype gen = S[Xi][id];
+            cls == Cancer  && gen == HomoMajor ? cancer_homoMJ++  : cancer_homoMJ;
+            cls == Cancer  && gen == Hetero    ? cancer_hetero++  : cancer_hetero;
+            cls == Cancer  && gen == HomoMinor ? cancer_homoMN++  : cancer_homoMN;
+            cls == Control && gen == HomoMajor ? control_homoMJ++ : control_homoMJ;
+            cls == Control && gen == Hetero    ? control_hetero++ : control_hetero;
+            cls == Control && gen == HomoMinor ? control_homoMN++ : control_homoMN;
         }
 
-    // Product over all SNPs
-        int countpat = pids.size();
-        int countXiC = 0;
-        double probability = 1;
-        for (int Xi = 0 ; Xi < snpcnt ; Xi++) { // SNP Xi
+        // set all Values to the matrices of this Xi
+        this->M.setGenProbAtXi(Cancer ,HomoMajor,Xi, (double)cancer_homoMJ  / (double)snps );
+        this->M.setGenProbAtXi(Cancer ,Hetero   ,Xi, (double)cancer_hetero  / (double)snps );
+        this->M.setGenProbAtXi(Cancer ,HomoMinor,Xi, (double)cancer_homoMN  / (double)snps );
+        this->M.setGenProbAtXi(Control,HomoMajor,Xi, (double)control_homoMJ / (double)snps );
+        this->M.setGenProbAtXi(Control,Hetero   ,Xi, (double)control_hetero / (double)snps );
+        this->M.setGenProbAtXi(Control,HomoMinor,Xi, (double)control_homoMN / (double)snps );
 
-            int countXiC = 0;
-
-            for (int Yi : pids ) { // all patients in TrainData
-
-                if (X.getClassifics()[Yi] == cls && X[Xi][Yi] == gen) {countXiC++;}
-
-                }
-
-            probability *= ((double)countXiC / (double)countpat);
-        }
-
-        return probability;
-     }
-
-
-
-
-
-/** write both Tables
- *
- * */
-void NaiveBayes::train(int patient_id) {
-
-double val = 0.0;
-int pid = patient_id;
-if (patient_id >= X.getClassifics().count()) {pid = 0;}
-
-  // Table Xi Cancer
-
-       /* Hz Major | C */
-       val = ProductSNPFormula(HomoMajor, Cancer);
-       //M_Cancer.setValue(0,pid,val);
-
-       /* Hetero   | C */
-       val = ProductSNPFormula(Hetero,Cancer);
-       //M_Cancer.setValue(1,pid,val);
-
-       /* Hz Minor | C */
-       val = ProductSNPFormula(HomoMinor, Cancer);
-       //M_Cancer.setValue(2,pid,val);
-
-  // Table Xi Control
-
-       /* Hz Major | N */
-       val = ProductSNPFormula(HomoMajor, Control);
-       //M_Control.setValue(0,pid,val);
-
-       /* Hetero   | N */
-       val = ProductSNPFormula(Hetero, Control);
-       //M_Control.setValue(1,pid,val);
-
-       /* Hz Minor | N */
-       val = ProductSNPFormula(HomoMinor, Control);
-       //M_Control.setValue(2,pid,val);
+    }
 
 }
-
-
-
-
-
-
-/** returns for patient X (patient_id) the log odd ratio of Cancer / Control
- *
- * @patient_id     Patient to predict the classification
- * @return         Type of Classification
- * */
-Classification NaiveBayes::predict(int patient_id) {
-
-        Classification predict;
-
-    // calc values
-
-        double pC_X = 0;
-
-        double pN_X = 0;
-
-        double LOR = log ( pC_X / pN_X );
-
-    // if LOR < 0 then Control otherwise Cancer
-
-        LOR < 0 ? predict = Control : predict = Cancer; 
-
-        return predict;
-
-}
-
-
-
 
 
 
@@ -145,18 +109,23 @@ void NaiveBayes::BayesTrainingsstunde() {
         this->k_test_actual = testblock;
         vector<int> kids = NaiveBayes::intList(0,10);
 
+        // ### training-data-set
+        std::vector<Block*> training_blocks;
 
         // ### run over all training-Blocks
         for (Block k: k_Blocks) {               // All Blocks Loop
             if (k_id != testblock) {            // is train block
-                // train
-                this->k_Blocks[k_id].trainBlock(*this);
+                // add
+                training_blocks.push_back(&this->k_Blocks[k_id]);
                 // end
                 C.stepcounter();
             }
             k_id++;
         }
 
+        // ### start training over all training-blocks
+
+        train(X,training_blocks);
 
         // ### run over all to find test-Block
         for (Block k: k_Blocks) {               // All Blocks Loop
@@ -164,7 +133,8 @@ void NaiveBayes::BayesTrainingsstunde() {
                 // decrease kids
                 kids.erase(kids.begin() + kt_id);
                 // testing
-                k_Blocks[kt_id].testing(*this,kids);
+                k_Blocks[kt_id].predict(M,X);
+                k_Blocks[kt_id].calcStatistics(*this);
                 // end
                 C.stepcounter();
             }

@@ -29,8 +29,7 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
     this->k_Blocks = Block::Splitter(XY,k_divisions);
 
     // ## Create Tables
-    this->M_Cancer  = Matrix(3,XY.getSNPcount()); // y = rows (Genotypes) ; x = Xi's
-    this->M_Control = Matrix(3,XY.getSNPcount()); // y = rows (Genotypes) ; x = Xi's
+    this->M = Model(XY.getSNPcount());
 
 
 }
@@ -50,10 +49,7 @@ int NaiveBayes::get_k_COUNT() const     {return k_COUNT;}
 Snipper NaiveBayes::getSNPs()     {return X;}
 Statistics& NaiveBayes::getStats() {return stats;}
 std::vector<Block>& NaiveBayes::getK_Blocks() { return k_Blocks; }
-Matrix NaiveBayes::getMatrixM_Ctl()   { return M_Control; }
-Matrix NaiveBayes::getMatrixM_Ccr()   { return M_Cancer; }
-Matrix NaiveBayes::getMatrixM_pCtl()  { return M_p_Control; }
-Matrix NaiveBayes::getMatrixM_pCcr()  { return M_p_Cancer; }
+
 std::vector<int> NaiveBayes::intList(int start, int end) {
 
     std::vector<int> n;

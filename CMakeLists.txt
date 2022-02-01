@@ -51,8 +51,8 @@ add_library(snpbib SHARED
         snipper/Snipper.h
         snipper/SnipperFile.cpp
         snipper/SnipperAlgorithm.cpp
-        snipper/TestSNP.cpp
-        snipper/TestSNP.h
+        Examples.cpp
+        Examples.h
 
         main.cpp
         BayesMain.cpp
@@ -62,7 +62,7 @@ add_library(snpbib SHARED
         Block.cpp
         Block.h
 
-        )
+        Model.cpp Model.h)
 
 # Erstelle das Programm "snipper".
 add_executable(bayes main.cpp Statistics.cpp)

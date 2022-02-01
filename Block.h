@@ -27,13 +27,6 @@ Y11	|	?	 |	Cancer		| 1 | 0	| 2
 
 ___________________________________________________________________________________
 
- ### Methods:
-
- static K_Fold Splitter(Snipper& S, int count)  => Create a Vector of k-Blocks with size 'count'
-
- void trainBlock ()                             => trains all patients in this block
-
- void testing ()                                => compare between Ypredict and Ytruestate
 
 */
 
@@ -44,6 +37,7 @@ ________________________________________________________________________________
 #include <iostream>
 #include "snipper/Snipper.h"
 #include "console/Color.h"
+#include "Model.h"
 
 
 class NaiveBayes;
@@ -61,8 +55,8 @@ public:
     // Methods
 
     static K_Fold Splitter(Snipper& S, int count);
-    void trainBlock (NaiveBayes NB);
-    void testing (NaiveBayes &NB, const std::vector<int>& trainings_block_ids );
+    void predict (Model& M, Snipper& S);
+    void calcStatistics(NaiveBayes& NB);
 
     // Setter
 

@@ -11,7 +11,7 @@
 #include "Block.h"
 #include "Statistics.h"
 #include "matrix/Matrix.h"
-
+#include "Model.h"
 
 
 /** Bayes
@@ -27,16 +27,9 @@ public:
         // Algorithm Complete
         void BayesTrainingsstunde();
 
-        // prediction
-        Classification predict(int patient_id); 
+        void train(Snipper& S,std::vector<Block*> trainingblocks );
 
-        // train
-        void train(int patient_id); 
-
-        // train
-        double BayesFormula(Classification posterior); 
-
-        double ProductSNPFormula(Genotype gen, Classification cls);
+        static Classification LOR_Formula(double pXiC, double pXiN, double pC, double pN);
 
     // #### BayesFile ####
 
@@ -57,20 +50,15 @@ public:
         [[nodiscard]] int get_k_SIZE() const;
         [[nodiscard]] int get_k_COUNT() const;
         Snipper getSNPs();
+        Model &getModel() {return M;};
         Statistics &getStats();
         std::vector<Block> &getK_Blocks();
-        Matrix getMatrixM_Ctl();
-        Matrix getMatrixM_Ccr();
-        Matrix getMatrixM_pCtl();
-        Matrix getMatrixM_pCcr();
+
 
 private:
     
 // Tables:
-Matrix M_Control    = Matrix(1,1); // y = rows (Genotypes ; x = Xi's
-Matrix M_Cancer     = Matrix(1,1); // y = rows (Genotypes ; x = Xi's
-Matrix M_p_Control  = Matrix(1,1);
-Matrix M_p_Cancer   = Matrix(1,1);
+Model M;
     
 // The SNPs
 Snipper X;
