@@ -8,11 +8,12 @@
 #include "snipper/Snipper.h"
 #include "snipper/SingleSNP.h"
 #include "Examples.h"
-
-
+#include "SNPFileGenerator/SNPgen.h"
 
 
 int main(int argc, char *argv[]) {
+
+    //SNPgenerator("../snp4.txt",101,500);
 
 /*
     Snipper S = createSNPs();
