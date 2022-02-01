@@ -9,10 +9,8 @@
 #include <vector>
 #include <iostream>
 #include "Block.h"
-#include "Model.h"
 #include "Statistics.h"
-#include "matrix/Matrix.h"
-
+#include "Model.h"
 
 
 /** Bayes
@@ -36,6 +34,7 @@ public:
         // Statistic-Output
         void outputFile(std::string output_file);
 
+
     // #### BayesMain ####
 
         // Constructor
@@ -51,15 +50,13 @@ public:
         Snipper getSNPs();
         Statistics &getStats();
         std::vector<Block> &getK_Blocks();
-        Matrix getMatrixM_Ctl();
-        Matrix getMatrixM_Ccr();
-        Matrix getMatrixM_pCtl();
-        Matrix getMatrixM_pCcr();
+        //Matrix getMatrixM_Ctl();
+
 
 private:
-    
+
 // Tables:
-Model M;
+    Model M;
     
 // The SNPs
 Snipper X;

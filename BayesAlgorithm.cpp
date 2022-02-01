@@ -4,16 +4,14 @@
 
 
 #include "NaiveBayes.h"
-#include "console/console.h"
 
 
 /** returns the result from log odd with Cancer or Control
  *
- * @all     The probabilitys for the bayes-formula     
+ * @all     The probabilitys for the bayes-formula
  * @return  return Cancer if the result of LOR < 0 otherwise Control
  * */
 Classification NaiveBayes::LOR_Formula(double pXiC, double pXiN, double pC, double pN) {
-
     double res = 0;
 
     double s1 = log10(pXiC);
@@ -30,6 +28,7 @@ Classification NaiveBayes::LOR_Formula(double pXiC, double pXiN, double pC, doub
     return Control;
 
 }
+
 
 
 

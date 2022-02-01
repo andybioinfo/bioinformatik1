@@ -8,6 +8,7 @@
 #include "matrix/Matrix.h"
 #include "snipper/States.h"
 #include "Block.h"
+#include "snipper/Snipper.h"
 
 /** The Table Model for Naive Bayes
  *
@@ -19,24 +20,26 @@ public:
 
     // ## Constructor
 
+        Model() = default;
+
         Model(int snpCount){
           this->M_Cancer  = Matrix(3,snpCount); // y = rows (Genotypes) ; x = Xi's
           this->M_Control = Matrix(3,snpCount); // y = rows (Genotypes) ; x = Xi's
           this->SNP_COUNT = snpCount;
-        }
+        };
 
     // ## train this model
 
-        void train(Snipper& S,std::vector<Block*> trainingblocks);
+        void train(Snipper& S,std::vector<Block> trainingblocks);
 
 
     // ## Setter/Getter small matrices
 
-        void setPCancer(double pCancer)     {M_p_Cancer.setValue(0,0,pCancer);  }
-        void setPControl(double pControl)   {M_p_Control.setValue(0,0,pControl);}
-        double getPCancer()                 {return M_p_Cancer.getValue(0,0);   }
-        double getPControl()                {return M_p_Control.getValue(0,0);  }
-        int getSNPcount()                   {return SNP_COUNT;}
+        void setPCancer(double pCancer)     {M_p_Cancer.setValue(0,0,pCancer);  };
+        void setPControl(double pControl)   {M_p_Control.setValue(0,0,pControl);};
+        double getPCancer()                 {return M_p_Cancer.getValue(0,0);   };
+        double getPControl()                {return M_p_Control.getValue(0,0);  };
+        [[nodiscard]] int getSNPcount() const             {return SNP_COUNT;};
 
     // ## Setter big matrices
 
@@ -96,8 +99,8 @@ public:
     
         void print() {
         std::cout << C::BWHITE << "\nModel( size: " << C::BBLUE << SNP_COUNT << C::BWHITE  << " )"
-                  << " p(Cancer) := " << C::BBLUE << getPCancer << C::BWHITE  
-                  << " p(Control) := "<< C::BBLUE << getPControl << C::RESET << "\n";
+                  << " p(Cancer) := " << C::BBLUE << getPCancer() << C::BWHITE
+                  << " p(Control) := "<< C::BBLUE << getPControl() << C::RESET << "\n";
                   std::cout << "Matrix Cancer "; 
                   M_Cancer.print(); 
                   std::cout << "Matrix Control";
@@ -114,7 +117,7 @@ private:
     Matrix M_Cancer     = Matrix(1,1); // y = rows (Genotypes ; x = Xi's
     Matrix M_p_Control  = Matrix(1,1);
     Matrix M_p_Cancer   = Matrix(1,1);
-    int SNP_COUNT;
+    int SNP_COUNT = 0;
 
 };
 

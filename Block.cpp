@@ -4,9 +4,8 @@
 
 
 #include "Block.h"
-#include "Statistics.h"
+#include "snipper/Snipper.h"
 #include "NaiveBayes.h"
-
 
 /** Create from a Database a k-Fold Modell with random added patients from your database
  *
@@ -61,9 +60,10 @@ Block::K_Fold Block::Splitter(Snipper &S, int count) {
 
 
 
-/** Calculate the statistics with compare True and Predict
+/** Tests this Patient-Data in this Block and returns the Statistics
  *
- * @NB            Naiva Bayes Object with the Database
+ * @NB
+ * @
  * @result        Statistics of this Testing
  * */
 void Block::calcStatistics(NaiveBayes& NB) {
@@ -119,11 +119,44 @@ void Block::calcStatistics(NaiveBayes& NB) {
 
 
 
+
+/** returns for patient X (patient_id) the log odd ratio of Cancer / Control
+ *
+ * @patient_id     Patient to predict the classification
+ * @return         Type of Classification
+ * */
+void Block::predict(Model& M, Snipper& S) {
+
+    double pC = M.getPCancer();
+    double pN = M.getPControl();
+    int pred_pos = 0;
+
+    // Run over all patients in this block
+    for (int id : this->getBlockPatients()) {
+        // start prob's
+        double pXiC = 1;
+        double pXiN = 1;
+
+        // run over all SNP's
+        for (int Xi = 0 ; Xi < S->getSNPcount() ; Xi++ ) {
+            Genotype gen = S[Xi][id];
+            pXiC *= M.getGenProbAtXi(Cancer,gen,Xi);
+            pXiN *= M.getGenProbAtXi(Control,gen,Xi);
+        }
+
+        // compute the prediction and add this to this block
+        this->predictions[pred_pos] = NaiveBayes::LOR_Formula( pXiC,  pXiN,  pC,  pN);
+        pred_pos++;
+        //
+    }
+}
+
+
 /** Print this Data-Block to console
  *
  * */
 void Block::print() {
-std::stringstream s("");
+    std::stringstream s("");
     s << C::BWHITE <<"\n K-Block id:"<<kid<<" size: "<< C::BBLUE << patient.size()  << C::BRED << " [ *SNPs: " << S.getSNPcount() << " Pat: " << S.getClassifics().count() << " ]";
     s << C::BWHITE << " Pat(pred): { ";
     int idx = 0;
@@ -142,6 +175,7 @@ std::stringstream s("");
  * @S   Your SNP-Database
  * */
 Block::Block(Snipper &S, int id) {
-this->S = S;
-this->kid = id;
+    this->S = S;
+    this->kid = id;
 }
+

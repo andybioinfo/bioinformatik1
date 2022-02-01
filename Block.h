@@ -5,48 +5,13 @@
 #ifndef BAYES_BLOCK_H
 #define BAYES_BLOCK_H
 
-/*
-
-This Class is a Single k-Block:
-
-Yi	Ypredict  *Ytruestates	*X1	*X2	*X3
-____|________|______________|___|___|___
-Y14	|	?	 |	Cancer		| 1 | 0	| 2
-Y19	|	?	 |	Control		| 1 | 0	| 2
-Y6	|	?	 |	Cancer		| 1 | 0	| 2
-Y1	|	?	 |	Cancer		| 0 | 1	| 2
-Y11	|	?	 |	Cancer		| 1 | 0	| 2
-
- # Yi            : is the row_id or Patient_id from the Input-SNP-File
-
- # Ypredict      : the calculated prediction
-
- # Ytruestates   : is the Y-Vector of the Input-SNP-File   (pointered)
-
- # Xi            : are the X-Vectors of the Input-SNP-File (pointered)
-
-___________________________________________________________________________________
-
- ### Methods:
-
- static K_Fold Splitter(Snipper& S, int count)  => Create a Vector of k-Blocks with size 'count'
-
- void predict ()                                => trains all patients in this block
-
- void testing ()                                => compare between Ypredict and Ytruestate
-
-*/
-
 #include <vector>
 #include <random>
 #include <algorithm>
 #include <sstream>
 #include <iostream>
-#include "snipper/Snipper.h"
-#include "console/Color.h"
+#include "NaiveBayes.h"
 #include "Model.h"
-
-class NaiveBayes;
 
 class Block {
 
@@ -84,51 +49,6 @@ Snipper S;
 int kid = -1;
 
 };
-
-
-/** returns for patient X (patient_id) the log odd ratio of Cancer / Control
- *
- * @patient_id     Patient to predict the classification
- * @return         Type of Classification
- * */
-void Block::predict(Model& M, Snipper& S) {
-
-    double pC = M.getPCancer();
-    double pN = M.getPControl();
-    int pred_pos = 0;
-
-    // Run over all patients in this block
-    for (int id : this->getBlockPatients()) {
-        // start prob's
-        double pXiC = 1;
-        double pXiN = 1;
-   
-        // run over all SNP's
-        for (int Xi = 0 ; Xi < S->getSNPcount() ; Xi++ ) {
-            Genotype gen = S[Xi][id];
-            pXiC *= M.getGenProbAtXi(Cancer,gen,Xi);
-            pXiN *= M.getGenProbAtXi(Control,gen,Xi);
-        }
-
-        // compute the prediction and add this to this block
-        this->predictions[pred_pos] = LOR_Formula( pXiC,  pXiN,  pC,  pN);
-        pred_pos++;
-        // 
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endif //BAYES_BLOCK_H

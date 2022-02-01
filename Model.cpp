@@ -6,18 +6,19 @@
 #include "Model.h"
 
 
+
 /** trains the model with the given trainingblocks/data
  *
  * @S               Your complete SNP-Database
  * @trainingblocks  The patient-ids from the training-blocks
  * @result          Filled matrices with prob. values          
  * */
-void Model::train(Snipper& S,std::vector<Block*> trainingblocks ) { 
+void Model::train(Snipper& S,std::vector<Block> trainingblocks ) {
 
            // Extract patient id's of all blocks
            std::vector<int> patient_ids;
-           for (Block* k :trainingblocks) {
-             for (int id : k->getBlockPatients()) {
+           for (Block k :trainingblocks) {
+             for (int id : k.getBlockPatients()) {
                 patient_ids.push_back(id);
              }          
            }
