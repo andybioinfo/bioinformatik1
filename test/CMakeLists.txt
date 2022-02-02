@@ -1,4 +1,4 @@
-project(Viterbi_Tests)
+project(Bayes_Tests)
 
 include_directories("${GTEST_SRC_DIR}/include")
 
@@ -23,6 +23,6 @@ add_library(test_driver main_test.cpp)
 
 # Füge einen Test hinzu. Sie können die folgende
 # Zeile für neue Tests einfach kopieren und anpassen.
-add_gtest(Bayes_test LIBRARIES snp)
-add_gtest(Formula_test LIBRARIES snp)
-add_gtest(Stat_test LIBRARIES snp)
+add_gtest(Bayes_test LIBRARIES snpbib)
+add_gtest(Formula_test LIBRARIES snpbib)
+add_gtest(Stat_test LIBRARIES snpbib)
