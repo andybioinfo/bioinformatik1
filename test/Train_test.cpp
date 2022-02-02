@@ -14,7 +14,7 @@
 #include "../NaiveBayes.h"
 #include "../Model.h"
 #include "../snipper/Snipper.h"
-
+#include "../Examples.h"
 
 
 /**

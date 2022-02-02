@@ -13,7 +13,7 @@
 #include "../Statistics.h"
 #include "../NaiveBayes.h"
 #include "../snipper/Snipper.h"
-
+#include "../Examples.h"
 
 
 /**

@@ -146,7 +146,7 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
  * @max_mix_avr   MAX , MIN or AVERAGE
  * @return        The expected value from the vector
  * */
-double Statistics::getfromList(stat max_min_avr,std::vector<double> values) {
+double Statistics::getfromList(Compares max_min_avr, std::vector<double> values) {
     if (values.size() == 0) {return 0;}
     double res = 0.0;
     double max = values[0];

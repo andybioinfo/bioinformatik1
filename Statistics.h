@@ -10,7 +10,7 @@
 #include "console/Style.h"
 
 
-enum stat { MIN, MAX, AVERAGE };
+enum Compares { MIN, MAX, AVERAGE };
 
 
 /**
@@ -36,7 +36,7 @@ public:
 
       void addStatsSet(double accuracy,double sensitivity,double specificity,double precision,double f1Score,double average,double standard_deviation);
 
-      static double getfromList(stat max_min_avr,std::vector<double> values);
+      static double getfromList(Compares max_min_avr, std::vector<double> values);
 
     // ## Console Diagram Methods
 

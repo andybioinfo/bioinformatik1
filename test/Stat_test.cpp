@@ -11,7 +11,7 @@
 #include <sstream>
 #include <iostream>
 #include "../Statistics.h"
-
+#include "../Examples.h"
 
 
 /**
