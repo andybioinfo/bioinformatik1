@@ -12,9 +12,10 @@
  *
  * @S          Your SNP-Database
  * @count      Count of k
+ * @shuffle    shuffle the patient list for random
  * @return     k-fold model with random added patients from your SNP-Database
  * */
-Block::K_Fold Block::Splitter(Snipper &S, int count) {
+Block::K_Fold Block::Splitter(Snipper &S, int count, bool shuffle_patient_list) {
 
     // Create k empty blocks ( k = count )
 
@@ -36,7 +37,8 @@ Block::K_Fold Block::Splitter(Snipper &S, int count) {
 
         auto rd = std::random_device();
         auto rng = std::default_random_engine(rd());
-        std::shuffle(std::begin(patients),std::end(patients),rng);
+        if (shuffle_patient_list) {
+        std::shuffle(std::begin(patients),std::end(patients),rng);}
 
     // Add Patients to all Blocks
 

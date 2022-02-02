@@ -54,7 +54,7 @@ public:
 
     // Methods
 
-    static K_Fold Splitter(Snipper& S, int count);
+    static K_Fold Splitter(Snipper &S, int count, bool shuffle_patient_list);
     void predict (Model& M, Snipper& S);
     void calcStatistics(NaiveBayes& NB);
 

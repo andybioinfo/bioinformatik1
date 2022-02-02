@@ -7,7 +7,7 @@
 
 
 
-NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
+NaiveBayes::NaiveBayes(Snipper XY, int k_divisions, bool shuffle_patient_list) {
 
     // ## get and check arguments
     int cols    = XY.getSNPcount();
@@ -26,7 +26,7 @@ NaiveBayes::NaiveBayes(Snipper XY, int k_divisions) {
     this->stats = Statistics();
 
     // ## Create K-Fold
-    this->k_Blocks = Block::Splitter(XY,k_divisions);
+    this->k_Blocks = Block::Splitter(XY,k_divisions,shuffle_patient_list);
 
     // ## Create Tables
     this->M = Model(XY.getSNPcount());
