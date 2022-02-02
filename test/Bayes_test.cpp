@@ -1,59 +1,127 @@
-//
-// Created by manjaro on 24.01.22.
-//
-
 #include <gtest/gtest.h>
-#include "../Snipper.h"
+
+#include <memory>
+#include <initializer_list>
+#include <set>
+#include <vector>
+#include <deque>
+#include <string>
+#include <ostream>
+#include <istream>
+#include <sstream>
+#include <iostream>
+#include "../Statistics.h"
+#include "../NaiveBayes.h"
+#include "../Model.h"
+#include "../snipper/Snipper.h"
 
 
 
-// Builder for "Exercise 4 SNPs"
-Snipper getExercise4SNPs() {
+/**
+ *  Tests for Creating Naive Bayes Class
+ * 
+ * 
+ */
 
-    Snipper S; // Exercise 4 SNPs
-    S.getClassifics() << Cancer << Control << Cancer << Cancer << Control << Cancer;
-    SingleSNP x1(S.getClassifics());
-    SingleSNP x2(S.getClassifics());
-    SingleSNP x3(S.getClassifics());
-    x1 << Hetero    << HomoMinor << HomoMajor << HomoMajor << HomoMinor << Hetero;
-    x2 << HomoMinor << HomoMajor << HomoMinor << Hetero    << Hetero    << HomoMinor;
-    x3 << HomoMajor << HomoMajor << Hetero    << HomoMajor << Hetero    << Hetero;
-    S << x1 << x2 << x3;
-    return S;
+
+
+
+// Create correct Naive Bayes - No Exception Throw
+TEST(Bayes, CreateNoException)
+    {
+
+
+    Snipper S1 = createExample2();  // create premixed Database
+    Snipper S2 = createSNPs();     // create unmixed  Database
+
+    NaiveBayes NB1(S1, 10);   // no shuffling, SNP-database is premixed
+    NaiveBayes NB2(S2, 10);   // no shuffling, SNP-database is premixed
+
 }
 
 
 
-// 
-TEST(Model, Test)
+// Create invalid Naive Bayes - Exception Throw
+TEST(Bayes, CreateInvalidException)
     {
 
-    EXPECT_TRUE(false);
+    Snipper S1; // 5 Patients, 1 SNP
+    S1.getClassifics() << Cancer << Control << Cancer << Cancer << Cancer;
+    Snipper S2; // 10 Patients, 0 SNP
+    S2.getClassifics() << Cancer << Control << Cancer << Cancer << Cancer << Cancer << Control << Cancer << Cancer << Cancer;
+    Snipper S3; // 10 Patients, 1 SNP
+    S3.getClassifics() << Cancer << Control << Cancer << Cancer << Cancer << Cancer << Control << Cancer << Cancer << Cancer;
+
+    SingleSNP s1(S1.getClassifics());
+    SingleSNP s3(S3.getClassifics());
+
+    s1 << HomoMajor << Hetero << HomoMajor << Hetero << HomoMajor;
+    s3 << HomoMajor << Hetero << HomoMajor << Hetero << HomoMajor << HomoMajor << Hetero << HomoMajor << Hetero << HomoMajor;
+
+    S1 << s1;
+    S3 << s3;
+
+    NaiveBayes NB1(S1, 10);  // too less patients exception  
+    NaiveBayes NB2(S2, 10);  // no SNP's exception
+    NaiveBayes NB3(S3, 0);   // no Fold-division exception 
+
+}
+
+
+
+// Create Naive Bayes - Correct Field values after creating
+TEST(Bayes, CreateCorrectFields)
+    {
+
+    Snipper S1 = createExample2();  // create premixed Database
+    Snipper S2 = createSNPs();      // create unmixed  Database
+
+    NaiveBayes NB1(S1, 10,false);   // no shuffling 
+    NaiveBayes NB2(S2, 10,false);   // no shuffling
+
+    int a1 = NB1.get_k_COUNT(); // 10 blocks
+    int a2 = NB2.get_k_COUNT(); // 10 blocks
+
+    int b1 = NB1.get_k_SIZE(); // Block Size 5
+    int b2 = NB2.get_k_SIZE(); // Block Size 4
+
+    EXPECT_EQ( 10  , a1 );
+    EXPECT_EQ( 10  , a2 );
+    EXPECT_EQ(  5  , b1 );
+    EXPECT_EQ(  4  , b2 );
+
+}
+
+
+
+
+// Create Naive Bayes - Correct Model Size values after creating
+TEST(Bayes, CreateCorrectModelSize)
+    {
+
+        Snipper S1 = createExample2();  // create premixed Database
+        Snipper S2 = createSNPs();      // create unmixed  Database
+
+        NaiveBayes NB1(S1, 10,false);  
+        NaiveBayes NB2(S2, 10,false);   
+
+        int a1 = NB1.getModel().getSNPcount(); // 3
+        int a2 = NB2.getModel().getSNPcount(); // 8
+
+        int b1 = NB1.getModel().getGenProbAtXi(Cancer,Hetero,2); // no out-of-bounds
+        int b2 = NB2.getModel().getGenProbAtXi(Cancer,Hetero,7); // no out-of-bounds
+
+        EXPECT_EQ( 3  , a1 );
+        EXPECT_EQ( 8  , a2 );
+        EXPECT_EQ( 0  , b1 );
+        EXPECT_EQ( 0  , b2 );
 
     }
 
 
-      // Create Naive Bayes - Testing/Predict
-void test7() {
 
-    Snipper S = createExample2();  // create premixed Database
 
-    NaiveBayes NB(S, 10,false);  
 
-    std::vector<Block*> training = {&NB.getK_Blocks()[0] , &NB.getK_Blocks()[1] , &NB.getK_Blocks()[2]};
-
-    NB.train(S,training);
-
-    NB.getK_Blocks()[3].predict(NB.getModel(),S);
-
- // ## Check predictions:
-
-    NB.getK_Blocks()[3].getBlockPredictions()[0]; // Cancer
-    NB.getK_Blocks()[3].getBlockPredictions()[1]; // Cancer
-    NB.getK_Blocks()[3].getBlockPredictions()[2]; // Cancer
-    NB.getK_Blocks()[3].getBlockPredictions()[3]; // 
-    NB.getK_Blocks()[3].getBlockPredictions()[4]; // Cancer
-}
 
 
 

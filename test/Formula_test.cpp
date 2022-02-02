@@ -1,26 +1,23 @@
-//
-// Created by manjaro on 21.01.22.
-//
-
 #include <gtest/gtest.h>
-#include "../Snipper.h"
-#include "../SingleSNP.h"
+
+#include <memory>
+#include <initializer_list>
+#include <set>
+#include <vector>
+#include <deque>
+#include <string>
+#include <ostream>
+#include <istream>
+#include <sstream>
+#include <iostream>
+#include "../NaiveBayes.h"
 
 
-// Builder for "Exercise 4 SNPs"
-Snipper getExercise4SNPs() {
-
-    Snipper S; // Exercise 4 SNPs
-    S.getClassifics() << Cancer << Control << Cancer << Cancer << Control << Cancer;
-    SingleSNP x1(S.getClassifics());
-    SingleSNP x2(S.getClassifics());
-    SingleSNP x3(S.getClassifics());
-    x1 << Hetero    << HomoMinor << HomoMajor << HomoMajor << HomoMinor << Hetero;
-    x2 << HomoMinor << HomoMajor << HomoMinor << Hetero    << Hetero    << HomoMinor;
-    x3 << HomoMajor << HomoMajor << Hetero    << HomoMajor << Hetero    << Hetero;
-    S << x1 << x2 << x3;
-    return S;
-}
+/**
+ *  Tests for LOR Formula
+ * 
+ * 
+ */
 
 
 
@@ -28,7 +25,7 @@ Snipper getExercise4SNPs() {
 
 
 // Tests the I(X,Y) Formula
-TEST(SNP_FORMULA, I_XY_FormulaTest)
+TEST(LOR, LOR_FormulaTest)
 {
 /*
     static Classification LOR_Formula(double pXiC, double pXiN, double pC, double pN);
