@@ -189,8 +189,9 @@ std::vector<std::string> Statistics::barGraph(double max_value,std::vector<doubl
 
     // 5%
     std::stringstream br("");
-    if (max > 0.5 && max <= 0.5+10 ) {br << C::BRED << "__"; } else { br << "  ";}
-    if (avr_percent >= 5.0  )   {  res.push_back(S::setStyle(color,Bold,White,br.str()));
+    if (max > 5 && max <= 5+10 ) {br << C::BRED << "  "; } else { br << "  ";}
+
+    if (avr_percent >= 0.0  )   {  res.push_back(S::setStyle(color,Bold,White,br.str()));
     } else {  res.push_back(S::setStyle(Black,Bold,White,br.str())); }
 
     // 10%+

@@ -89,32 +89,32 @@ void NaiveBayes::outputFile(std::string output_file) {
 
     while(true){
         if (i >= (int)stats.get_stats_Accuracy().size()) {break;}
-        a0 << "_____k_" << i << "_|";
+        a0 << "_____k_" << i << "__|";
 
-        a1 <<  Format::double2String( stats.get_stats_Accuracy()[i]            )    << "|";
-       av1 <<  Format::double2String( stats.get_stats_Average1()[i]            )    << "|";
-       dv1 <<  Format::double2String( stats.get_stats_Standard_deviation1()[i] )    << "|";
-       lm1 << "_________|";
+        a1 <<  Format::double2String( stats.get_stats_Accuracy()[i]            )    << " |";
+       av1 <<  Format::double2String( stats.get_stats_Average1()[i]            )    << " |";
+       dv1 <<  Format::double2String( stats.get_stats_Standard_deviation1()[i] )    << " |";
+       lm1 << "__________|";
 
-        a2 <<  Format::double2String( stats.get_stats_Sensitivity()[i]         )    << "|";
-       av2 <<  Format::double2String( stats.get_stats_Average2()[i]            )    << "|";
-       dv2 <<  Format::double2String( stats.get_stats_Standard_deviation2()[i] )    << "|";
-       lm2 << "_________|";
+        a2 <<  Format::double2String( stats.get_stats_Sensitivity()[i]         )    << " |";
+       av2 <<  Format::double2String( stats.get_stats_Average2()[i]            )    << " |";
+       dv2 <<  Format::double2String( stats.get_stats_Standard_deviation2()[i] )    << " |";
+       lm2 << "__________|";
 
-        a3 <<  Format::double2String( stats.get_stats_Specificity()[i]         )    << "|";
-       av3 <<  Format::double2String( stats.get_stats_Average3()[i]            )    << "|";
-       dv3 <<  Format::double2String( stats.get_stats_Standard_deviation3()[i] )    << "|";
-       lm3 << "_________|";
+        a3 <<  Format::double2String( stats.get_stats_Specificity()[i]         )    << " |";
+       av3 <<  Format::double2String( stats.get_stats_Average3()[i]            )    << " |";
+       dv3 <<  Format::double2String( stats.get_stats_Standard_deviation3()[i] )    << " |";
+       lm3 << "__________|";
 
-        a4 <<  Format::double2String( stats.get_stats_Precision()[i]           )    << "|";
-       av4 <<  Format::double2String( stats.get_stats_Average4()[i]            )    << "|";
-       dv4 <<  Format::double2String( stats.get_stats_Standard_deviation4()[i] )    << "|";
-       lm4 << "_________|";
+        a4 <<  Format::double2String( stats.get_stats_Precision()[i]           )    << " |";
+       av4 <<  Format::double2String( stats.get_stats_Average4()[i]            )    << " |";
+       dv4 <<  Format::double2String( stats.get_stats_Standard_deviation4()[i] )    << " |";
+       lm4 << "__________|";
 
-        a5 <<  Format::double2String( stats.get_stats_F1Score()[i]             )    << "|";
-       av5 <<  Format::double2String( stats.get_stats_Average5()[i]            )    << "|";
-       dv5 <<  Format::double2String( stats.get_stats_Standard_deviation5()[i] )    << "|";
-       lm5 << "_________|";
+        a5 <<  Format::double2String( stats.get_stats_F1Score()[i]             )    << " |";
+       av5 <<  Format::double2String( stats.get_stats_Average5()[i]            )    << " |";
+       dv5 <<  Format::double2String( stats.get_stats_Standard_deviation5()[i] )    << " |";
+       lm5 << "__________|";
 
        i++;
        }
@@ -124,85 +124,85 @@ void NaiveBayes::outputFile(std::string output_file) {
 
     // Get values over all k's:  { MIN, MAX, AVERAGE }
 
-    a0 << " |" << "__K_MIN__|";
-    a1 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_Accuracy() ))           << "|";
-    av1 << "         |";
-    dv1 << "         |";
-    lm1 << "_________|";
+    a0 << " |" << "__K_MIN___|";
+    a1 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_Accuracy() ))           << " |";
+    av1 <<" |" <<  "          |";
+    dv1 <<" |" <<  "          |";
+    lm1 <<" |" <<  "__________|";
     
-    a2 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_Sensitivity() ))        << "|";
-    av2 << "         |";
-    dv2 << "         |";
-    lm2 << "_________|";
+    a2 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_Sensitivity() ))        << " |";
+    av2 <<" |" <<  "          |";
+    dv2 <<" |" <<  "          |";
+    lm2 <<" |" <<  "__________|";
     
-    a3 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_Specificity() ))        << "|";
-    av3 << "         |";
-    dv3 << "         |";
-    lm3 << "_________|";
+    a3 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_Specificity() ))        << " |";
+    av3 <<" |" <<  "          |";
+    dv3 <<" |" <<  "          |";
+    lm3 <<" |" <<  "__________|";
     
-    a4 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_Precision() ))          << "|";
-    av4 << "         |";
-    dv4 << "         |";
-    lm4 << "_________|";
+    a4 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_Precision() ))          << " |";
+    av4 <<" |" <<  "          |";
+    dv4 <<" |" <<  "          |";
+    lm4 <<" |" <<  "__________|";
     
-    a5 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_F1Score() ))            << "|";
-    av5 << "         |";
-    dv5 << "         |";
-    lm5 << "_________|";
+    a5 << " |" <<  Format::double2String( Statistics::getfromList( MIN , stats.get_stats_F1Score() ))            << " |";
+    av5 <<" |" <<  "          |";
+    dv5 <<" |" <<  "          |";
+    lm5 <<" |" <<  "__________|";
 
 
-    a0 << "K_AVERAGE|";
-    a1 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_Accuracy() ))           << "|";
-    av1 << "         |";
-    dv1 << "         |";
-    lm1 << "_________|";
+    a0 << "K_AVERAGE_|";
+    a1 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_Accuracy() ))           << " |";
+    av1 << "          |";
+    dv1 << "          |";
+    lm1 << "__________|";
 
-    a2 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_Sensitivity() ))        << "|";
-    av2 << "         |";
-    dv2 << "         |";
-    lm2 << "_________|";
+    a2 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_Sensitivity() ))        << " |";
+    av2 << "          |";
+    dv2 << "          |";
+    lm2 << "__________|";
 
-    a3 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_Specificity() ))        << "|";
-    av3 << "         |";
-    dv3 << "         |";
-    lm3 << "_________|";
+    a3 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_Specificity() ))        << " |";
+    av3 << "          |";
+    dv3 << "          |";
+    lm3 << "__________|";
 
-    a4 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_Precision() ))          << "|";
-    av4 << "         |";
-    dv4 << "         |";
-    lm4 << "_________|";
+    a4 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_Precision() ))          << " |";
+    av4 << "          |";
+    dv4 << "          |";
+    lm4 << "__________|";
 
-    a5 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_F1Score() ))            << "|";
-    av5 << "         |";
-    dv5 << "         |";
-    lm5 << "_________|";
+    a5 <<  Format::double2String( Statistics::getfromList( AVERAGE , stats.get_stats_F1Score() ))            << " |";
+    av5 << "          |";
+    dv5 << "          |";
+    lm5 << "__________|";
 
 
-    a0 << "__K_MAX__|";
-    a1 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_Accuracy() ))           << "|";
-    av1 << "         |";
-    dv1 << "         |";
-    lm1 << "_________|";
+    a0 << "__K_MAX___|";
+    a1 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_Accuracy() ))           << " |";
+    av1 << "          |";
+    dv1 << "          |";
+    lm1 << "__________|";
 
-    a2 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_Sensitivity() ))        << "|";
-    av2 << "         |";
-    dv2 << "         |";
-    lm2 << "_________|";
+    a2 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_Sensitivity() ))        << " |";
+    av2 << "          |";
+    dv2 << "          |";
+    lm2 << "__________|";
 
-    a3 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_Specificity() ))        << "|";
-    av3 << "         |";
-    dv3 << "         |";
-    lm3 << "_________|";
+    a3 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_Specificity() ))        << " |";
+    av3 << "          |";
+    dv3 << "          |";
+    lm3 << "__________|";
 
-    a4 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_Precision() ))          << "|";
-    av4 << "         |";
-    dv4 << "         |";
-    lm4 << "_________|";
+    a4 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_Precision() ))          << " |";
+    av4 << "          |";
+    dv4 << "          |";
+    lm4 << "__________|";
 
-    a5 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_F1Score() ))            << "|";
-    av5 << "         |";
-    dv5 << "         |";
-    lm5 << "_________|";
+    a5 <<  Format::double2String( Statistics::getfromList( MAX , stats.get_stats_F1Score() ))            << " |";
+    av5 << "          |";
+    dv5 << "          |";
+    lm5 << "__________|";
 
 
     output << a0.str();

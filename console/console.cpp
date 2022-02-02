@@ -98,7 +98,7 @@ void console::ShowInputs(std::string filein, std::string fileout, Snipper &begin
 * */
 void console::Help(std::string message) {
     console::ShowHeader();
-    std::cout << C::BWHITE  <<  "" ;
+    std::cout << C::BRED  <<  "ABORTED : Wrong Input\n\n" ;
     std::cout << C::BWHITE  <<  "";
     std::cout << C::BWHITE  <<  "  Help:    " << C::BYELLOW << " $ ./bayes [input] [output] \n" ;
     std::cout << C::BWHITE  <<  "  Example: " << C::BGREEN  << " $ ./bayes ../snp.txt ../out.txt            \n" ;
