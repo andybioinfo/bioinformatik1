@@ -160,11 +160,11 @@ TEST(Statistics, Average)
 TEST(Statistics, Standard_deviation)
     {
 
-    std::vector<double> Xi = { 7 ; 24 ; 33 ; 55 ; 84 ; 100 };
+    std::vector<double> Xi = { 7 , 24 , 33 , 55 , 84 , 100 };
 
-    std::vector<double> pXi = { 0.33333 ; 0.22222 ; 0.16666 ; 0.16666 ; 0.05555 ; 0.05555 };
+    std::vector<double> pXi = { 0.33333 , 0.22222 , 0.16666 , 0.16666 , 0.05555 , 0.05555 };
 
-    double val =Standard_deviation(std::vector<double> Xi,std::vector<double> pXi);
+    double val =Standard_deviation( Xi, pXi );
     cout << "Test(Standard_deviation) { X0: 7 X1: 42  X2: 33 X3: 55 X4: 84 X5: 100 | "
         << "pX0: 6/18 pX1: 4/18 pX2: 3/18 pX3: 3/18 pX4: 1/18 pX5: 1/18 } = " << val << "\n";
 
