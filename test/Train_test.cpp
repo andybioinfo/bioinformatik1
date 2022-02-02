@@ -10,7 +10,7 @@
 #include <istream>
 #include <sstream>
 #include <iostream>
-#include "../Statistics.h"
+//#include "../Statistics.h"
 #include "../NaiveBayes.h"
 #include "../Model.h"
 #include "../snipper/Snipper.h"
