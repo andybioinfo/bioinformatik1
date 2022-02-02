@@ -41,7 +41,7 @@ public:
 
         // Constructor
         using K_Fold = std::vector<Block>;
-        NaiveBayes(Snipper XY, int k_divisions);
+        NaiveBayes(Snipper XY, int k_divisions, bool shuffle_patient_list);
 
         // Helper
         static std::vector<int> intList(int start,int end);
