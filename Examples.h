@@ -10,6 +10,6 @@
 
 Snipper createSNPs();
 
-std::vector<Block>  createKFold();
+Snipper  createExample2();
 
 #endif //BAYES_EXAMPLES_H

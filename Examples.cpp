@@ -7,18 +7,66 @@
 #include "Block.h"
 
 
-/** Example k-FOld with premixed Patients
+/** Example Database with premixed Patients
  *
- * 20 Patients
+ * 50 Patients
  *  3 SNPs
  *
- * @return     kFold Object
+ * @return     SNP-Database
  * */
-std::vector<Block>  createKFold() {
+Snipper  createExample2() {
 
+        Snipper S;
+        S.getClassifics()
+            << Cancer << Control << Cancer  << Cancer  << Cancer 
+            << Cancer << Cancer  << Control << Control << Cancer
+            << Cancer << Control << Control << Control << Cancer
+            << Cancer << Control << Cancer  << Cancer  << Cancer
+            << Cancer << Control << Control << Control << Cancer
+            << Cancer << Control << Cancer  << Cancer  << Cancer
+            << Cancer << Control << Control << Control << Cancer
+            << Cancer << Control << Cancer  << Cancer  << Cancer
+            << Cancer << Control << Control << Control << Cancer
+            << Cancer << Control << Cancer  << Cancer  << Cancer;
 
+    SingleSNP x1(S.getClassifics());
+    SingleSNP x2(S.getClassifics());
+    SingleSNP x3(S.getClassifics());
 
+   x1
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0);
 
+   x2
+        << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0)
+        << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0)
+        << SingleSNP::int2gen(0) << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0)
+        << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0);
+
+   x3
+        << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2)
+        << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2)
+        << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2)
+        << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2) << SingleSNP::int2gen(2)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(1)
+        << SingleSNP::int2gen(1) << SingleSNP::int2gen(1) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0) << SingleSNP::int2gen(0);
+
+    S << x1 << x2 << x3;
+
+    return S;
+    
 }
 
 
