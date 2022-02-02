@@ -138,12 +138,12 @@ TEST(Statistics, F1Score)
 // 
 TEST(Statistics, Average)
     {
-    std::vector<double> AV = {20.0 ; 80.0 ; 30.0};
+    std::vector<double> AV = {20.0 , 80.0 , 30.0};
     double val = Average(AV);
     cout << "Test(Average) { val1: 20.0 val2: 80.0 val3: 30.0 } = " << val << "\n";
     EXPECT_EQ( 2  , 0 );
 
-    AV = { 0.0 ; 0.0 ; 0.0};
+    AV = { 0.0 , 0.0 , 0.0};
     val = Average(AV);
     cout << "Test(Average) { val1: 0.0 val2: 0.0 val3: 0.0 } = " << val << "\n";
     EXPECT_EQ( 0  , val );
