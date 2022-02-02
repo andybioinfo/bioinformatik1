@@ -113,14 +113,9 @@ void Block::calcStatistics(NaiveBayes& NB) {
     double pr = Statistics::Precision( TP,  FP);
     double f1 = Statistics::F1Score( pr,  se);
 
-    //
-
-    double av = 80;//Average(std::vector<double> list);
-    double dv = 15;//Standard_deviation(std::vector<double> Xi,std::vector<double> pXi);
-
     // Store Statistics of this Testing
 
-    NB.getStats().addStatsSet(ac,se,sp,pr,f1,av,dv);
+    NB.getStats().addStatsSet(ac,se,sp,pr,f1,0,0);
 
 }
 

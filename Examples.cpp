@@ -74,7 +74,6 @@ Snipper  createExample2() {
 
 
 
-
 /** Example SNP Database for Testing
  *
  * 40 Patients
