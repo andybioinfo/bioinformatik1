@@ -34,8 +34,8 @@ TEST(Bayes, CreateNoException)
     Snipper S1 = createExample2();  // create premixed Database
     Snipper S2 = createSNPs();     // create unmixed  Database
 
-    NaiveBayes NB1(S1, 10);   // no shuffling, SNP-database is premixed
-    NaiveBayes NB2(S2, 10);   // no shuffling, SNP-database is premixed
+    NaiveBayes NB1(S1, 10,false);   // no shuffling, SNP-database is premixed
+    NaiveBayes NB2(S2, 10,false);   // no shuffling, SNP-database is premixed
 
 }
 
@@ -61,9 +61,9 @@ TEST(Bayes, CreateInvalidException)
     S1 << s1;
     S3 << s3;
 
-    NaiveBayes NB1(S1, 10);  // too less patients exception  
-    NaiveBayes NB2(S2, 10);  // no SNP's exception
-    NaiveBayes NB3(S3, 0);   // no Fold-division exception 
+    NaiveBayes NB1(S1, 10,false);  // too less patients exception  
+    NaiveBayes NB2(S2, 10,false);  // no SNP's exception
+    NaiveBayes NB3(S3, 0,false);   // no Fold-division exception 
 
 }
 
