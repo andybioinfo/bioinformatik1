@@ -69,4 +69,10 @@ add_executable(bayes main.cpp Statistics.cpp)
 
 target_link_libraries(bayes snpbib ${CIP_STD_LIBS})
 
+# Aktiviere die Unittestfunktionalität von CMake.
+enable_testing()
+
+add_subdirectory(${GTEST_SRC_DIR} "gtest")
+add_subdirectory(test)
+
 
