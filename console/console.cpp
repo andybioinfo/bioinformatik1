@@ -126,8 +126,8 @@ std::vector<std::string> a2 = Statistics::barGraph( 0.0,ST.get_stats_Sensitivity
 std::vector<std::string> a3 = Statistics::barGraph( 0.0,ST.get_stats_Precision(), Red);
 std::vector<std::string> a4 = Statistics::barGraph( 0.0,ST.get_stats_Accuracy(), Cyan);
 std::vector<std::string> a5 = Statistics::barGraph( 0.0,ST.get_stats_F1Score(), Blue);
-std::vector<std::string> a6 = Statistics::barGraph( 0.0,ST.get_stats_Average(), Magenta);
-std::vector<std::string> a7 = Statistics::barGraph( 0.0,ST.get_stats_Standard_deviation(), Red);
+std::vector<std::string> a6 = Statistics::barGraph( 0.0,ST.get_stats_Average4(), Magenta);
+std::vector<std::string> a7 = Statistics::barGraph( 0.0,ST.get_stats_Standard_deviation4(), Red);
 
 
     double mi4 =  Statistics::getfromList( MIN , ST.get_stats_Accuracy() );
@@ -135,24 +135,24 @@ std::vector<std::string> a7 = Statistics::barGraph( 0.0,ST.get_stats_Standard_de
     double mi1 =  Statistics::getfromList( MIN , ST.get_stats_Specificity() );
     double mi3 =  Statistics::getfromList( MIN , ST.get_stats_Precision() );
     double mi5 =  Statistics::getfromList( MIN , ST.get_stats_F1Score() );
-    double mi6 =  Statistics::getfromList( MIN , ST.get_stats_Average() );
-    double mi7 =  Statistics::getfromList( MIN , ST.get_stats_Standard_deviation() );
+    double mi6 =  Statistics::getfromList( MIN , ST.get_stats_Average4() );
+    double mi7 =  Statistics::getfromList( MIN , ST.get_stats_Standard_deviation4() );
 
     double av4 =  Statistics::getfromList( AVERAGE , ST.get_stats_Accuracy() );
     double av2 =  Statistics::getfromList( AVERAGE , ST.get_stats_Sensitivity() );
     double av1 =  Statistics::getfromList( AVERAGE , ST.get_stats_Specificity());
     double av3 =  Statistics::getfromList( AVERAGE , ST.get_stats_Precision());
     double av5 =  Statistics::getfromList( AVERAGE , ST.get_stats_F1Score());
-    double av6 =  Statistics::getfromList( AVERAGE , ST.get_stats_Average());
-    double av7 =  Statistics::getfromList( AVERAGE , ST.get_stats_Standard_deviation());
+    double av6 =  Statistics::getfromList( AVERAGE , ST.get_stats_Average4());
+    double av7 =  Statistics::getfromList( AVERAGE , ST.get_stats_Standard_deviation4());
 
     double ma4 = Statistics::getfromList( MAX , ST.get_stats_Accuracy() );
     double ma2 = Statistics::getfromList( MAX , ST.get_stats_Sensitivity() );
     double ma1 = Statistics::getfromList( MAX , ST.get_stats_Specificity());
     double ma3 = Statistics::getfromList( MAX , ST.get_stats_Precision());
     double ma5 = Statistics::getfromList( MAX , ST.get_stats_F1Score() );
-    double ma6 = Statistics::getfromList( MAX , ST.get_stats_Average() );
-    double ma7 = Statistics::getfromList( MAX , ST.get_stats_Standard_deviation());
+    double ma6 = Statistics::getfromList( MAX , ST.get_stats_Average4() );
+    double ma7 = Statistics::getfromList( MAX , ST.get_stats_Standard_deviation4());
 
 
 std::cout << C::BWHITE  <<  "\n  AVR%   __ __ __ __ __ __ __    / ( min% | avr% | max% ) of all k-folds's";
@@ -161,8 +161,8 @@ std::cout << C::BWHITE  <<  "\n  90%    "<<a1[ 9]<<" "<<a2[ 9]<<" "<<a3[ 9]<<" "
 std::cout << C::BWHITE  <<  "\n  80%    "<<a1[ 8]<<" "<<a2[ 8]<<" "<<a3[ 8]<<" "<<a4[ 8]<<" "<<a5[ 8]<<" "<<a6[ 8]<<" "<<a7[ 8]<<"   | Pr = Precision    ( " << mi3 << " | " << av3 << " | " << ma3 << " )";
 std::cout << C::BWHITE  <<  "\n  70%    "<<a1[ 7]<<" "<<a2[ 7]<<" "<<a3[ 7]<<" "<<a4[ 7]<<" "<<a5[ 7]<<" "<<a6[ 7]<<" "<<a7[ 7]<<"   | Ac = Accuracy     ( " << mi4 << " | " << av4 << " | " << ma4 << " )";
 std::cout << C::BWHITE  <<  "\n  60%    "<<a1[ 6]<<" "<<a2[ 6]<<" "<<a3[ 6]<<" "<<a4[ 6]<<" "<<a5[ 6]<<" "<<a6[ 6]<<" "<<a7[ 6]<<"   | F1 = F1Score      ( " << mi5 << " | " << av5 << " | " << ma5 << " )";
-std::cout << C::BWHITE  <<  "\n  50%    "<<a1[ 5]<<" "<<a2[ 5]<<" "<<a3[ 5]<<" "<<a4[ 5]<<" "<<a5[ 5]<<" "<<a6[ 5]<<" "<<a7[ 5]<<"   | Av = Average      ( " << mi6 << " | " << av6 << " | " << ma6 << " )";
-std::cout << C::BWHITE  <<  "\n  40%    "<<a1[ 4]<<" "<<a2[ 4]<<" "<<a3[ 4]<<" "<<a4[ 4]<<" "<<a5[ 4]<<" "<<a6[ 4]<<" "<<a7[ 4]<<"   | Dv = Deviation    ( " << mi7 << " | " << av7 << " | " << ma7 << " )";
+std::cout << C::BWHITE  <<  "\n  50%    "<<a1[ 5]<<" "<<a2[ 5]<<" "<<a3[ 5]<<" "<<a4[ 5]<<" "<<a5[ 5]<<" "<<a6[ 5]<<" "<<a7[ 5]<<"   | Av(Pr) = Average  ( " << mi6 << " | " << av6 << " | " << ma6 << " )";
+std::cout << C::BWHITE  <<  "\n  40%    "<<a1[ 4]<<" "<<a2[ 4]<<" "<<a3[ 4]<<" "<<a4[ 4]<<" "<<a5[ 4]<<" "<<a6[ 4]<<" "<<a7[ 4]<<"   | Dv(Pr) = Deviation( " << mi7 << " | " << av7 << " | " << ma7 << " )";
 std::cout << C::BWHITE  <<  "\n  30%    "<<a1[ 3]<<" "<<a2[ 3]<<" "<<a3[ 3]<<" "<<a4[ 3]<<" "<<a5[ 3]<<" "<<a6[ 3]<<" "<<a7[ 3]<<"";
 std::cout << C::BWHITE  <<  "\n  20%    "<<a1[ 2]<<" "<<a2[ 2]<<" "<<a3[ 2]<<" "<<a4[ 2]<<" "<<a5[ 2]<<" "<<a6[ 2]<<" "<<a7[ 2]<<"";
 std::cout << C::BWHITE  <<  "\n  10%    "<<a1[ 1]<<" "<<a2[ 1]<<" "<<a3[ 1]<<" "<<a4[ 1]<<" "<<a5[ 1]<<" "<<a6[ 1]<<" "<<a7[ 1]<<"";

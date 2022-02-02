@@ -24,8 +24,18 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
     stats_Specificity.push_back(specificity);
     stats_Precision.push_back(precision);
     stats_F1Score.push_back(f1Score);
-    stats_Average.push_back(average);
-    stats_Standard_deviation.push_back(standard_deviation);
+
+    stats_Average1.push_back(Average(stats_Accuracy));
+    stats_Average2.push_back(Average(stats_Sensitivity));
+    stats_Average3.push_back(Average(stats_Specificity));
+    stats_Average4.push_back(Average(stats_Precision));
+    stats_Average5.push_back(Average(stats_F1Score));
+
+    stats_Standard_deviation1.push_back(Standard_deviation(stats_Accuracy,    stats_Accuracy     ));
+    stats_Standard_deviation2.push_back(Standard_deviation(stats_Sensitivity, stats_Sensitivity  ));
+    stats_Standard_deviation3.push_back(Standard_deviation(stats_Specificity, stats_Specificity  ));
+    stats_Standard_deviation4.push_back(Standard_deviation(stats_Precision,   stats_Precision    ));
+    stats_Standard_deviation5.push_back(Standard_deviation(stats_F1Score,     stats_F1Score      ));
 
 }
 
