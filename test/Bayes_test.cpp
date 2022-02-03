@@ -41,33 +41,6 @@ TEST(Bayes, CreateNoException)
 
 
 
-// Create invalid Naive Bayes - Exception Throw
-TEST(Bayes, CreateInvalidException)
-    {
-
-    Snipper S1; // 5 Patients, 1 SNP
-    S1.getClassifics() << Cancer << Control << Cancer << Cancer << Cancer;
-    Snipper S2; // 10 Patients, 0 SNP
-    S2.getClassifics() << Cancer << Control << Cancer << Cancer << Cancer << Cancer << Control << Cancer << Cancer << Cancer;
-    Snipper S3; // 10 Patients, 1 SNP
-    S3.getClassifics() << Cancer << Control << Cancer << Cancer << Cancer << Cancer << Control << Cancer << Cancer << Cancer;
-
-    SingleSNP s1(S1.getClassifics());
-    SingleSNP s3(S3.getClassifics());
-
-    s1 << HomoMajor << Hetero << HomoMajor << Hetero << HomoMajor;
-    s3 << HomoMajor << Hetero << HomoMajor << Hetero << HomoMajor << HomoMajor << Hetero << HomoMajor << Hetero << HomoMajor;
-
-    S1 << s1;
-    S3 << s3;
-
-    NaiveBayes NB1(S1, 10,false);  // too less patients exception  
-    NaiveBayes NB2(S2, 10,false);  // no SNP's exception
-    NaiveBayes NB3(S3, 0,false);   // no Fold-division exception 
-
-}
-
-
 
 // Create Naive Bayes - Correct Field values after creating
 TEST(Bayes, CreateCorrectFields)
@@ -87,7 +60,7 @@ TEST(Bayes, CreateCorrectFields)
 
     EXPECT_EQ( 10  , a1 );
     EXPECT_EQ( 10  , a2 );
-    EXPECT_EQ(  5  , b1 );
+    EXPECT_EQ(  4  , b1 );
     EXPECT_EQ(  4  , b2 );
 
 }

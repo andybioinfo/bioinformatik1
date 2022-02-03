@@ -27,4 +27,4 @@ add_gtest(Bayes_test LIBRARIES snpbib)
 add_gtest(Formula_test LIBRARIES snpbib)
 add_gtest(Stat_test LIBRARIES snpbib)
 add_gtest(Test_test LIBRARIES snpbib)
-add_gtest(Train_test LIBRARIES snpbib)
+

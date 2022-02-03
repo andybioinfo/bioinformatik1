@@ -58,7 +58,7 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
     double res = (TN) / (TN + FP);
     if (res != res) {return 0;}
     return res * 100.0;
-};
+}
 
 
 /** Compute Sensitivity
@@ -70,7 +70,7 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
     double res = (TP) / (TP + FN);
     if (res != res) {return 0;}
     return res * 100.0;
-};
+}
 
 
 /** Compute Precision
@@ -82,7 +82,7 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
     double res = (TP) / (TP + FP);
     if (res != res) {return 0;}
     return res * 100.0;
-};
+}
 
 
 /** Compute F1Score
@@ -95,7 +95,7 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
     double res = 2 * ( (precision * sensivity) / (precision + sensivity) );
     if (res != res) {return 0;}
     return res;
-};
+}
 
 
 /** Compute Average
@@ -107,7 +107,7 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
     double res = 0.0;
     for (double val : list) { res += val; }
     return res / list.size();
-};
+}
 
 
 /** Compute Standard_deviation

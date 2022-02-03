@@ -65,7 +65,7 @@ TEST(Statistics, Sensitivity)
     TN = 5;     FP = 2;
     val = Statistics::Sensitivity( TN,  FP);
     std::cout << "Test(Sensitivity) { TN: "<< TN <<" FP: "<< FP <<" } = " << val << "\n";
-    EXPECT_TRUE( Snipper::doubleCompare(26.7897,val) );
+    EXPECT_TRUE( Snipper::doubleCompare(71.4286,val) );
 
     }
 

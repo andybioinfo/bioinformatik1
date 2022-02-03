@@ -35,6 +35,6 @@ TEST(LOR, LOR_FormulaTest)
 
     Classification result = NaiveBayes::LOR_Formula( pXiC,  pXiN,  pC,  pN);
 
-    EXPECT_EQ( Control  , result );
+    EXPECT_EQ( Cancer  , result );
 
 }
