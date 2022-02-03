@@ -26,8 +26,8 @@ Classification NaiveBayes::LOR_Formula(double pXiC, double pXiN, double pC, doub
     s3 == s3 ? res-= s3 : res;
     s4 == s4 ? res-= s4 : res;
 
-    if (res < 0) {return Cancer;}
-    return Control;
+    if (res < 0) {return Control;}
+    return Cancer;
 
 }
 

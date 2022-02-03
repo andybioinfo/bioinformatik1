@@ -39,7 +39,8 @@ Block::K_Fold Block::Splitter(Snipper &S, int count, bool shuffle_patient_list) 
         auto rd = std::random_device();
         auto rng = std::default_random_engine(rd());
         if (shuffle_patient_list) {
-        std::shuffle(std::begin(patients),std::end(patients),rng);}
+        std::shuffle(std::begin(patients),std::end(patients),rng);
+        }
 
     // Add Patients to all Blocks
 
@@ -123,9 +124,11 @@ void Block::calcStatistics(NaiveBayes& NB) {
         Classification TrueState    = this->S.getClassifics()[pat_id];
         Classification PredictState = this->predictions[count];
 
+        //std::cout << "(" << TrueState << "->" << PredictState << ")";
+
         TrueState == Cancer  && PredictState == Cancer  ? TruePositives++  : TruePositives;
-        TrueState == Cancer  && PredictState == Control ? FalsePositives++ : FalsePositives;
-        TrueState == Control && PredictState == Cancer  ? FalseNegatives++ : FalseNegatives;
+        TrueState == Cancer  && PredictState == Control ? FalseNegatives++ : FalseNegatives;
+        TrueState == Control && PredictState == Cancer  ? FalsePositives++ : FalsePositives;
         TrueState == Control && PredictState == Control ? TrueNegatives++  : TrueNegatives;
 
         count++;

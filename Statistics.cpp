@@ -16,9 +16,6 @@
  * */
 void Statistics::addStatsSet(double accuracy,double sensitivity,double specificity,double precision,double f1Score,double average,double standard_deviation) {
 
-    //std::cout << "\n +Stats: ac: " << accuracy << " se: " << sensitivity << " sp: " << specificity << " pr: "
-    //<< precision << " f1: "<< f1Score << " av: "<< average << " dv: "<< standard_deviation;
-
     stats_Accuracy.push_back(accuracy);
     stats_Sensitivity.push_back(sensitivity);
     stats_Specificity.push_back(specificity);
@@ -115,8 +112,8 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
 
 /** Compute Standard_deviation
  *
- * @Xi         List of Xi Values  (in Range 0.0 - 1.0)
- * @pXi        List of pXi Values (in Range 0.0 - 1.0)
+ * @Xi         List of Xi Values  (in Percent)
+ * @pXi        List of pXi Values (in Percent)
  * @return     average-Value (in percent)
  * */
  double Statistics::Standard_deviation(std::vector<double> Xi,std::vector<double> pXi) {
@@ -125,16 +122,17 @@ void Statistics::addStatsSet(double accuracy,double sensitivity,double specifici
     double E_Xi2 = 0.0;
 
     // Calculation E[Xi]
-    for (int i = 0 ; i < count ; i++) { E_Xi += Xi[i] * pXi[i]; }
+    for (int i = 0 ; i < count ; i++) { E_Xi += (Xi[i]/100.0) * (pXi[i]/100.0); }
 
     // Calculation E[Xi²]
-    for (int i = 0 ; i < count ; i++) { E_Xi2 += pow(Xi[i],2) * pXi[i]; }
+    for (int i = 0 ; i < count ; i++) { E_Xi2 += pow((Xi[i]/100.0)  ,2) * (pXi[i]/100.0); }
 
     // Calculation Var_Xi
     double Var_Xi = E_Xi2 - pow(E_Xi,2);
 
     // Calculation sigma
-    double devi = sqrt(Var_Xi);
+    double devi = 0.0;
+    Var_Xi < 0 ? devi = 0 : devi = sqrt(Var_Xi);
 
     return devi * 100.0;
 
@@ -179,9 +177,7 @@ double Statistics::getfromList(Compares max_min_avr, std::vector<double> values)
  * */
 std::vector<std::string> Statistics::barGraph(double max_value,std::vector<double> values, Color color) {
     std::vector<std::string> res;
-    //if (values.size() == 0) {return res;}
 
-    double min = getfromList(MIN,values);
     double max = getfromList(MAX,values);
     double avr_percent = getfromList(AVERAGE,values);
 
