@@ -13,6 +13,20 @@
 #include "matrix/Matrix.h"
 #include "Model.h"
 
+/*
+
+This Class store the Model and k-Fold-Blocks for the Naive-Bayes Algorithm
+
+
+
+___________________________________________________________________________________
+
+
+*/
+
+
+
+
 
 /** Bayes
  *
@@ -57,18 +71,19 @@ public:
 
 private:
     
-// Tables:
-Model M;
-    
-// The SNPs
-Snipper X;
-Statistics stats;
-K_Fold k_Blocks;
+    // Tables:
+    Model M;
+        
+    // The SNPs
+    Snipper X;
+    Statistics stats;
+    K_Fold k_Blocks;
 
-int k_SIZE;
-int k_TEST;
-int k_COUNT;
-int k_test_actual;
+    // 
+    int k_SIZE;
+    int k_TEST;
+    int k_COUNT;
+    int k_test_actual;
 
 };
 

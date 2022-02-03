@@ -57,11 +57,11 @@ TEST(TEST, PredictionTest)
     // Cancer  = 1 
     // Control = 0 
 
-    Classification A = NB.getK_Blocks()[3].getBlockPredictions()[0]; // Control  = 1 
-    Classification B = NB.getK_Blocks()[3].getBlockPredictions()[1]; // Control  = 1
-    Classification C = NB.getK_Blocks()[3].getBlockPredictions()[2]; // Cancer   = 0
-    Classification D = NB.getK_Blocks()[3].getBlockPredictions()[3]; // Cancer   = 0
-    Classification E = NB.getK_Blocks()[3].getBlockPredictions()[4]; // Cancer   = 0
+    Classification A = NB.getK_Blocks()[3].getBlockPredictions()[0]; // Cancer   
+    Classification B = NB.getK_Blocks()[3].getBlockPredictions()[1]; // Cancer  
+    Classification C = NB.getK_Blocks()[3].getBlockPredictions()[2]; // Control 
+    Classification D = NB.getK_Blocks()[3].getBlockPredictions()[3]; // Control 
+    Classification E = NB.getK_Blocks()[3].getBlockPredictions()[4]; // Control 
 
     EXPECT_EQ( Control  , A );
     EXPECT_EQ( Control  , B );

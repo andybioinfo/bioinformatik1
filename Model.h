@@ -10,6 +10,29 @@
 #include "matrix/Matrix.h"
 #include "snipper/States.h"
 
+
+/*
+
+This Class store the Model-Values in tables/matrices. (Read or Write)
+
+You can read/change:
+
+ - pCancer
+
+ - cControl
+
+ - Matrix Xi{0,1,2} | Control
+
+ - Matrix Xi{0,1,2} | Cancer
+
+___________________________________________________________________________________
+
+
+*/
+
+
+
+
 /** The Table Model for Naive Bayes
  *
  *

@@ -8,11 +8,12 @@
 #include "NaiveBayes.h"
 
 
-/** Create from a Database a k-Fold Modell with random added patients from your database
+
+/** Create from a Database a k-Fold Model with random added patients from your database
  *
  * @S          Your SNP-Database
  * @count      Count of k
- * @shuffle    shuffle the patient list for random
+ * @shuffle    shuffle the patient list for random Blocks
  * @return     k-fold model with random added patients from your SNP-Database
  * */
 Block::K_Fold Block::Splitter(Snipper &S, int count, bool shuffle_patient_list) {
@@ -63,12 +64,47 @@ Block::K_Fold Block::Splitter(Snipper &S, int count, bool shuffle_patient_list) 
 
 
 
+/** Compute and store the predictions (with Model-using) in this Block
+ *
+ * @S              Original SNP-Database
+ * @M              Trained NB-Model
+ * @resumt         Type of Classification will stored in this Block
+ * */
+void Block::predict(Model& M, Snipper& S) {
+
+    double pC = M.getPCancer();
+    double pN = M.getPControl();
+    int pred_pos = 0;
+
+    // Run over all patients in this block
+    for (int id : this->getBlockPatients()) {
+        // start prob's
+        double pXiC = 1;
+        double pXiN = 1;
+
+        // run over all SNP's
+        for (int Xi = 0 ; Xi < S.getSNPcount() ; Xi++ ) {
+
+            Genotype gen = S[Xi][id];
+
+            pXiC *= M.getGenProbAtXi(Cancer,gen,Xi);
+            pXiN *= M.getGenProbAtXi(Control,gen,Xi);
+
+        }
+
+        // compute the prediction and add this to this block
+        this->predictions[pred_pos] = NaiveBayes::LOR_Formula( pXiC,  pXiN,  pC,  pN);
+        pred_pos++;
+        //
+    }
+
+}
+
 
 
 /** Tests this Patient-Data in this Block and returns the Statistics
  *
- * @NB
- * @
+ * @NB            Naive Bayes Data
  * @result        Statistics of this Testing
  * */
 void Block::calcStatistics(NaiveBayes& NB) {
@@ -103,8 +139,6 @@ void Block::calcStatistics(NaiveBayes& NB) {
     double TN = TrueNegatives;
     double FN = FalseNegatives;
 
-    //cout << "\n { TP: " << TP << " FP: "<< FP << " TN: " << TN << " FN: " << FN << " }";
-
     // compute St
 
     double ac = Statistics::Accuracy( TP,  TN,  FP,  FN);
@@ -119,68 +153,3 @@ void Block::calcStatistics(NaiveBayes& NB) {
 
 }
 
-
-/** Print this Data-Block to console
- *
- * */
-void Block::print() {
-std::stringstream s("");
-
-    s << C::BWHITE <<"\n K-Block id:"<<kid<<" size: "<< C::BBLUE << patient.size()  << C::BRED << " [ *SNPs: " << S.getSNPcount() << " Pat: " << S.getClassifics().count() << " ]";
-    s << C::BWHITE << " Pat(true->pred): { ";
-    int idx = 0;
-    for (int pat : patient ) {
-        std::stringstream pre("");
-        Classification trueS = S.getClassifics()[pat];
-        Classification preS  = predictions[idx];
-        pre << "t " << trueS << " -> " << preS;
-
-        s << C::BBLUE << pat << C::BCYAN << " (" << pre.str() << ") ";
-        if (idx != (int)patient.size() - 1) {s << "; ";}
-        idx++; }
-    s << C::BWHITE << "} ";
-    std::cout << s.str() << C::RESET;
-}
-
-
-
-/** Constructor of a Block
- *
- * @S   Your SNP-Database
- * */
-Block::Block(Snipper &S, int id) {
-this->S = S;
-this->kid = id;
-}
-
-/** returns for patient X (patient_id) the log odd ratio of Cancer / Control
- *
- * @patient_id     Patient to predict the classification
- * @return         Type of Classification
- * */
-void Block::predict(Model& M, Snipper& S) {
-
-    double pC = M.getPCancer();
-    double pN = M.getPControl();
-    int pred_pos = 0;
-
-    // Run over all patients in this block
-    for (int id : this->getBlockPatients()) {
-        // start prob's
-        double pXiC = 1;
-        double pXiN = 1;
-
-        // run over all SNP's
-        for (int Xi = 0 ; Xi < S.getSNPcount() ; Xi++ ) {
-            Genotype gen = S[Xi][id];
-            pXiC *= M.getGenProbAtXi(Cancer,gen,Xi);
-            pXiN *= M.getGenProbAtXi(Control,gen,Xi);
-        }
-
-        // compute the prediction and add this to this block
-        this->predictions[pred_pos] = NaiveBayes::LOR_Formula( pXiC,  pXiN,  pC,  pN);
-        pred_pos++;
-        //
-    }
-
-}
