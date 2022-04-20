@@ -12,54 +12,85 @@
 
 
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
 
-    // correct arg-count?
-    if (argc < 3) { console::Help("  Not enough arguments!  ");return 0; }
-    if (argc > 3) { console::Help("  Too many arguments!  ");return 0; }
+  // ## show help
 
-    // ## Argument Variables
-    std::string arg_In  = argv[1];
-    std::string arg_Out = argv[2];
-    std::ifstream input(arg_In);
-    std::ofstream output(arg_Out);
+    const char* RESET   = "\033[0m";
+    const char* BBLUE    = "\033[1;34m";
+    const char* BWHITE  = "\033[1;37m";
+    const char* BRED    = "\033[1;31m";
+    cout  <<  BBLUE <<  "\n  Help:    " << BBLUE << " $ ./createH2O [angle] [filename] " ;
+    cout  <<  "\n  Example: " << BBLUE  << " $ ./createH2O 90.0 ../your_amazing_molecule.pdb" ;
+    cout  <<  "\n  ";
+    cout  <<  BWHITE << "\n  [angle]    | " << BWHITE  << " angle in degree " ;
+    cout  <<  "\n  [file]     | " << BWHITE  << " output-file " << BRED << " !!! File path realitive !!!\n\n " << RESET;
 
-    // ## File Check
-    if (!input) { console::Help("  Input file error!  "); input.close(); return 0; }
-    if (!output) { console::Help("  Output file error!  "); input.close(); output.close();return 0; }
-    input.close();output.close();
+  // ## correct arg-count?
 
-    // ## Input okay -> Start SNP computing
+    if (argc < 2) { cout  <<  BRED  <<  "\n   ==> Not enough arguments!   \n" << RESET; return 0; }
+    if (argc > 2) { cout  <<  BRED  <<  "\n   ==> Too many arguments!     \n" << RESET; return 0; }
 
-    console::ShowHeader();
-    Timer t;
+  // ## Create System and Molecule ...
 
-    Snipper S(arg_In );                                 // read file and create Snipper SNP-Database
+    // B)
+    System s;
+    BALL::Molecule m;
 
-    double time1 = t.getMilliSecs();                            // timestamp after file in
+    // C)
+    BALL::Atom Ox;
+    BALL::Atom H1;
+    BALL::Atom H2;
+    auto oxy = PTE[Element::O];
+    auto hyd = PTE[Element::H];
+    Ox.setElement(oxy);
+    H1.setElement(hyd);
+    H2.setElement(hyd);
 
-    NaiveBayes NB(S, 10,true);     // Build NaiveBayes
+    BALL::Bond* a = Ox.createBond(H1);
+    BALL::Bond* b = Ox.createBond(H2);
 
-    NB.BayesTrainingsstunde();                                  // compute Naive Bayes
+    Ox.setPosition(Vector3(0,0,0));
+    H1.setPosition(Vector3(0,1.42,0));
+    H2.setPosition(Vector3(1,1.42,0));
 
-    NB.outputFile(arg_Out);                            // write results in file
+    m.insert(Ox);
+    m.insert(H1);
+    m.insert(H2);
 
-    double time2 = t.getMilliSecs();                            // timestamp after finish algorithm
 
-    console::InputLine(                                         // write inputs to console
-        NB.getSNPs().getSNPcount(), 
-        NB.getSNPs().getClassifics().count(), 
-        NB.get_k_COUNT(), 
-        NB.get_k_SIZE(),
-        arg_In,
-        Timer::getFormatted(time2), 
-        Timer::getFormatted(time1), 
-        Timer::getFormatted(time2-time1)
-        );
+  // ## Set angle
 
-       
+    double angle_input  = atof(argv[1]);
+    Angle angle(angle_input, false);
+    Vector3 rotationaxis(1., 0., 0.);
 
-    console::Result(NB,arg_Out,"","","");
+    Matrix4x4 mat;
+    mat.setRotation(angle, rotationaxis);
+
+  // ## Insert finished molecule in System
+
+    s.insert(m);
+
+
+  // ## ... and write in the file
+    
+    std::string arg_out  = argv[2];
+    PDBFile outfile(arg_out, ios::out);
+    outfile << s;
+    outfile.close();
+
+    /*
+                 (meow!)
+         /\_/\   )/
+   ((   (=^.^=)
+   ))    )   (
+    (( /      \    ' '
+     (   ) || ||     ' '
+     '----''-''-'  >+++°>
+
+    */
 
     return 0;
 }
